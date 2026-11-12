@@ -331,6 +331,11 @@
     .speaker { color: var(--paint); margin: 0 0 .45rem; }
     .caption { margin: 0; font-size: clamp(.93rem, 1.5vw, 1.08rem); line-height: 1.45; }
     .poem { margin: .55rem 0 0; white-space: pre-line; font: italic .95rem/1.25 Georgia, serif; }
+    .stage[data-look="poem"] :is(.caption, .poem) { min-height: 5.8rem; }
+    .stage[data-look="poem"] .poem {
+      margin: 0;
+      font: italic clamp(1rem, 1.5vw, 1.15rem)/1.45 Georgia, serif;
+    }
     .scene-source { display: inline-block; margin-top: .5rem; color: #752f29; font-weight: 650; }
 
     .board {
@@ -581,6 +586,16 @@
     .stage[data-pose="point"] .host .arm.raised { transform: rotate(-14deg); animation: none; }
     .stage[data-pose="point"] .host .arm.resting { transform: rotate(5deg); }
     .stage[data-pose="rest"] .host .arm.raised { transform: rotate(-35deg); animation: none; }
+    .stage[data-pose="recite"] .host .arm.raised {
+      animation: none;
+      transform: rotate(-22deg);
+      rotate: var(--verse-gesture, 0deg);
+    }
+    .stage[data-pose="recite"] .host .arm.resting {
+      transform-origin: left top;
+      transform: rotate(-16deg);
+      rotate: calc(var(--verse-gesture, 0deg) * -.55);
+    }
     @keyframes explain-left { 50% { transform: rotate(7deg); } }
 
     .host > .scene[role="button"] { cursor: pointer; touch-action: manipulation; }
@@ -2828,7 +2843,7 @@
         0,
         13.488
       ],
-      "poemStart": 13.488
+      "poemStarts": [13.488, 17.238, 21.524, 25.393]
     }
   },
   {
@@ -3388,6 +3403,8 @@
     let sceneScale = 1;
     let activePhoto = -1;
     let activeSentence = -1;
+    let activeVerse = -1;
+    let verses = [];
     let sentences = [];
     let current = -1;
     let writingBranch = false;
@@ -3411,7 +3428,7 @@
       poster: ['delighted', 'curious'],
       portrait: ['thoughtful', 'curious'],
       piano: ['friendly', 'delighted'],
-      poem: ['surprised', 'wink'],
+      poem: ['friendly', 'curious'],
       concert: ['delighted', 'friendly'],
       legacy: ['thoughtful', 'delighted']
     };
@@ -3505,6 +3522,12 @@
       current = index;
       activePhoto = -1;
       activeSentence = -1;
+      activeVerse = -1;
+      const poemLines = scene.poem?.split('\n') ?? [];
+      verses = [];
+      for (let i = 0; i < poemLines.length; i += 2) {
+        verses.push(poemLines.slice(i, i + 2).join('\n'));
+      }
       sentences = scene.voice?.sentences.map(sentence => sentence.text)
         ?? scene.caption.split(/(?<=[.!?])\s+/u);
       stage.dataset.look = scene.look;
@@ -3515,8 +3538,9 @@
       date.textContent = scene.date ?? '';
       date.hidden = !scene.date;
       caption.textContent = sentences[0];
-      poem.textContent = scene.poem ?? '';
-      poem.hidden = !scene.poem;
+      caption.hidden = false;
+      poem.hidden = true;
+      woody.style.removeProperty('--verse-gesture');
       source.hidden = !scene.source;
       if (scene.source) source.href = scene.source;
       map.hidden = scene.branch === 0;
@@ -3741,8 +3765,21 @@
         const faces = facesByLook[scene.look] ?? facesByLook.opening;
         narrationFace = faces[sentenceIndex % faces.length];
       }
-      if (scene.poem && scene.voice?.poemStart !== undefined) {
-        poem.hidden = seconds < scene.voice.poemStart;
+      const verseStarts = scene.voice?.poemStarts;
+      if (verseStarts) {
+        const verseIndex = verseStarts.findLastIndex(start => start <= seconds);
+        if (verseIndex >= 0 && verseIndex !== activeVerse) {
+          activeVerse = verseIndex;
+          caption.hidden = true;
+          poem.hidden = false;
+          poem.textContent = verses[verseIndex];
+          stage.dataset.pose = 'recite';
+          narrationFace = verseIndex % 2 === 0 ? 'friendly' : 'curious';
+        }
+        if (verseIndex >= 0 && !reducedMotion.matches) {
+          const beat = Math.min(1, (seconds - verseStarts[verseIndex]) / 1.1);
+          woody.style.setProperty('--verse-gesture', Math.sin(beat * Math.PI) * 16 + 'deg');
+        }
       }
       if (gallery.hidden) return;
       const photoTime = Math.max(0, seconds - (writingBranch ? 4 : 0));
