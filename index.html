@@ -273,174 +273,160 @@
       box-shadow: 5px 5px #282522;
     }
 
+
     .stage {
       --paper: #eec760;
-      --paint: #9f342c;
+      --paint: #762d26;
       display: grid;
-      grid-template-columns: minmax(0, 37fr) minmax(0, 63fr);
-      min-height: 325px;
-      overflow: hidden;
-      isolation: isolate;
+      grid-template-columns: minmax(0, 36fr) minmax(0, 64fr);
+      align-items: center;
+      gap: clamp(12px, 2vw, 24px);
+      padding: clamp(14px, 3vw, 34px);
       background: var(--paper);
       transition: background-color .45s ease;
+      position: relative;
     }
 
-    .stage[data-look="theatre"] { --paper: #d99579; --paint: #572b29; }
-    .stage[data-look="poster"] { --paper: #e5b64f; --paint: #8a2922; }
-    .stage[data-look="portrait"] { --paper: #dfad48; --paint: #724831; }
+    .stage[data-look="theatre"] { --paper: #d99579; }
+    .stage[data-look="poster"] { --paper: #e5b64f; }
+    .stage[data-look="portrait"] { --paper: #dfad48; }
     .stage[data-look="piano"] { --paper: #93b3a1; --paint: #214c4e; }
-    .stage[data-look="poem"] { --paper: #b4bf94; --paint: #3d4e31; }
+    .stage[data-look="poem"] { --paper: #b4bf94; --paint: #344a2b; }
     .stage[data-look="concert"] { --paper: #9aaacb; --paint: #303e66; }
     .stage[data-look="legacy"] { --paper: #c79dba; --paint: #5a354c; }
 
-    .scene {
-      width: min(100%, 365px);
-      align-self: center;
-      justify-self: center;
-      z-index: 2;
-    }
-
+    .host { display: grid; justify-items: center; min-width: 0; }
+    .scene { width: min(100%, 235px); }
     .stage[data-speaking] .pencil { animation-duration: 2.7s; }
     .stage[data-speaking] .smile { animation: talk .48s ease-in-out infinite alternate; }
-    .stage[data-look="intro"][data-entering] .scene {
-      animation: woody-entrance .7s ease-out both;
-    }
+    .stage[data-look="intro"][data-entering] .scene { animation: appear .55s ease-out both; }
+    .stage[data-paused] * { animation-play-state: paused; }
+    .stage[data-paused] .scene { animation: none; }
 
-    .scene-title {
-      display: grid;
-      align-content: center;
-      min-width: 0;
-      padding: clamp(18px, 4vw, 56px);
+    .dialogue {
+      width: 100%;
+      padding: clamp(12px, 1.5vw, 20px);
       position: relative;
-      isolation: isolate;
+      border: 1px solid #282522;
+      border-radius: 10px;
+      background: #fffaf0;
+      box-shadow: 3px 3px #282522;
     }
 
-    .scene-title::before, .scene-title::after {
+    .dialogue::before {
       content: "";
       position: absolute;
-      z-index: -1;
-      pointer-events: none;
+      left: 44%;
+      top: -7px;
+      width: 12px;
+      height: 12px;
+      border: solid #282522;
+      border-width: 1px 0 0 1px;
+      background: #fffaf0;
+      transform: rotate(45deg);
     }
 
-    .scene-title::before {
-      width: 47%;
-      aspect-ratio: 1;
-      right: -7%;
-      top: 5%;
-      opacity: .32;
-      border-radius: 50%;
-      background: repeating-linear-gradient(135deg, transparent 0 6px, var(--paint) 6px 8px);
-    }
-
-    .scene-title::after {
-      width: 30%;
-      height: 110%;
-      right: 5%;
-      bottom: -72%;
-      background: var(--paint);
-      transform: rotate(-28deg);
-      opacity: .8;
-    }
-
-    [data-look="theatre"] .scene-title::before {
-      right: 0;
-      width: 65%;
-      border-radius: 50% 50% 0 0;
-      background: repeating-linear-gradient(90deg, var(--paint) 0 12%, transparent 12% 24%);
-    }
-
-    [data-look="portrait"] .scene-title::before {
-      right: -4%;
-      top: 10%;
-      width: 45%;
-      border: 12px double var(--paint);
-      border-radius: 0;
-      background: radial-gradient(ellipse at 57% 38%, var(--paint) 0 19%, transparent 20%),
-        linear-gradient(128deg, transparent 52%, var(--paint) 53%);
-      transform: rotate(14deg);
-    }
-
-    [data-look="piano"] .scene-title::after,
-    [data-look="concert"] .scene-title::after {
-      width: 72%;
-      height: 27%;
-      right: -4%;
-      bottom: -8%;
-      background: repeating-linear-gradient(90deg, var(--paint) 0 10%, #faf5e8 10% 19%);
-      transform: rotate(-12deg);
-    }
-
-    [data-look="poem"] .scene-title::before,
-    [data-look="legacy"] .scene-title::before,
-    [data-look="poster"] .scene-title::before {
-      border-radius: 0;
-      transform: rotate(12deg);
-      box-shadow: -15px 13px 0 var(--paint);
-    }
-
-    .scene-heading { max-width: 36rem; }
-    .stage[data-entering] .scene-heading { animation: appear .46s ease-out both; }
-    .date, .speaker, .count {
-      font-size: .72rem;
+    .speaker, .date {
+      font-size: .7rem;
       font-weight: 750;
-      letter-spacing: .12em;
+      letter-spacing: .09em;
       text-transform: uppercase;
     }
+    .speaker { color: var(--paint); margin: 0 0 .45rem; }
+    .caption { margin: 0; font-size: clamp(.93rem, 1.5vw, 1.08rem); line-height: 1.45; }
+    .poem { margin: .55rem 0 0; white-space: pre-line; font: italic .95rem/1.25 Georgia, serif; }
+    .scene-source { display: inline-block; margin-top: .5rem; color: #752f29; font-weight: 650; }
 
-    .date { margin: 0 0 .7rem; }
-    h1 {
-      margin: 0;
-      font: 700 clamp(2.1rem, 6.2vw, 5.5rem)/.95 Georgia, serif;
-      letter-spacing: -.06em;
-      overflow-wrap: anywhere;
+    .board {
+      min-width: 0;
+      align-self: center;
+      padding: clamp(12px, 2vw, 24px);
+      border: 1px solid #282522;
+      background: repeating-linear-gradient(#fdf5e5 0 23px, #e8ddc9 23px 24px);
+      box-shadow: 4px 4px #282522;
     }
 
-    .dialogue { padding: clamp(16px, 3.8vw, 42px); }
-    .speaker { color: #91382d; margin: 0 0 .55rem; }
-    .caption {
-      margin: 0;
-      min-height: 3.15em;
-      max-width: 80ch;
-      font-size: clamp(1rem, 2vw, 1.23rem);
-      line-height: 1.55;
+    .board-heading {
+      display: flex;
+      justify-content: space-between;
+      gap: 10px;
+      align-items: flex-start;
     }
+    .date { color: var(--paint); margin: 0 0 .3rem; }
+    h1 { margin: 0; font: 700 clamp(1.4rem, 3.3vw, 2.7rem)/1.04 Georgia, serif; }
+    .stage[data-entering] .scene-heading { animation: appear .42s ease-out both; }
 
-    .poem { margin: .8rem 0 0; white-space: pre-line; font: italic 1.1rem/1.5 Georgia, serif; }
-    .scene-source { display: inline-block; margin-top: .6rem; color: #7f302a; font-weight: 650; }
-    .player-footer { border-top: 1px solid #3e3a33; padding: 12px clamp(16px, 3.8vw, 42px) 16px; }
-    .controls { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; }
-    .controls button {
-      min-height: 42px;
-      padding: 7px 12px;
-      font: inherit;
-      font-weight: 650;
-      color: inherit;
+    #play {
+      min-height: 32px;
+      padding: 4px 9px;
       border: 1px solid #282522;
       border-radius: 4px;
-      background: transparent;
+      color: #282522;
+      background: #fffaf0;
+      font: 650 .78rem system-ui, sans-serif;
       cursor: pointer;
     }
+    button:focus-visible, a:focus-visible { outline: 3px solid #156480; outline-offset: 3px; }
 
-    .controls #play { background: #282522; color: #fff9e8; min-width: 110px; }
-    .controls button:disabled { opacity: .43; cursor: default; }
-    .controls button:focus-visible, a:focus-visible { outline: 3px solid #156480; outline-offset: 3px; }
-    .count { margin-left: auto; }
-    progress { display: block; width: 100%; height: 7px; margin-top: 12px; accent-color: #91382d; }
+    .map { position: relative; display: grid; grid-template: repeat(3, 1fr) / repeat(3, 1fr); aspect-ratio: 1.45; margin-top: 10px; }
+    .map[hidden] { display: none; }
+    .map-item {
+      place-self: center;
+      z-index: 1;
+      padding: .4em .5em;
+      max-width: 94%;
+      border: 1px solid var(--paint);
+      border-radius: 5px;
+      background: #fffaf0;
+      color: #282522;
+      font-size: clamp(.71rem, 1.35vw, 1.02rem);
+      font-weight: 700;
+      line-height: 1.14;
+      text-align: center;
+      grid-area: var(--row) / var(--column);
+    }
+    .map-core {
+      --row: 2;
+      --column: 2;
+      background: #292522;
+      color: #fffaf0;
+      border-color: #292522;
+      font-family: Georgia, serif;
+    }
+    .map-item[data-current] { background: var(--paint); color: #fffaf0; }
+    .stage[data-entering] .map-item[data-current] { animation: appear .35s .2s ease-out both; }
+
+    .map-line {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      width: var(--length, 40%);
+      height: 2px;
+      background: var(--paint);
+      transform: rotate(var(--angle));
+      transform-origin: left center;
+    }
+    .stage[data-entering] .map-line[data-current] { animation: draw .24s ease-out both; }
+    .map [data-branch="2"] { --row: 1; --column: 1; --angle: -145deg; }
+    .map [data-branch="3"] { --row: 1; --column: 2; --angle: -90deg; --length: 23%; }
+    .map [data-branch="4"] { --row: 1; --column: 3; --angle: -35deg; }
+    .map [data-branch="5"] { --row: 2; --column: 3; --angle: 0deg; --length: 33%; }
+    .map [data-branch="6"] { --row: 3; --column: 3; --angle: 35deg; }
+    .map [data-branch="7"] { --row: 3; --column: 2; --angle: 90deg; --length: 23%; }
+    .map [data-branch="8"] { --row: 3; --column: 1; --angle: 145deg; }
+
     [hidden] { display: none !important; }
-
-    @keyframes appear { from { opacity: 0; translate: 0 10px; } }
+    @keyframes appear { from { opacity: 0; translate: 0 8px; } }
+    @keyframes draw { from { scale: 0 1; } }
     @keyframes talk { from { scale: 1 .6; } to { scale: 1.03 1.08; } }
-    @keyframes woody-entrance {
-      from { opacity: 0; translate: -12% 6%; scale: .92; }
+
+    @media (max-width: 650px) {
+      .stage { grid-template-columns: 1fr; }
+      .host { grid-template-columns: minmax(58px, 25%) minmax(0, 1fr); align-items: center; gap: 9px; }
+      .dialogue::before { left: -7px; top: 44%; transform: rotate(-45deg); }
+      .map { max-width: 470px; margin-inline: auto; }
     }
 
-    @media (max-width: 560px) {
-      .stage { grid-template-columns: 36fr 64fr; min-height: 0; }
-      .scene-title { min-height: 198px; padding: 15px 12px; }
-      .date, .count { font-size: .65rem; }
-      h1 { font-size: clamp(1.6rem, 7vw, 2.5rem); }
-      .count { width: 100%; margin: 2px 0 0; }
-    }
 </style>
 </head>
 <body>
@@ -448,56 +434,68 @@
 
     <section class="stage" id="stage" data-look="intro">
 
-      <div class="scene" role="img" aria-label="Lápis amarelo sorrindo e acenando">
-        <div class="shadow"></div>
-        <div class="pencil">
-          <div class="eraser"></div>
-          <div class="ferrule"></div>
-          <div class="barrel">
-            <div class="brows"><i></i><i></i></div>
-            <div class="eyes"><i></i><i></i></div>
-            <div class="smile"></div>
+      <div class="host">
+        <div class="scene" role="img" aria-label="Lápis amarelo sorrindo e acenando">
+          <div class="shadow"></div>
+          <div class="pencil">
+            <div class="eraser"></div>
+            <div class="ferrule"></div>
+            <div class="barrel">
+              <div class="brows"><i></i><i></i></div>
+              <div class="eyes"><i></i><i></i></div>
+              <div class="smile"></div>
+            </div>
+            <div class="wood"></div>
+            <div class="arm raised"><span class="glove"></span></div>
+            <div class="arm resting"><span class="glove"></span></div>
           </div>
-          <div class="wood"></div>
-          <div class="arm raised"><span class="glove"></span></div>
-          <div class="arm resting"><span class="glove"></span></div>
+        </div>
+        <div class="dialogue" aria-label="Fala do professor Woody" aria-live="polite" aria-atomic="true">
+          <p class="speaker">Professor Woody</p>
+          <p class="caption" id="caption">Oi, galera! Eu sou o professor Woody. Hoje vamos montar juntos um mapa mental da Semana de Arte Moderna.</p>
+          <blockquote class="poem" id="poem" hidden></blockquote>
+          <a class="scene-source" id="scene-source" hidden>Ver a obra no acervo do IEB-USP</a>
         </div>
       </div>
-      <div class="scene-title">
-        <div class="scene-heading">
-          <p class="date" id="date" hidden></p>
-          <h1 id="title">Olá, eu sou o Woody!</h1>
+      <div class="board">
+        <div class="board-heading">
+          <div class="scene-heading">
+            <p class="date" id="date" hidden></p>
+            <h1 id="title">Olá, eu sou o Woody!</h1>
+          </div>
+          <button type="button" id="play">Pausar</button>
+        </div>
+        <div class="map" id="map" role="group" aria-label="Mapa mental da Semana de Arte Moderna" hidden>
+          <strong class="map-item map-core">Semana de Arte Moderna</strong>
+          <span class="map-line" data-branch="2" aria-hidden="true" hidden></span>
+          <span class="map-item" data-branch="2" hidden>Contexto</span>
+          <span class="map-line" data-branch="3" aria-hidden="true" hidden></span>
+          <span class="map-item" data-branch="3" hidden>Divulgação</span>
+          <span class="map-line" data-branch="4" aria-hidden="true" hidden></span>
+          <span class="map-item" data-branch="4" hidden>Artes visuais</span>
+          <span class="map-line" data-branch="5" aria-hidden="true" hidden></span>
+          <span class="map-item" data-branch="5" hidden>Música e debate</span>
+          <span class="map-line" data-branch="6" aria-hidden="true" hidden></span>
+          <span class="map-item" data-branch="6" hidden>Poesia</span>
+          <span class="map-line" data-branch="7" aria-hidden="true" hidden></span>
+          <span class="map-item" data-branch="7" hidden>Concerto</span>
+          <span class="map-line" data-branch="8" aria-hidden="true" hidden></span>
+          <span class="map-item" data-branch="8" hidden>Legado</span>
         </div>
       </div>
     </section>
 
-    <section class="dialogue" aria-label="Fala do professor Woody" aria-live="polite" aria-atomic="true">
-      <p class="speaker">Professor Woody</p>
-      <p class="caption" id="caption">Oi, galera! Tudo bem com vocês? Eu sou o professor Woody e vou acompanhar vocês na aula de hoje.</p>
-      <blockquote class="poem" id="poem" hidden></blockquote>
-      <a class="scene-source" id="scene-source" hidden>Ver a obra no acervo do IEB-USP</a>
-    </section>
-
-    <div class="player-footer">
-      <div class="controls" aria-label="Controles da animação">
-        <button type="button" id="previous" disabled>← Anterior</button>
-        <button type="button" id="play">Pausar</button>
-        <button type="button" id="next">Próxima →</button>
-        <span class="count" id="count">Cena 1 de 10</span>
-      </div>
-      <progress id="progress" value="0" max="1" aria-label="Progresso da animação"></progress>
-    </div>
   </main>
   <script>
     const scenes = [
       {
         look: 'intro', title: 'Olá, eu sou o Woody!',
-        caption: 'Oi, galera! Tudo bem com vocês? Eu sou o professor Woody e vou acompanhar vocês na aula de hoje.',
+        caption: 'Oi, galera! Eu sou o professor Woody. Hoje vamos montar juntos um mapa mental da Semana de Arte Moderna.',
         seconds: 8
       },
       {
         look: 'opening', date: 'São Paulo · 1922', title: 'Semana de Arte Moderna',
-        caption: 'Vamos voltar a 1922? Foi nesse ano que aconteceu a Semana de Arte Moderna, um encontro que marcou a arte brasileira.',
+        caption: 'Vamos voltar a 1922? No centro do mapa, vou escrever “Semana de Arte Moderna”. Agora é só puxar os ramos para lembrar do que aconteceu.',
         seconds: 9
       },
       {
@@ -539,7 +537,7 @@
       },
       {
         look: 'opening', date: 'Fim da aula', title: 'Até a próxima!',
-        caption: 'Bom, galera, por hoje é isso. Espero que tenham gostado da nossa viagem a 1922. Até a próxima!',
+        caption: 'Pronto, galera! Nosso mapa mostra como a Semana reuniu artes visuais, música e poesia e deixou marcas na arte brasileira. Até a próxima!',
         seconds: 8
       }
     ];
@@ -550,14 +548,12 @@
     const caption = document.querySelector('#caption');
     const poem = document.querySelector('#poem');
     const source = document.querySelector('#scene-source');
-    const previous = document.querySelector('#previous');
     const play = document.querySelector('#play');
-    const next = document.querySelector('#next');
-    const count = document.querySelector('#count');
-    const progress = document.querySelector('#progress');
+    const map = document.querySelector('#map');
+    const branches = map.querySelectorAll('[data-branch]');
     const sceneStarts = [0];
     for (const scene of scenes) sceneStarts.push(sceneStarts.at(-1) + scene.seconds);
-    progress.max = sceneStarts.at(-1);
+    const duration = sceneStarts.at(-1);
 
     let current = 0;
     let elapsed = 0;
@@ -569,6 +565,7 @@
     function syncPlayButton() {
       play.textContent = playing ? 'Pausar' : finished ? 'Recomeçar' : 'Continuar';
       stage.toggleAttribute('data-speaking', playing);
+      stage.toggleAttribute('data-paused', !playing);
     }
 
     function showScene(index) {
@@ -586,28 +583,21 @@
       poem.hidden = !scene.poem;
       source.hidden = !scene.source;
       if (scene.source) source.href = scene.source;
-      previous.disabled = index === 0;
-      next.disabled = index === scenes.length - 1;
-      count.textContent = 'Cena ' + (index + 1) + ' de ' + scenes.length;
-    }
-
-    function seek(index) {
-      elapsed = sceneStarts[index];
-      startedAt = performance.now() - elapsed * 1000;
-      progress.value = elapsed;
-      finished = false;
-      showScene(index);
-      syncPlayButton();
+      map.hidden = index === 0;
+      for (const branch of branches) {
+        const sceneIndex = Number(branch.dataset.branch);
+        branch.hidden = sceneIndex > index;
+        branch.toggleAttribute('data-current', sceneIndex === index);
+      }
     }
 
     function tick(now) {
       if (!playing) return;
-      elapsed = Math.min((now - startedAt) / 1000, progress.max);
-      progress.value = elapsed;
+      elapsed = Math.min((now - startedAt) / 1000, duration);
       const sceneIndex = sceneStarts.findLastIndex(start => start <= elapsed);
       const index = Math.min(sceneIndex, scenes.length - 1);
       if (index !== current) showScene(index);
-      if (elapsed >= progress.max) {
+      if (elapsed >= duration) {
         playing = false;
         finished = true;
         syncPlayButton();
@@ -617,7 +607,11 @@
     }
 
     function startPlayback() {
-      if (finished) seek(0);
+      if (finished) {
+        finished = false;
+        elapsed = 0;
+        showScene(0);
+      }
       startedAt = performance.now() - elapsed * 1000;
       playing = true;
       frame = requestAnimationFrame(tick);
@@ -633,8 +627,6 @@
         startPlayback();
       }
     });
-    previous.addEventListener('click', () => seek(current - 1));
-    next.addEventListener('click', () => seek(current + 1));
     showScene(0);
     startPlayback();
   </script>
