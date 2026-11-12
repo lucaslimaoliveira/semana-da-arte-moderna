@@ -163,7 +163,6 @@
       background: var(--ink);
       transform: rotate(-7deg);
       transform-origin: center top;
-      animation: smile 4.2s ease-in-out infinite;
     }
     .smile::before, .smile::after { content: ""; position: absolute; }
     .smile::before {
@@ -254,7 +253,6 @@
       40%, 64% { transform: rotate(2deg); }
     }
     @keyframes blink { 75%, 81% { scale: 1 1; } 78% { scale: 1 .11; } }
-    @keyframes smile { 28%, 56% { scale: 1.03 1.08; } }
     @media (prefers-reduced-motion: reduce) {
       *, *::before, *::after { animation: none !important; }
     }
@@ -297,8 +295,8 @@
 
     .host { display: grid; justify-items: center; min-width: 0; }
     .scene { width: min(100%, 235px); }
-    .stage[data-speaking] .pencil { animation-duration: 2.7s; }
-    .stage[data-speaking] .smile { animation: talk .48s ease-in-out infinite alternate; }
+    .host .pencil { animation-duration: 2.7s; }
+    .host .smile { scale: var(--mouth-width, 1) var(--mouth-opening, .42); }
     .stage[data-look="intro"][data-entering] .scene { animation: appear .55s ease-out both; }
 
     .dialogue {
@@ -442,7 +440,6 @@
 
     [hidden] { display: none !important; }
     @keyframes appear { from { opacity: 0; translate: 0 8px; } }
-    @keyframes talk { from { scale: 1 .6; } to { scale: 1.03 1.08; } }
 
     @media (max-width: 650px) {
       .stage { grid-template-columns: 1fr; }
@@ -584,19 +581,6 @@
     .stage[data-pose="point"] .host .arm.raised { transform: rotate(-14deg); animation: none; }
     .stage[data-pose="point"] .host .arm.resting { transform: rotate(5deg); }
     .stage[data-pose="rest"] .host .arm.raised { transform: rotate(-35deg); animation: none; }
-    .stage[data-mouth="closed"] .host .smile {
-      height: 7%;
-      top: 64%;
-      border-radius: 0 0 70% 60%;
-      background: #fffefa;
-    }
-    .stage[data-mouth="closed"] .host .smile::after { display: none; }
-    .stage[data-mouth="round"] .host .smile {
-      left: 39%;
-      width: 24%;
-      height: 17%;
-      border-radius: 48%;
-    }
     @keyframes explain-left { 50% { transform: rotate(7deg); } }
 
     .host > .scene[role="button"] { cursor: pointer; touch-action: manipulation; }
@@ -703,7 +687,7 @@
           </div>
         </div>
         <div class="dialogue" aria-label="Fala do professor Woody" aria-live="polite" aria-atomic="true">
-          <p class="voice-note" id="voice-note">Voz gerada por IA · toque no Woody para ouvir</p>
+          <p class="voice-note" id="voice-note">Voz gerada por IA · Antônio</p>
           <p class="speaker">Professor Woody</p>
           <p class="caption" id="caption">Oi, galera! Eu sou o professor Woody. Hoje vamos montar juntos um mapa mental da Semana de Arte Moderna.</p>
           <blockquote class="poem" id="poem" hidden></blockquote>
@@ -3407,7 +3391,10 @@
     let sentences = [];
     let current = -1;
     let writingBranch = false;
+    let writingComplete = false;
+    let mapNeedsLayout = true;
     let startedAt;
+    let elapsed = 0;
     let finished = false;
     let narrationActive = false;
     let narrationStarting = false;
@@ -3430,7 +3417,7 @@
     };
 
     function updateExpression() {
-      const expression = reactionFace || (stage.hasAttribute('data-writing') ? 'focused' : narrationFace);
+      const expression = stage.hasAttribute('data-writing') ? 'focused' : reactionFace || narrationFace;
       if (stage.dataset.expression !== expression) stage.dataset.expression = expression;
     }
 
@@ -3446,9 +3433,9 @@
     }
 
     function interactWithWoody() {
-      if (!narrationActive || finished) {
+      if (finished) {
         enableNarration();
-      } else {
+      } else if (narrationActive) {
         reactToTouch();
       }
     }
@@ -3467,6 +3454,11 @@
       sceneScale = Math.min(1, (availableWidth - 18) / (player.offsetWidth + 6),
         (availableHeight - 18) / (player.offsetHeight + 6));
       player.style.setProperty('--scene-scale', sceneScale);
+      mapNeedsLayout = true;
+      if (finished && !map.hidden) {
+        layoutLines();
+        drawConnections();
+      }
     }
 
     const resizeObserver = new ResizeObserver(fitScene);
@@ -3509,6 +3501,7 @@
     function showScene(index) {
       const scene = scenes[index];
       writingBranch = scene.branch > 0 && scene.branch !== scenes[current]?.branch;
+      writingComplete = !writingBranch;
       current = index;
       activePhoto = -1;
       activeSentence = -1;
@@ -3683,7 +3676,15 @@
       const writing = seconds < returnStart + returnDuration && !reducedMotion.matches;
       stage.toggleAttribute('data-writing', writing);
       writer.hidden = !writing;
-      if (reducedMotion.matches) return;
+      writingComplete = !writing;
+      if (reducedMotion.matches) {
+        for (const letter of lettering.get(label)) letter.style.clipPath = '';
+        if (detail) {
+          for (const letter of lettering.get(detail)) letter.style.clipPath = '';
+        }
+        if (line) line.progress = 1;
+        return;
+      }
 
       const from = drawingRect(core);
       const homeRect = drawingRect(document.querySelector('.host > .scene'));
@@ -3740,13 +3741,6 @@
         const faces = facesByLook[scene.look] ?? facesByLook.opening;
         narrationFace = faces[sentenceIndex % faces.length];
       }
-      const mouth = ['open', 'closed', 'round', 'open', 'closed', 'open', 'closed', 'closed'][Math.floor(seconds * 8) % 8];
-      const word = narrationActive && scene.voice?.words.find(word => word.start <= seconds && word.end >= seconds);
-      const speaking = !narrationActive || (!narration.paused && narration.readyState >= 3 && Boolean(word));
-      const spokenMouth = !speaking ? 'closed'
-        : word && /[ouóôú]/iu.test(word.text) && Math.floor(seconds * 8) % 3 === 0 ? 'round' : mouth;
-      stage.toggleAttribute('data-speaking', speaking);
-      if (stage.dataset.mouth !== spokenMouth) stage.dataset.mouth = spokenMouth;
       if (scene.poem && scene.voice?.poemStart !== undefined) {
         poem.hidden = seconds < scene.voice.poemStart;
       }
@@ -3782,20 +3776,45 @@
       }
     }
 
+    function updateMouth(seconds) {
+      let opening = .42;
+      let width = 1;
+      if (narrationActive && !narration.paused && narration.readyState >= 3 && !reducedMotion.matches) {
+        const words = scenes[current].voice?.words ?? [];
+        for (const word of words) {
+          if (word.start > seconds + .05) break;
+          if (word.end < seconds - .08) continue;
+          // Blend nearby words so a short gap doesn't snap the mouth shut.
+          const envelope = Math.min(1, (seconds - word.start + .05) / .10,
+            (word.end + .08 - seconds) / .13);
+          const shape = .78 + .22 * Math.sin((seconds - word.start) * 25) ** 2;
+          const candidate = .42 + .58 * envelope * shape;
+          if (candidate <= opening) continue;
+          opening = candidate;
+          width = /[ouóôú]/iu.test(word.text) ? 1 - .22 * envelope : 1;
+        }
+      }
+      woody.style.setProperty('--mouth-opening', opening.toFixed(3));
+      woody.style.setProperty('--mouth-width', width.toFixed(3));
+    }
+
     function tick(now) {
       if (finished) return;
-      startedAt ??= now;
-      const elapsed = Math.max(0, Math.min(narrationActive
+      startedAt ??= now - elapsed * 1000;
+      elapsed = Math.max(0, Math.min(narrationActive
         ? narration.currentTime : (now - startedAt) / 1000, duration));
       const index = Math.min(sceneStarts.findLastIndex(start => start <= elapsed), scenes.length - 1);
       if (index !== current) showScene(index);
-      presentScene(elapsed - sceneStarts[index]);
-      if (!map.hidden) {
+      const sceneTime = elapsed - sceneStarts[index];
+      presentScene(sceneTime);
+      if (!map.hidden && (mapNeedsLayout || !writingComplete)) {
         layoutLines();
-        writeScene(elapsed - sceneStarts[index]);
+        if (!writingComplete) writeScene(sceneTime);
         drawConnections();
+        mapNeedsLayout = false;
       }
       updateExpression();
+      updateMouth(sceneTime);
       if (elapsed >= duration) {
         finishPlayback();
         return;
@@ -3807,7 +3826,8 @@
       finished = true;
       writer.hidden = true;
       stage.removeAttribute('data-writing');
-      stage.removeAttribute('data-speaking');
+      woody.style.removeProperty('--mouth-opening');
+      woody.style.removeProperty('--mouth-width');
       narrationFace = 'delighted';
       updateExpression();
       if (narrationActive) {
@@ -3816,6 +3836,17 @@
         woody.setAttribute('title', 'Toque no Woody para ouvir novamente');
       }
       cancelAnimationFrame(animationFrame);
+      animationFrame = 0;
+    }
+
+    function retrySound(event) {
+      if (event.type === 'keydown' && (event.repeat || !['Enter', ' '].includes(event.key))) return;
+      enableNarration();
+    }
+
+    function waitForSoundGesture() {
+      document.addEventListener('click', retrySound, true);
+      document.addEventListener('keydown', retrySound, true);
     }
 
     async function enableNarration() {
@@ -3826,19 +3857,23 @@
         narration.currentTime = 0;
         await narration.play();
         narrationActive = true;
+        document.removeEventListener('click', retrySound, true);
+        document.removeEventListener('keydown', retrySound, true);
         finished = false;
-        current = -1;
+        if (current !== 0) showScene(0);
+        elapsed = 0;
         startedAt = undefined;
-        showScene(0);
         voiceNote.textContent = 'Voz gerada por IA · Antônio';
         woody.setAttribute('aria-label', 'Woody. Ativar para mudar a expressão.');
         woody.setAttribute('title', 'Toque no Woody para ver outra expressão');
         cancelAnimationFrame(animationFrame);
         animationFrame = requestAnimationFrame(tick);
-      } catch {
-        voiceNote.textContent = 'Voz gerada por IA · toque no Woody para ouvir';
-        woody.setAttribute('aria-label', 'Woody. Ativar para ouvir a narração.');
-        woody.setAttribute('title', 'Toque no Woody para ouvir a narração');
+      } catch (error) {
+        voiceNote.textContent = error.name === 'NotAllowedError'
+          ? 'Clique ou toque na página para liberar o som'
+          : 'Áudio indisponível · toque na página para tentar de novo';
+        waitForSoundGesture();
+        if (!animationFrame && !finished) animationFrame = requestAnimationFrame(tick);
       } finally {
         narrationStarting = false;
       }
@@ -3847,17 +3882,13 @@
     narration.addEventListener('ended', finishPlayback);
     narration.addEventListener('error', () => {
       if (!narrationActive) return;
-      startedAt = performance.now() - narration.currentTime * 1000;
+      startedAt = undefined;
       narrationActive = false;
-      voiceNote.textContent = 'Áudio interrompido · toque no Woody para tentar novamente';
-      woody.setAttribute('aria-label', 'Woody. Ativar para tentar ouvir a narração.');
+      voiceNote.textContent = 'Áudio interrompido · toque na página para tentar novamente';
+      waitForSoundGesture();
     });
-    woody.setAttribute('aria-label', 'Woody. Ativar para ouvir a narração.');
-    woody.setAttribute('title', 'Toque no Woody para ouvir a narração');
     woody.setAttribute('aria-describedby', 'voice-note');
     showScene(0);
-    stage.setAttribute('data-speaking', '');
-    animationFrame = requestAnimationFrame(tick);
     enableNarration();
   </script>
 </body>
