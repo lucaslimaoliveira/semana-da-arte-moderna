@@ -37,3 +37,7 @@ jobs:
       - name: Publicar
         id: deployment
         uses: actions/deploy-pages@v4
+      - name: Mostrar o link do site
+        env:
+          PAGE_URL: ${{ steps.deployment.outputs.page_url }}
+        run: printf '[Abrir o site publicado](%s)\n' "$PAGE_URL" >> "$GITHUB_STEP_SUMMARY"
