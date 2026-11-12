@@ -472,6 +472,108 @@
       .gallery[data-count="1"] img { height: 165px; }
     }
 
+
+    html, body { width: 100%; height: 100%; overflow: hidden; overscroll-behavior: none; }
+    body { position: fixed; inset: 0; padding: 0; }
+    .player {
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      width: min(1080px, calc(100vw - 28px));
+      translate: -50% -50%;
+      transform: scale(var(--scene-scale, 1));
+      transform-origin: center;
+    }
+    .stage { min-height: 590px; }
+    .host > .scene { transition: opacity .12s; }
+    .scene.writer { width: 80px; }
+    .writer .pencil { transform: rotate(35deg); }
+    .writer .arm.raised { transform: rotate(-18deg); }
+    .writer .eyes i::before { translate: -8% 8%; }
+    .writer .smile {
+      height: 9%;
+      top: 65%;
+      border-radius: 0 0 65% 65%;
+    }
+    .writer .smile::after { display: none; }
+    .word { display: inline-block; white-space: nowrap; }
+    .letter { display: inline-block; }
+    .map-item { font-family: 'Courier New', monospace; }
+    .map-core { font-family: Georgia, serif; }
+    .map-core .word { white-space: nowrap; }
+
+    .gallery {
+      display: block;
+      position: relative;
+      height: clamp(170px, 21vw, 228px);
+      overflow: hidden;
+      isolation: isolate;
+    }
+    .gallery figure {
+      position: absolute;
+      inset: 0;
+      display: grid;
+      grid-template-rows: minmax(0, 1fr) auto;
+      justify-items: center;
+      opacity: 0;
+      transform: translateX(55px) rotate(4deg) scale(.92);
+      transition: opacity .35s, transform .55s cubic-bezier(.2,.75,.25,1);
+      animation: none !important;
+      pointer-events: none;
+    }
+    .gallery figure[data-seen] { transform: translateX(-55px) rotate(-4deg) scale(.92); }
+    .gallery figure[data-active] { opacity: 1; transform: none; }
+    .gallery img, .gallery[data-count="1"] img {
+      width: auto;
+      height: 100%;
+      min-height: 0;
+      max-width: 100%;
+      max-height: 100%;
+      object-fit: contain;
+      border: 0;
+      background: transparent;
+      box-shadow: 2px 3px 0 #28252225;
+    }
+    .gallery figcaption {
+      padding: 5px 8px;
+      margin: 6px 0 0;
+      background: #fffaf0;
+    }
+    .gallery figure[data-active] img { animation: photo-arrival .55s ease-out both; }
+    .caption { transition: opacity .15s; }
+    @keyframes photo-arrival { from { clip-path: inset(0 100% 0 0); scale: .96; } }
+    @media (max-width: 650px) {
+      .stage { min-height: 0; }
+      .gallery, .gallery[data-count="1"] { height: 158px; }
+      .host { grid-template-columns: minmax(74px, 27%) minmax(0, 1fr); }
+      .gallery img, .gallery[data-count="1"] img { height: 100%; }
+    }
+
+
+    .host .arm { transition: transform .35s ease-out; }
+    .stage[data-pose="explain"] .host .arm.raised { animation: explain-left 2.8s ease-in-out infinite; }
+    .stage[data-pose="explain"] .host .arm.resting {
+      transform-origin: left top;
+      transform: rotate(-32deg);
+    }
+    .stage[data-pose="point"] .host .arm.raised { transform: rotate(-14deg); animation: none; }
+    .stage[data-pose="point"] .host .arm.resting { transform: rotate(5deg); }
+    .stage[data-pose="rest"] .host .arm.raised { transform: rotate(-35deg); animation: none; }
+    .stage[data-mouth="closed"] .host .smile {
+      height: 7%;
+      top: 64%;
+      border-radius: 0 0 70% 60%;
+      background: #fffefa;
+    }
+    .stage[data-mouth="closed"] .host .smile::after { display: none; }
+    .stage[data-mouth="round"] .host .smile {
+      left: 39%;
+      width: 24%;
+      height: 17%;
+      border-radius: 48%;
+    }
+    @keyframes explain-left { 50% { transform: rotate(7deg); } }
+
 </style>
 </head>
 <body>
@@ -740,6 +842,7 @@
   }
 ];
 
+    const player = document.querySelector('.player');
     const stage = document.querySelector('#stage');
     const title = document.querySelector('#title');
     const date = document.querySelector('#date');
@@ -763,15 +866,67 @@
     const sceneStarts = [0];
     for (const scene of scenes) sceneStarts.push(sceneStarts.at(-1) + scene.seconds);
     const duration = sceneStarts.at(-1);
+    let sceneScale = 1;
+    let activePhoto = -1;
+    let activeSentence = -1;
+    let sentences = [];
     let current = -1;
     let writingBranch = false;
     let startedAt;
     let finished = false;
 
+    function fitScene() {
+      const availableWidth = window.visualViewport?.width ?? window.innerWidth;
+      const availableHeight = window.visualViewport?.height ?? window.innerHeight;
+      sceneScale = Math.min(1, (availableWidth - 18) / (player.offsetWidth + 6),
+        (availableHeight - 18) / (player.offsetHeight + 6));
+      player.style.setProperty('--scene-scale', sceneScale);
+    }
+
+    const resizeObserver = new ResizeObserver(fitScene);
+    resizeObserver.observe(player);
+    window.addEventListener('resize', fitScene);
+    window.visualViewport?.addEventListener('resize', fitScene);
+    document.fonts.ready.then(fitScene);
+
+    // Convert viewport coordinates back to the unscaled drawing surface.
+    function drawingRect(element) {
+      const rect = element.getBoundingClientRect();
+      return {
+        left: rect.left / sceneScale, top: rect.top / sceneScale,
+        width: rect.width / sceneScale, height: rect.height / sceneScale,
+        bottom: rect.bottom / sceneScale
+      };
+    }
+
+    const lettering = new Map();
+    for (const text of map.querySelectorAll('.node-label, .node-detail')) {
+      const letters = [];
+      const words = text.textContent.split(' ');
+      text.replaceChildren();
+      for (const [wordIndex, word] of words.entries()) {
+        if (wordIndex) text.append(document.createTextNode(' '));
+        const group = document.createElement('span');
+        group.className = 'word';
+        for (const character of word) {
+          const letter = document.createElement('span');
+          letter.className = 'letter';
+          letter.textContent = character;
+          group.append(letter);
+          letters.push(letter);
+        }
+        text.append(group);
+      }
+      lettering.set(text, letters);
+    }
+
     function showScene(index) {
       const scene = scenes[index];
       writingBranch = scene.branch > 0 && scene.branch !== scenes[current]?.branch;
       current = index;
+      activePhoto = -1;
+      activeSentence = -1;
+      sentences = scene.caption.split(/(?<=[.!?])\s+/u);
       stage.dataset.look = scene.look;
       stage.removeAttribute('data-entering');
       void stage.offsetWidth;
@@ -779,7 +934,7 @@
       title.textContent = scene.title;
       date.textContent = scene.date ?? '';
       date.hidden = !scene.date;
-      caption.textContent = scene.caption;
+      caption.textContent = sentences[0];
       poem.textContent = scene.poem ?? '';
       poem.hidden = !scene.poem;
       source.hidden = !scene.source;
@@ -797,9 +952,9 @@
         image.alt = photo.alt;
         image.width = 180;
         image.height = 180;
-        const caption = document.createElement('figcaption');
-        caption.textContent = photo.caption;
-        figure.append(image, caption);
+        const label = document.createElement('figcaption');
+        label.textContent = photo.caption;
+        figure.append(image, label);
         gallery.append(figure);
       }
 
@@ -807,24 +962,26 @@
         const nodeIndex = Number(node.dataset.branch);
         node.hidden = nodeIndex > scene.branch;
         node.toggleAttribute('data-current', nodeIndex === scene.branch);
-        for (const text of node.children) text.style.clipPath = '';
       }
       for (const line of lines) {
         line.hidden = Number(line.dataset.branch) > scene.branch;
         line.style.scale = '1 1';
       }
-      core.querySelector('.node-label').style.clipPath = '';
+      for (const letters of lettering.values()) {
+        for (const letter of letters) letter.style.clipPath = '';
+      }
+      fitScene();
     }
 
     function layoutLines() {
-      const mapRect = map.getBoundingClientRect();
-      const center = core.getBoundingClientRect();
+      const mapRect = drawingRect(map);
+      const center = drawingRect(core);
       const originX = center.left + center.width / 2;
       const originY = center.top + center.height / 2;
       for (const [index, line] of lines.entries()) {
         const node = nodes[index];
         if (node.hidden) continue;
-        const rect = node.getBoundingClientRect();
+        const rect = drawingRect(node);
         const dx = rect.left + rect.width / 2 - originX;
         const dy = rect.top + rect.height / 2 - originY;
         line.style.left = (originX - mapRect.left) + 'px';
@@ -834,24 +991,45 @@
       }
     }
 
-    function moveWriter(x, y) {
-      const rect = stage.getBoundingClientRect();
+    function moveWriter(x, y, width = 80) {
+      const rect = drawingRect(stage);
       writer.style.left = (x - rect.left) + 'px';
       writer.style.top = (y - rect.top) + 'px';
+      writer.style.width = width + 'px';
     }
 
-    function revealText(text, fraction) {
+    function revealText(text, progress) {
+      const letters = lettering.get(text);
+      const amount = Math.max(0, Math.min(1, progress)) * letters.length;
+      for (const [index, letter] of letters.entries()) {
+        const fraction = Math.max(0, Math.min(1, amount - index));
+        letter.style.clipPath = 'inset(0 ' + ((1 - fraction) * 100) + '% 0 0)';
+      }
+      const index = Math.min(Math.floor(amount), letters.length - 1);
+      const letter = drawingRect(letters[index]);
+      const fraction = amount >= letters.length ? 1 : amount % 1;
+      // Small up-and-down strokes follow the current letter instead of the whole card.
+      const x = letter.left + letter.width * fraction;
+      const y = letter.bottom - 2 - Math.sin(fraction * Math.PI * 2) * Math.min(4, letter.height * .2);
+      moveWriter(x, y);
+      return {x, y};
+    }
+
+    function glide(from, to, fraction, returning = false) {
       const progress = Math.max(0, Math.min(1, fraction));
-      text.style.clipPath = 'inset(0 ' + ((1 - progress) * 100) + '% 0 0)';
-      const rect = text.getBoundingClientRect();
-      moveWriter(rect.left + rect.width * progress, rect.bottom - 3);
+      const eased = progress * progress * (3 - 2 * progress);
+      const x = from.x + (to.x - from.x) * eased;
+      const y = from.y + (to.y - from.y) * eased - Math.sin(progress * Math.PI) * 20;
+      const home = drawingRect(document.querySelector('.host > .scene'));
+      const width = returning ? 80 + (home.width - 80) * eased : home.width + (80 - home.width) * eased;
+      moveWriter(x, y, width);
     }
 
     function writeScene(seconds) {
       if (!writingBranch) return;
       const branch = scenes[current].branch;
       const node = branch === 1 ? core : nodes.find(item => Number(item.dataset.branch) === branch);
-      const writing = Boolean(node) && seconds >= .6 && seconds < 6 && !reducedMotion.matches;
+      const writing = Boolean(node) && seconds < 7.2 && !reducedMotion.matches;
       stage.toggleAttribute('data-writing', writing);
       writer.hidden = !writing;
       if (!node || reducedMotion.matches) return;
@@ -859,33 +1037,69 @@
       const label = node.querySelector('.node-label');
       const detail = node.querySelector('.node-detail');
       const line = lines.find(item => Number(item.dataset.branch) === branch);
-      // Give the line time to grow before the pencil writes the label.
-      const labelStart = line ? 2 : .6;
-      revealText(label, (seconds - labelStart) / 1.8);
-      if (detail) detail.style.clipPath = 'inset(0 100% 0 0)';
+      const from = drawingRect(core);
+      const to = drawingRect(node);
+      const homeRect = drawingRect(document.querySelector('.host > .scene'));
+      const home = {x: homeRect.left + homeRect.width * .51, y: homeRect.top + homeRect.height * .86};
+      const center = {x: from.left + from.width / 2, y: from.top + from.height / 2};
+      const labelStart = line ? 2 : .7;
 
+      let tip = revealText(label, (seconds - labelStart) / 2.2);
+      if (detail) {
+        tip = revealText(detail, (seconds - 4.2) / 2.2);
+        if (seconds < 4.2) tip = revealText(label, (seconds - labelStart) / 2.2);
+      }
       if (line) {
-        const fraction = Math.max(0, Math.min(1, (seconds - .6) / 1.4));
+        const fraction = Math.max(0, Math.min(1, (seconds - .7) / 1.1));
         line.style.scale = fraction + ' 1';
-        if (seconds < 2) {
-          const from = core.getBoundingClientRect();
-          const to = node.getBoundingClientRect();
-          moveWriter(
-            from.left + from.width / 2 + (to.left + to.width / 2 - from.left - from.width / 2) * fraction,
-            from.top + from.height / 2 + (to.top + to.height / 2 - from.top - from.height / 2) * fraction
-          );
+        const end = {x: to.left + to.width / 2, y: to.top + to.height / 2};
+        if (seconds < 1.8) moveWriter(
+          center.x + (end.x - center.x) * fraction,
+          center.y + (end.y - center.y) * fraction
+        );
+        if (seconds >= 1.8 && seconds < 2) {
+          const first = drawingRect(lettering.get(label)[0]);
+          const lift = (seconds - 1.8) / .2;
+          moveWriter(end.x + (first.left - end.x) * lift,
+            end.y + (first.bottom - 2 - end.y) * lift - Math.sin(lift * Math.PI) * 6);
         }
       }
-      if (detail && seconds >= 3.8) revealText(detail, (seconds - 3.8) / 1.8);
+      if (seconds < .7) {
+        const firstLetter = drawingRect(lettering.get(label)[0]);
+        glide(home, line ? center : {x:firstLetter.left, y:firstLetter.bottom}, seconds / .7);
+      }
+      if (seconds >= 6.4 && seconds < 7.2) glide(tip, home, (seconds - 6.4) / .8, true);
+    }
+
+    function presentScene(seconds) {
+      const scene = scenes[current];
+      const sentenceIndex = Math.min(sentences.length - 1, Math.floor(seconds / (scene.seconds / sentences.length)));
+      if (sentenceIndex !== activeSentence) {
+        activeSentence = sentenceIndex;
+        caption.textContent = sentences[sentenceIndex];
+        stage.dataset.pose = current === 0 ? 'greet' : ['explain', 'point', 'rest'][sentenceIndex % 3];
+      }
+      const mouth = ['open', 'closed', 'round', 'open', 'closed', 'open', 'closed', 'closed'][Math.floor(seconds * 8) % 8];
+      if (stage.dataset.mouth !== mouth) stage.dataset.mouth = mouth;
+      if (gallery.hidden) return;
+      const photoTime = Math.max(0, seconds - (writingBranch ? 4 : 0));
+      const photoDuration = (scene.seconds - (writingBranch ? 4 : 0)) / gallery.children.length;
+      const index = Math.min(gallery.children.length - 1, Math.floor(photoTime / photoDuration));
+      if (index === activePhoto) return;
+      activePhoto = index;
+      for (const [position, figure] of [...gallery.children].entries()) {
+        figure.toggleAttribute('data-active', position === index);
+        figure.toggleAttribute('data-seen', position < index);
+      }
     }
 
     function tick(now) {
       if (finished) return;
-      // Use the animation-frame clock from the first frame throughout playback.
       startedAt ??= now;
       const elapsed = Math.max(0, Math.min((now - startedAt) / 1000, duration));
       const index = Math.min(sceneStarts.findLastIndex(start => start <= elapsed), scenes.length - 1);
       if (index !== current) showScene(index);
+      presentScene(elapsed - sceneStarts[index]);
       if (!map.hidden) {
         layoutLines();
         writeScene(elapsed - sceneStarts[index]);
