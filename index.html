@@ -1,281 +1,343 @@
 <!doctype html>
 <html lang="pt-BR">
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<meta name="description" content="Uma aula ilustrada sobre a Semana de Arte Moderna de 1922.">
-<title>O lápis de 1922</title>
-<style>
-@import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&family=Playfair+Display:wght@800&display=swap');
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Prévia da animação do lápis.">
+  <title>O lápis de 1922</title>
+  <style>
+    * { box-sizing: border-box; }
 
-* { box-sizing: border-box; }
-body { margin: 0; background: #f6eedc; color: #26221d; font-family: 'DM Sans', system-ui, sans-serif; }
-main {
-  display: grid;
-  align-items: center;
-  width: min(1100px, calc(100% - 36px));
-  min-height: 100svh;
-  margin: 0 auto;
-  padding: 24px 0;
-}
-.lesson {
-  display: grid;
-  grid-template-columns: 1.18fr 1fr;
-  min-height: min(620px, calc(100svh - 48px));
-  border: 1px solid #34302a;
-  border-radius: 6px;
-  overflow: hidden;
-  background: #fffbef;
-  box-shadow: 4px 5px #34302a;
-}
-.stage {
-  --scene: #cec0a8;
-  --ink: #342d29;
-  display: grid;
-  place-items: center;
-  position: relative;
-  isolation: isolate;
-  min-height: 360px;
-  overflow: hidden;
-  background: repeating-linear-gradient(135deg, transparent 0 7px, #342d290b 7px 8px), var(--scene);
-  transition: background-color .45s;
-}
-.stage[data-step="1"] { --scene: #c6a89e; }
-.stage[data-step="2"] { --scene: #afbbad; }
-.stage[data-step="3"] { --scene: #b1b9c4; }
-.paper {
-  position: absolute;
-  inset: 14% 12%;
-  border: 1px solid #342d2966;
-  background: repeating-linear-gradient(0deg, transparent 0 26px, #7e6a4d19 26px 27px), #f3eddf;
-  transform: rotate(-7deg);
-  box-shadow: 5px 7px #342d2924;
-}
-.paper::before { content: ""; position: absolute; inset: 11px; border: 1px solid #7e6a4d4d; }
-.art {
-  position: absolute;
-  right: 8%;
-  top: 8%;
-  color: #744e44;
-  font: 700 clamp(2rem, 6vw, 5rem)/1 Georgia, serif;
-}
-.ground {
-  position: absolute;
-  top: calc(50% + 135px);
-  left: calc(50% - 17px);
-  width: 104px;
-  height: 12px;
-  border-radius: 50%;
-  background: #342d2938;
-  transform: translateX(-50%) rotate(-6deg);
-  filter: blur(3px);
-}
-.pencil {
-  position: relative;
-  isolation: isolate;
-  width: 80px;
-  height: 244px;
-  transform: rotate(11deg);
-  filter: drop-shadow(5px 7px 2px #342d2933);
-  animation: poise 5s ease-in-out infinite;
-}
-.eraser, .metal, .shaft, .tip { position: absolute; left: 0; width: 100%; }
-.eraser, .metal, .shaft { border: 2px solid var(--ink); }
-.eraser {
-  height: 35px;
-  border-radius: 7px 7px 0 0;
-  background: linear-gradient(90deg, #9f6158, #bc8171 28% 77%, #85554d 78%);
-}
-.metal {
-  z-index: 2;
-  top: 30px;
-  height: 23px;
-  background: repeating-linear-gradient(0deg, transparent 0 4px, #3b433c7a 4px 5px),
-    linear-gradient(90deg, #777f77, #d3d0bd 30% 73%, #767c74);
-}
-.shaft {
-  z-index: 1;
-  top: 49px;
-  height: 133px;
-  background: repeating-linear-gradient(0deg, transparent 0 3px, #54381b0b 3px 4px),
-    linear-gradient(90deg, #987040 0 17%, #d6af69 17% 23%, #bd9455 23% 76%, #a17945 76% 85%, #805c36 85%);
-}
-.tip {
-  z-index: 2;
-  top: 179px;
-  height: 65px;
-  background: var(--ink);
-  clip-path: polygon(0 0, 100% 0, 50% 100%);
-}
-.tip::before {
-  content: "";
-  position: absolute;
-  inset: 1px 3px 2px;
-  background: repeating-linear-gradient(83deg, transparent 0 4px, #62422835 4px 5px),
-    linear-gradient(#d2ac7a 0 77%, #5d5752 77%);
-  clip-path: polygon(0 0, 24% 7%, 44% 0, 70% 6%, 100% 0, 50% 100%);
-}
-.eyes, .brows { position: absolute; left: 20px; right: 18px; display: flex; justify-content: space-between; }
-.brows { top: 31px; }
-.brows i { width: 12px; border-top: 1.5px solid var(--ink); transform: rotate(-8deg); }
-.brows i + i { transform: rotate(6deg); }
-.eyes { top: 39px; }
-.eyes i {
-  width: 10px;
-  height: 7px;
-  border-radius: 55%;
-  border-top: 1.5px solid var(--ink);
-  background: radial-gradient(circle at 59% 43%, var(--ink) 0 2px, transparent 2.4px);
-  animation: blink 5s ease-in-out infinite;
-}
-.mouth {
-  position: absolute;
-  top: 54px;
-  left: 50%;
-  width: 13px;
-  height: 6px;
-  border-bottom: 1.5px solid var(--ink);
-  border-radius: 0 0 55% 55%;
-  transform: translateX(-50%) rotate(-5deg);
-}
-.arm {
-  position: absolute;
-  z-index: 0;
-  width: 43px;
-  height: 30px;
-  border-bottom: 2px solid var(--ink);
-  border-radius: 0 0 47% 55%;
-}
-.arm.left { top: 111px; left: -35px; transform: rotate(35deg); }
-.arm.right { top: 105px; right: -36px; transform: rotate(-22deg); transform-origin: left center; }
-.arm::after {
-  content: "";
-  position: absolute;
-  right: -3px;
-  bottom: 3px;
-  width: 11px;
-  height: 7px;
-  border: 1.5px solid var(--ink);
-  border-radius: 5px 5px 4px 4px;
-  background: #e6d5b9;
-  transform: rotate(-20deg);
-}
-.arm.left::after { right: auto; left: -3px; transform: rotate(20deg); }
-.stage[data-step="1"] .pencil { animation-name: consider; }
-.stage[data-step="2"] .arm.right { transform: rotate(-33deg); }
-.stage[data-step="3"] .pencil { animation-name: conclude; }
-.stage.entrance .arm.right { animation: gesture .65s ease-out; }
-.copy { padding: clamp(24px, 5vw, 52px); display: flex; flex-direction: column; justify-content: center; }
-.counter { color: #8b362b; font-size: .83rem; font-weight: 700; text-transform: uppercase; letter-spacing: .1em; }
-h1 { font: 800 clamp(1.9rem, 4vw, 3.15rem)/1.04 'Playfair Display', Georgia, serif; margin: 12px 0; }
-.copy p { font-size: 1.06rem; line-height: 1.6; margin: 0 0 22px; min-height: 5em; }
-.controls, .steps { display: flex; gap: 10px; flex-wrap: wrap; align-items: center; }
-.controls button, .steps button {
-  font: inherit;
-  cursor: pointer;
-  color: inherit;
-  border: 1.5px solid #26221d;
-  background: transparent;
-  border-radius: 8px;
-  padding: 10px 14px;
-  font-weight: 700;
-}
-.controls .next { background: #29241e; color: #fff8e7; }
-.controls button:disabled { opacity: .4; cursor: default; }
-.steps { margin-top: 22px; }
-.steps button { border-radius: 100%; padding: 0; width: 33px; height: 33px; }
-.steps [aria-current="step"] { background: #a43328; color: white; border-color: #a43328; }
-button:focus-visible { outline: 3px solid #295c82; outline-offset: 3px; }
-#explanation.entrance, .stage.entrance .art { animation: arrive .45s ease-out both; }
-@keyframes arrive { from { opacity: 0; transform: translateY(6px); } }
-@keyframes poise { 50% { transform: translateY(-6px) rotate(9deg); } }
-@keyframes consider { 50% { transform: translateY(-4px) rotate(15deg); } }
-@keyframes conclude { 50% { transform: translateY(-7px) rotate(6deg); } }
-@keyframes blink { 47%, 53% { transform: scaleY(1); } 50% { transform: scaleY(.15); } }
-@keyframes gesture { 45% { rotate: -15deg; } }
-@media (max-width: 720px) {
-  main { min-height: 0; padding: 15px 0 24px; }
-  .lesson { grid-template-columns: 1fr; min-height: 0; }
-  .stage { min-height: 290px; }
-  .paper { inset: 12% 11%; }
-  .pencil { scale: .85; }
-  .ground { top: calc(50% + 112px); }
-  .copy p { min-height: 0; }
-}
-@media (prefers-reduced-motion: reduce) {
-  *, *::before, *::after { animation: none !important; transition: none !important; }
-}
-</style>
-<main>
-<section class="lesson" aria-label="Aula sobre a Semana de Arte Moderna">
-<div class="stage" data-step="0" aria-hidden="true">
-  <div class="paper"><span class="art">1922</span></div>
-  <div class="ground"></div>
-  <div class="pencil">
-    <div class="arm left"></div>
-    <div class="arm right"></div>
-    <div class="eraser"></div>
-    <div class="metal"></div>
-    <div class="shaft">
-      <div class="brows"><i></i><i></i></div>
-      <div class="eyes"><i></i><i></i></div>
-      <div class="mouth"></div>
+    body {
+      min-height: 100vh;
+      min-height: 100svh;
+      margin: 0;
+      display: grid;
+      place-items: center;
+      background: radial-gradient(ellipse at 50% 42%, #fffdf8 0 25%, #f1e8d7 100%);
+    }
+
+    .scene {
+      --ink: #211a16;
+      width: min(92vw, 82vh, 540px);
+      aspect-ratio: 1 / 1;
+      position: relative;
+      container-type: inline-size;
+    }
+
+    .shadow {
+      position: absolute;
+      left: 41%;
+      top: 90%;
+      width: 37%;
+      height: 4%;
+      background: #80522636;
+      border-radius: 50%;
+      filter: blur(6px);
+      animation: shadow 4.2s ease-in-out infinite;
+    }
+
+    .pencil {
+      position: absolute;
+      z-index: 1;
+      left: 42%;
+      top: 8%;
+      width: 26%;
+      height: 78%;
+      transform: rotate(11deg);
+      transform-origin: 50% 72%;
+      animation: float 4.2s ease-in-out infinite;
+    }
+
+    .eraser, .ferrule, .wood, .barrel { position: absolute; inset-inline: 0; }
+
+    .eraser {
+      top: 0;
+      height: 17%;
+      border: 1cqw solid var(--ink);
+      border-radius: 24% 30% 16% 16% / 52% 55% 20% 20%;
+      background: linear-gradient(108deg, #ffd2d1, #ef929b 30% 75%, #bf5968 76%);
+      box-shadow: inset .7cqw .8cqw #ffe3dc;
+    }
+
+    .ferrule {
+      z-index: 4;
+      top: 12%;
+      left: -4%;
+      right: -4%;
+      height: 14%;
+      border: 1cqw solid var(--ink);
+      border-radius: 13% / 30%;
+      background:
+        linear-gradient(0deg, #5e6669 0 12%, transparent 12% 46%, #4b4f53 47% 53%, transparent 54% 83%, #f8fafa 83%),
+        linear-gradient(105deg, #8a9396, #e0e4e3 33% 72%, #899395 73%);
+    }
+
+    .barrel {
+      z-index: 3;
+      top: 23%;
+      height: 61%;
+      border: 1cqw solid var(--ink);
+      border-bottom-width: .8cqw;
+      border-radius: 5% 7% 24% 20% / 12% 10% 12% 12%;
+      background: linear-gradient(100deg, #ffe073 0 15%, #ffca30 15% 72%, #e7981c 73% 91%, #c97814 92%);
+      box-shadow: inset .9cqw 0 #fff0a4;
+    }
+
+    .barrel::before {
+      content: "";
+      position: absolute;
+      top: 8%;
+      left: 10%;
+      width: 6%;
+      height: 76%;
+      border-radius: 100%;
+      background: linear-gradient(#fff2a1, #ffdf64 78%, transparent);
+    }
+
+    .wood {
+      z-index: 2;
+      top: 76%;
+      height: 24%;
+      background: var(--ink);
+      clip-path: polygon(0 0, 100% 0, 57% 96%, 53% 100%, 47% 100%, 43% 96%);
+    }
+
+    .wood::before {
+      content: "";
+      position: absolute;
+      inset: 0 1.1cqw .9cqw;
+      background: linear-gradient(166deg, transparent 0 69%, #303035 70% 100%),
+        linear-gradient(100deg, #ffdeac 0 59%, #d99b5a 60%);
+      clip-path: polygon(0 0, 100% 0, 54% 97%, 50% 100%, 46% 97%);
+    }
+
+    .brows, .eyes {
+      position: absolute;
+      inset-inline: 14% 12%;
+      display: flex;
+      justify-content: space-between;
+    }
+
+    .brows { top: 23%; }
+    .brows i {
+      width: 34%;
+      height: 2.4cqw;
+      border-radius: 95% 70% 15% 10%;
+      background: var(--ink);
+      transform: rotate(-16deg);
+    }
+    .brows i + i { transform: rotate(15deg); }
+
+    .eyes { top: 35%; }
+    .eyes i {
+      position: relative;
+      width: 44%;
+      height: 9.5cqw;
+      border: .8cqw solid var(--ink);
+      border-radius: 48% 49% 44% 45%;
+      background: #fffefa;
+      box-shadow: inset -.65cqw -.65cqw #d9dfe0;
+      animation: blink 4.2s infinite;
+    }
+    .eyes i::before {
+      content: "";
+      position: absolute;
+      inset: 30% 21% 8% 17%;
+      border-radius: 50%;
+      background:
+        radial-gradient(circle at 37% 26%, white 0 16%, transparent 18%),
+        radial-gradient(circle at 68% 73%, white 0 8%, transparent 10%),
+        var(--ink);
+    }
+
+    .smile {
+      position: absolute;
+      top: 61%;
+      left: 30%;
+      width: 43%;
+      height: 23%;
+      overflow: hidden;
+      border: .8cqw solid var(--ink);
+      border-radius: 16% 20% 63% 56% / 16% 14% 86% 81%;
+      background: var(--ink);
+      transform: rotate(-7deg);
+      transform-origin: center top;
+      animation: smile 4.2s ease-in-out infinite;
+    }
+    .smile::before, .smile::after { content: ""; position: absolute; }
+    .smile::before {
+      inset: 0 8% auto;
+      height: 25%;
+      background: #fffefa;
+      border-radius: 0 0 55% 55%;
+    }
+    .smile::after {
+      inset: auto 6% -9% 24%;
+      height: 45%;
+      background: #e7595d;
+      border-radius: 66% 67% 0 0;
+    }
+
+    .arm {
+      position: absolute;
+      z-index: 5;
+      border: 1.6cqw solid var(--ink);
+    }
+
+    .arm.raised {
+      left: -68%;
+      top: 45%;
+      width: 79%;
+      height: 19%;
+      border-top: 0;
+      border-right: 0;
+      border-radius: 0 0 0 85%;
+      transform: rotate(-8deg);
+      transform-origin: right bottom;
+      animation: point 4.2s ease-in-out infinite;
+    }
+
+    .arm.resting {
+      right: -44%;
+      top: 57%;
+      width: 48%;
+      height: 21%;
+      border-bottom: 0;
+      border-left: 0;
+      border-radius: 0 90% 16% 0;
+      transform: rotate(14deg);
+    }
+
+    .glove {
+      position: absolute;
+      display: block;
+      width: 8cqw;
+      height: 7cqw;
+      border: .85cqw solid var(--ink);
+      border-radius: 40% 45% 44% 48%;
+      background: #fffcf2;
+      box-shadow: inset -.75cqw -.7cqw #d5dad9;
+    }
+    .raised .glove { left: -4.2cqw; top: -1cqw; transform: rotate(-27deg); }
+    .resting .glove { right: -4cqw; bottom: -3.2cqw; transform: rotate(15deg); }
+    .glove::before, .glove::after { content: ""; position: absolute; }
+    .glove::before {
+      top: 22%;
+      left: 22%;
+      width: 36%;
+      height: 32%;
+      border-left: .48cqw solid var(--ink);
+      border-right: .48cqw solid var(--ink);
+      border-radius: 40%;
+      transform: rotate(-19deg);
+    }
+    .raised .glove::after {
+      top: -105%;
+      left: 27%;
+      width: 44%;
+      height: 125%;
+      border: .8cqw solid var(--ink);
+      border-bottom: 0;
+      border-radius: 60% 62% 18% 0;
+      background: #fffcf2;
+      box-shadow: inset -.55cqw 0 #d5dad9;
+    }
+
+    .bulb {
+      position: absolute;
+      z-index: 2;
+      left: 20%;
+      top: 22%;
+      width: 14%;
+      height: 19%;
+      transform: rotate(-19deg);
+      animation: idea 4.2s ease-in-out infinite;
+    }
+    .bulb-glass {
+      position: absolute;
+      inset: 0 0 24%;
+      border: .85cqw solid var(--ink);
+      border-radius: 50% 50% 42% 42%;
+      background: radial-gradient(circle at 27% 26%, #fffef1 0 7%, transparent 8%),
+        radial-gradient(circle at 46% 40%, #fff5a5 0 32%, #fcd757 62%, #eda926 100%);
+      box-shadow: 0 0 4.5cqw #ffc84f8c;
+    }
+    .bulb-glass::after {
+      content: "";
+      position: absolute;
+      left: 34%;
+      top: 49%;
+      width: 32%;
+      height: 45%;
+      border: .5cqw solid var(--ink);
+      border-radius: 46% 46% 8% 8%;
+      border-bottom: 0;
+    }
+    .bulb-base {
+      position: absolute;
+      inset: 68% 22% 0;
+      border: .8cqw solid var(--ink);
+      border-radius: 12% 12% 43% 43%;
+      background: repeating-linear-gradient(#dce0dd 0 1cqw, #787d7c 1cqw 1.65cqw);
+    }
+    .rays { position: absolute; inset: -32% -37% 29%; }
+    .rays i {
+      position: absolute;
+      width: 19%;
+      height: .7cqw;
+      background: #a96c23;
+      border-radius: 1cqw;
+      animation: rays 4.2s ease-in-out infinite;
+    }
+    .rays i:nth-child(1) { left: 1%; top: 39%; transform: rotate(24deg); }
+    .rays i:nth-child(2) { left: 40%; top: 3%; transform: rotate(89deg); }
+    .rays i:nth-child(3) { right: 0; top: 34%; transform: rotate(-30deg); }
+
+    @keyframes float {
+      28%, 56% { transform: translateY(-1.9cqw) rotate(7deg); }
+      80% { transform: translateY(.5cqw) rotate(13deg); }
+    }
+    @keyframes shadow { 28%, 56% { transform: scaleX(.84); opacity: .65; } }
+    @keyframes point { 28%, 56% { transform: rotate(12deg); } }
+    @keyframes blink { 75%, 81% { scale: 1 1; } 78% { scale: 1 .11; } }
+    @keyframes smile { 28%, 56% { scale: 1.03 1.08; } }
+    @keyframes idea {
+      0%, 100% { opacity: .6; transform: translateY(.8cqw) rotate(-19deg); }
+      28%, 56% { opacity: 1; transform: translateY(-1.5cqw) rotate(-12deg); }
+    }
+    @keyframes rays {
+      0%, 80%, 100% { opacity: 0; }
+      28%, 56% { opacity: 1; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after { animation: none !important; }
+    }
+  </style>
+</head>
+<body>
+  <main>
+    <div class="scene" role="img" aria-label="Lápis amarelo sorrindo e apontando para uma lâmpada que se acende">
+      <div class="shadow"></div>
+      <div class="bulb">
+        <span class="rays"><i></i><i></i><i></i></span>
+        <div class="bulb-glass"></div>
+        <div class="bulb-base"></div>
+      </div>
+      <div class="pencil">
+        <div class="eraser"></div>
+        <div class="ferrule"></div>
+        <div class="barrel">
+          <div class="brows"><i></i><i></i></div>
+          <div class="eyes"><i></i><i></i></div>
+          <div class="smile"></div>
+        </div>
+        <div class="wood"></div>
+        <div class="arm raised"><span class="glove"></span></div>
+        <div class="arm resting"><span class="glove"></span></div>
+      </div>
     </div>
-    <div class="tip"></div>
-  </div>
-</div>
-<div class="copy">
-<div id="explanation" aria-live="polite" aria-atomic="true"><div class="counter" id="counter">Etapa 1 de 4</div><h1 id="title">Uma semana para experimentar</h1><p id="description">Em fevereiro de 1922, artistas se reuniram no Theatro Municipal de São Paulo para apresentar novas formas de fazer arte. Vamos ver o que aconteceu?</p></div>
-<div class="controls"><button id="previous" disabled>← Voltar</button><button class="next" id="next">Próxima etapa →</button></div>
-<nav class="steps" aria-label="Etapas da aula"></nav>
-</div>
-</section>
-</main>
-<script>
-const scenes = [
-  {title:'Uma semana para experimentar', description:'Em fevereiro de 1922, artistas se reuniram no Theatro Municipal de São Paulo para apresentar novas formas de fazer arte. Vamos ver o que aconteceu?', art:'1922'},
-  {title:'O que aconteceu no teatro?', description:'Quem foi ao Municipal encontrou exposições de artes visuais, apresentações musicais e leituras. Cada linguagem trouxe uma maneira diferente de experimentar.', art:'♪'},
-  {title:'Quem participou?', description:'Anita Malfatti expôs pinturas, Heitor Villa-Lobos apresentou música e Mário de Andrade participou das atividades literárias. A Semana reuniu artistas de várias áreas.', art:'Aa'},
-  {title:'O que ficou?', description:'A Semana se tornou um marco do modernismo brasileiro. Nas décadas seguintes, artistas continuaram explorando novas formas de representar a vida e a cultura do país.', art:'✷'}
-];
-const stage = document.querySelector('.stage');
-const explanation = document.querySelector('#explanation');
-const counter = document.querySelector('#counter');
-const title = document.querySelector('#title');
-const description = document.querySelector('#description');
-const previous = document.querySelector('#previous');
-const next = document.querySelector('#next');
-const navigation = document.querySelector('.steps');
-let current = 0;
-const buttons = scenes.map((scene, index) => {
-  const button = document.createElement('button');
-  button.textContent = index + 1;
-  button.setAttribute('aria-label', 'Etapa ' + (index + 1) + ' — ' + scene.title);
-  button.addEventListener('click', () => show(index));
-  navigation.append(button);
-  return button;
-});
-function show(index) {
-  current = index;
-  const scene = scenes[index];
-  stage.dataset.step = index;
-  stage.querySelector('.art').textContent = scene.art;
-  counter.textContent = 'Etapa ' + (index + 1) + ' de ' + scenes.length;
-  title.textContent = scene.title;
-  description.textContent = scene.description;
-  previous.disabled = index === 0;
-  next.textContent = index === scenes.length - 1 ? '↻ Recomeçar' : 'Próxima etapa →';
-  buttons.forEach((button, position) => {
-    if (position === index) button.setAttribute('aria-current', 'step');
-    else button.removeAttribute('aria-current');
-  });
-  for (const element of [stage, explanation]) {
-    element.classList.remove('entrance');
-    void element.offsetWidth;
-    element.classList.add('entrance');
-  }
-}
-previous.addEventListener('click', () => show(current - 1));
-next.addEventListener('click', () => show((current + 1) % scenes.length));
-show(0);
-</script>
+  </main>
+</body>
 </html>
