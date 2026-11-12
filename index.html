@@ -302,6 +302,9 @@
 
     .stage[data-speaking] .pencil { animation-duration: 2.7s; }
     .stage[data-speaking] .smile { animation: talk .48s ease-in-out infinite alternate; }
+    .stage[data-look="intro"][data-entering] .scene {
+      animation: woody-entrance .7s ease-out both;
+    }
 
     .scene-title {
       display: grid;
@@ -427,6 +430,9 @@
 
     @keyframes appear { from { opacity: 0; translate: 0 10px; } }
     @keyframes talk { from { scale: 1 .6; } to { scale: 1.03 1.08; } }
+    @keyframes woody-entrance {
+      from { opacity: 0; translate: -12% 6%; scale: .92; }
+    }
 
     @media (max-width: 560px) {
       .stage { grid-template-columns: 36fr 64fr; min-height: 0; }
@@ -440,7 +446,7 @@
 <body>
   <main class="player" aria-label="Animação da Semana de Arte Moderna">
 
-    <section class="stage" id="stage" data-look="opening">
+    <section class="stage" id="stage" data-look="intro">
 
       <div class="scene" role="img" aria-label="Lápis amarelo sorrindo e acenando">
         <div class="shadow"></div>
@@ -459,15 +465,15 @@
       </div>
       <div class="scene-title">
         <div class="scene-heading">
-          <p class="date" id="date">São Paulo · 1922</p>
-          <h1 id="title">Semana de Arte Moderna</h1>
+          <p class="date" id="date" hidden></p>
+          <h1 id="title">Olá, eu sou o Woody!</h1>
         </div>
       </div>
     </section>
 
     <section class="dialogue" aria-label="Fala do professor Woody" aria-live="polite" aria-atomic="true">
       <p class="speaker">Professor Woody</p>
-      <p class="caption" id="caption">Oi, galera! Eu sou o professor Woody. Hoje a gente vai voltar a 1922 para conhecer a Semana de Arte Moderna.</p>
+      <p class="caption" id="caption">Oi, galera! Tudo bem com vocês? Eu sou o professor Woody e vou acompanhar vocês na aula de hoje.</p>
       <blockquote class="poem" id="poem" hidden></blockquote>
       <a class="scene-source" id="scene-source" hidden>Ver a obra no acervo do IEB-USP</a>
     </section>
@@ -475,9 +481,9 @@
     <div class="player-footer">
       <div class="controls" aria-label="Controles da animação">
         <button type="button" id="previous" disabled>← Anterior</button>
-        <button type="button" id="play">Reproduzir</button>
+        <button type="button" id="play">Pausar</button>
         <button type="button" id="next">Próxima →</button>
-        <span class="count" id="count">Cena 1 de 9</span>
+        <span class="count" id="count">Cena 1 de 10</span>
       </div>
       <progress id="progress" value="0" max="1" aria-label="Progresso da animação"></progress>
     </div>
@@ -485,8 +491,13 @@
   <script>
     const scenes = [
       {
+        look: 'intro', title: 'Olá, eu sou o Woody!',
+        caption: 'Oi, galera! Tudo bem com vocês? Eu sou o professor Woody e vou acompanhar vocês na aula de hoje.',
+        seconds: 8
+      },
+      {
         look: 'opening', date: 'São Paulo · 1922', title: 'Semana de Arte Moderna',
-        caption: 'Oi, galera! Eu sou o professor Woody. Hoje a gente vai voltar a 1922 para conhecer a Semana de Arte Moderna.',
+        caption: 'Vamos voltar a 1922? Foi nesse ano que aconteceu a Semana de Arte Moderna, um encontro que marcou a arte brasileira.',
         seconds: 9
       },
       {
@@ -556,7 +567,7 @@
     let frame = 0;
 
     function syncPlayButton() {
-      play.textContent = playing ? 'Pausar' : finished ? 'Recomeçar' : 'Reproduzir';
+      play.textContent = playing ? 'Pausar' : finished ? 'Recomeçar' : 'Continuar';
       stage.toggleAttribute('data-speaking', playing);
     }
 
@@ -568,7 +579,8 @@
       void stage.offsetWidth;
       stage.setAttribute('data-entering', '');
       title.textContent = scene.title;
-      date.textContent = scene.date;
+      date.textContent = scene.date ?? '';
+      date.hidden = !scene.date;
       caption.textContent = scene.caption;
       poem.textContent = scene.poem ?? '';
       poem.hidden = !scene.poem;
@@ -604,21 +616,27 @@
       frame = requestAnimationFrame(tick);
     }
 
+    function startPlayback() {
+      if (finished) seek(0);
+      startedAt = performance.now() - elapsed * 1000;
+      playing = true;
+      frame = requestAnimationFrame(tick);
+      syncPlayButton();
+    }
+
     play.addEventListener('click', () => {
       if (playing) {
         playing = false;
         cancelAnimationFrame(frame);
+        syncPlayButton();
       } else {
-        if (finished) seek(0);
-        startedAt = performance.now() - elapsed * 1000;
-        playing = true;
-        frame = requestAnimationFrame(tick);
+        startPlayback();
       }
-      syncPlayButton();
     });
     previous.addEventListener('click', () => seek(current - 1));
     next.addEventListener('click', () => seek(current + 1));
     showScene(0);
+    startPlayback();
   </script>
 </body>
 </html>
