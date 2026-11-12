@@ -356,50 +356,89 @@
 
     a:focus-visible { outline: 3px solid #156480; outline-offset: 3px; }
 
-    .map { position: relative; display: grid; grid-template: repeat(3, 1fr) / repeat(3, 1fr); aspect-ratio: 1.45; margin-top: 10px; }
-    .map[hidden] { display: none; }
-    .map-item {
-      place-self: center;
-      z-index: 1;
-      padding: .4em .5em;
-      max-width: 94%;
-      border: 1px solid var(--paint);
-      border-radius: 5px;
+
+    .board {
+      border: 1px solid #d8c9af;
+      border-radius: 22px;
       background: #fffaf0;
-      color: #282522;
-      font-size: clamp(.71rem, 1.35vw, 1.02rem);
-      font-weight: 700;
-      line-height: 1.14;
+      box-shadow: 0 8px 24px #48371a15, 0 2px 0 #fffdf8 inset;
+    }
+    .map, .gallery:not([hidden]) + .map {
+      position: relative;
+      display: block;
+      aspect-ratio: 1.65;
+      min-height: 340px;
+      margin-top: 18px;
+      border-radius: 16px;
+      background: radial-gradient(#cdbf9f65 .8px, transparent .8px) center / 14px 14px;
+      isolation: isolate;
+    }
+    .board .scene-heading h1 { font-size: clamp(1.25rem, 2.5vw, 2.1rem); letter-spacing: -.025em; }
+    .map-links { position: absolute; inset: 0; width: 100%; height: 100%; pointer-events: none; }
+    .map-item {
+      --branch: #277469;
+      --x: 50%;
+      --y: 50%;
+      position: absolute;
+      left: var(--x);
+      top: var(--y);
+      translate: -50% -50%;
+      z-index: 1;
+      display: grid;
+      align-content: center;
+      width: 27%;
+      min-width: 0;
+      max-width: none;
+      min-height: 56px;
+      padding: 10px 7px;
+      border: 1px solid color-mix(in srgb, var(--branch) 34%, white);
+      border-top: 4px solid var(--branch);
+      border-radius: 12px;
+      background: color-mix(in srgb, var(--branch) 7%, #fffdfa);
+      color: #292724;
+      font: 700 clamp(.69rem, 1.2vw, .96rem)/1.15 system-ui, sans-serif;
       text-align: center;
-      grid-area: var(--row) / var(--column);
+      box-shadow: 0 3px 0 color-mix(in srgb, var(--branch) 15%, #efebdf),
+        0 5px 10px #3d30210c;
+      transition: background-color .3s, box-shadow .3s, border-color .3s;
     }
     .map-core {
-      --row: 2;
-      --column: 2;
-      background: #292522;
-      color: #fffaf0;
-      border-color: #292522;
-      font-family: Georgia, serif;
+      width: 30%;
+      min-height: 82px;
+      padding: 12px 9px;
+      border: 3px solid #edc564;
+      border-radius: 48% 44% 46% 40% / 32% 44% 34% 46%;
+      background: #282c36;
+      color: #fff9e9;
+      font: 700 clamp(.85rem, 1.55vw, 1.2rem)/1.08 Georgia, serif;
+      box-shadow: 0 5px 0 #d8b66f55, 0 0 0 6px #f1e2bf50;
     }
-    .map-item[data-current] { background: var(--paint); color: #fffaf0; }
-
-    .map-line {
-      position: absolute;
-      top: 50%;
-      left: 50%;
-      width: var(--length, 40%);
-      height: 2px;
-      background: var(--paint);
-      transform: rotate(var(--angle));
-      transform-origin: left center;
+    .map-item[data-current] {
+      border-color: var(--branch);
+      border-top-width: 4px;
+      background: color-mix(in srgb, var(--branch) 13%, white);
+      color: #292724;
+      box-shadow: 0 4px 0 color-mix(in srgb, var(--branch) 30%, #f3ecdf),
+        0 0 0 4px color-mix(in srgb, var(--branch) 12%, transparent);
     }
-    .map [data-branch="2"] { --row: 1; --column: 1; --angle: -145deg; }
-    .map [data-branch="3"] { --row: 1; --column: 2; --angle: -90deg; --length: 23%; }
-    .map [data-branch="4"] { --row: 1; --column: 3; --angle: -35deg; }
-    .map [data-branch="5"] { --row: 2; --column: 3; --angle: 0deg; --length: 33%; }
-    .map [data-branch="6"] { --row: 3; --column: 3; --angle: 35deg; }
-    .map [data-branch="7"] { --row: 3; --column: 2; --angle: 90deg; --length: 23%; }
-    .map [data-branch="8"] { --row: 3; --column: 1; --angle: 145deg; }
+    .map .node-label { color: var(--branch); }
+    .map-core .node-label { color: #fff9e9; }
+    .map .node-detail { margin-top: 5px; font-size: .78em; font-weight: 500; line-height: 1.2; color: #514a40; }
+    .stage[data-entering] .map-item[data-current] { animation: map-arrival .45s ease-out both; }
+    .map [data-branch="2"] { --x: 15%; --y: 22%; --branch: #237568; }
+    .map [data-branch="3"] { --x: 50%; --y: 12%; --branch: #ab552e; }
+    .map [data-branch="4"] { --x: 85%; --y: 22%; --branch: #a03e4b; }
+    .map [data-branch="5"] { --x: 85%; --y: 51%; --branch: #326498; }
+    .map [data-branch="6"] { --x: 85%; --y: 81%; --branch: #77558d; }
+    .map [data-branch="7"] { --x: 50%; --y: 88%; --branch: #5d7434; }
+    .map [data-branch="8"] { --x: 15%; --y: 81%; --branch: #82601d; }
+    @keyframes map-arrival { from { opacity: 0; scale: .92; } }
+    @media (max-width: 650px) {
+      .board { padding: 13px; border-radius: 16px; }
+      .map, .gallery:not([hidden]) + .map { min-height: 305px; margin-top: 14px; }
+      .map-item { padding: 8px 4px; font-size: .69rem; border-radius: 9px; }
+      .map-core { font-size: .83rem; border-radius: 40%; min-height: 78px; }
+    }
 
     [hidden] { display: none !important; }
     @keyframes appear { from { opacity: 0; translate: 0 8px; } }
@@ -466,7 +505,6 @@
     .stage[data-entering] .gallery figure { animation: appear .5s ease-out both; }
     .stage[data-entering] .gallery figure:nth-child(2) { animation-delay: .12s; }
     .stage[data-entering] .gallery figure:nth-child(3) { animation-delay: .24s; }
-    .gallery:not([hidden]) + .map { aspect-ratio: 1.9; min-height: 215px; }
     @media (max-width: 650px) {
       .gallery img { height: 128px; }
       .gallery[data-count="1"] img { height: 165px; }
@@ -498,7 +536,6 @@
     .writer .smile::after { display: none; }
     .word { display: inline-block; white-space: nowrap; }
     .letter { display: inline-block; }
-    .map-item { font-family: 'Courier New', monospace; }
     .map-core { font-family: Georgia, serif; }
     .map-core .word { white-space: nowrap; }
 
@@ -678,20 +715,14 @@
         </div>
         <div class="gallery" id="gallery" aria-label="Imagens da explicação" hidden></div>
         <div class="map" id="map" role="group" aria-label="Mapa mental da Semana de Arte Moderna" hidden>
+          <canvas class="map-links" aria-hidden="true"></canvas>
           <strong class="map-item map-core"><span class="node-label">Semana de Arte Moderna</span></strong>
-          <span class="map-line" data-branch="2" aria-hidden="true" hidden></span>
           <span class="map-item" data-branch="2" hidden><span class="node-label">Contexto</span><small class="node-detail">São Paulo · 1922</small></span>
-          <span class="map-line" data-branch="3" aria-hidden="true" hidden></span>
           <span class="map-item" data-branch="3" hidden><span class="node-label">Divulgação</span><small class="node-detail">Di Cavalcanti</small></span>
-          <span class="map-line" data-branch="4" aria-hidden="true" hidden></span>
           <span class="map-item" data-branch="4" hidden><span class="node-label">13 de fevereiro</span><small class="node-detail">Anita · Brecheret</small></span>
-          <span class="map-line" data-branch="5" aria-hidden="true" hidden></span>
           <span class="map-item" data-branch="5" hidden><span class="node-label">Música e debate</span><small class="node-detail">Guiomar · Menotti</small></span>
-          <span class="map-line" data-branch="6" aria-hidden="true" hidden></span>
           <span class="map-item" data-branch="6" hidden><span class="node-label">Poesia</span><small class="node-detail">Os Sapos</small></span>
-          <span class="map-line" data-branch="7" aria-hidden="true" hidden></span>
           <span class="map-item" data-branch="7" hidden><span class="node-label">Concerto</span><small class="node-detail">Villa-Lobos</small></span>
-          <span class="map-line" data-branch="8" aria-hidden="true" hidden></span>
           <span class="map-item" data-branch="8" hidden><span class="node-label">Legado</span><small class="node-detail">Revistas · manifestos</small></span>
         </div>
       </div>
@@ -918,7 +949,13 @@
     const map = document.querySelector('#map');
     const core = map.querySelector('.map-core');
     const nodes = [...map.querySelectorAll('.map-item[data-branch]')];
-    const lines = [...map.querySelectorAll('.map-line')];
+    const linksCanvas = map.querySelector('.map-links');
+    const linksContext = linksCanvas.getContext('2d');
+    const lines = nodes.map(node => ({
+      branch: Number(node.dataset.branch), node,
+      color: getComputedStyle(node).getPropertyValue('--branch').trim(),
+      progress: 1, visible: false, curve: null
+    }));
     const reducedMotion = matchMedia('(prefers-reduced-motion: reduce)');
     const woody = document.querySelector('.host > .scene');
     woody.setAttribute('role', 'button');
@@ -1076,8 +1113,8 @@
         node.toggleAttribute('data-current', nodeIndex === scene.branch);
       }
       for (const line of lines) {
-        line.hidden = Number(line.dataset.branch) > scene.branch;
-        line.style.scale = '1 1';
+        line.visible = line.branch <= scene.branch;
+        line.progress = 1;
       }
       for (const letters of lettering.values()) {
         for (const letter of letters) letter.style.clipPath = '';
@@ -1088,18 +1125,71 @@
     function layoutLines() {
       const mapRect = drawingRect(map);
       const center = drawingRect(core);
-      const originX = center.left + center.width / 2;
-      const originY = center.top + center.height / 2;
-      for (const [index, line] of lines.entries()) {
-        const node = nodes[index];
-        if (node.hidden) continue;
-        const rect = drawingRect(node);
-        const dx = rect.left + rect.width / 2 - originX;
-        const dy = rect.top + rect.height / 2 - originY;
-        line.style.left = (originX - mapRect.left) + 'px';
-        line.style.top = (originY - mapRect.top) + 'px';
-        line.style.width = Math.hypot(dx, dy) + 'px';
-        line.style.transform = 'rotate(' + Math.atan2(dy, dx) + 'rad)';
+      const origin = {
+        x: center.left + center.width / 2 - mapRect.left,
+        y: center.top + center.height / 2 - mapRect.top
+      };
+      const pixelRatio = Math.min(window.devicePixelRatio || 1, 2);
+      const width = Math.round(mapRect.width * pixelRatio);
+      const height = Math.round(mapRect.height * pixelRatio);
+      if (linksCanvas.width !== width || linksCanvas.height !== height) {
+        linksCanvas.width = width;
+        linksCanvas.height = height;
+      }
+      linksContext.setTransform(pixelRatio, 0, 0, pixelRatio, 0, 0);
+      for (const line of lines) {
+        if (!line.visible) continue;
+        const rect = drawingRect(line.node);
+        const dx = rect.left + rect.width / 2 - mapRect.left - origin.x;
+        const dy = rect.top + rect.height / 2 - mapRect.top - origin.y;
+        const startRatio = 1 / Math.hypot(dx / (center.width / 2 + 5), dy / (center.height / 2 + 5));
+        const endRatio = Math.min(
+          (rect.width / 2 + 3) / (Math.abs(dx) || 0.0001),
+          (rect.height / 2 + 3) / (Math.abs(dy) || 0.0001)
+        );
+        const start = {x: origin.x + dx * startRatio, y: origin.y + dy * startRatio};
+        const end = {x: origin.x + dx * (1 - endRatio), y: origin.y + dy * (1 - endRatio)};
+        const bend = Math.abs(dx) < 8 ? 20 : dx * .3;
+        line.curve = {
+          start, end,
+          first: {x: start.x + bend, y: start.y + dy * .1},
+          second: {x: end.x - bend * .4, y: end.y - dy * .3}
+        };
+      }
+    }
+
+    function curvePoint(curve, progress) {
+      const remaining = 1 - progress;
+      return {
+        x: remaining ** 3 * curve.start.x + 3 * remaining ** 2 * progress * curve.first.x
+          + 3 * remaining * progress ** 2 * curve.second.x + progress ** 3 * curve.end.x,
+        y: remaining ** 3 * curve.start.y + 3 * remaining ** 2 * progress * curve.first.y
+          + 3 * remaining * progress ** 2 * curve.second.y + progress ** 3 * curve.end.y
+      };
+    }
+
+    function drawConnections() {
+      const rect = drawingRect(map);
+      linksContext.clearRect(0, 0, rect.width, rect.height);
+      linksContext.lineCap = 'round';
+      linksContext.lineJoin = 'round';
+      for (const line of lines) {
+        if (!line.visible || !line.curve) continue;
+        linksContext.beginPath();
+        linksContext.moveTo(line.curve.start.x, line.curve.start.y);
+        const steps = Math.max(1, Math.ceil(line.progress * 48));
+        for (let step = 1; step <= steps; step++) {
+          const point = curvePoint(line.curve, line.progress * step / steps);
+          linksContext.lineTo(point.x, point.y);
+        }
+        linksContext.strokeStyle = line.color;
+        linksContext.lineWidth = line.branch === scenes[current].branch ? 4 : 2.5;
+        linksContext.stroke();
+        const point = curvePoint(line.curve, line.progress);
+        linksContext.beginPath();
+        linksContext.arc(point.x, point.y, 3, 0, Math.PI * 2);
+        linksContext.fillStyle = line.color;
+        linksContext.fill();
       }
     }
 
@@ -1148,12 +1238,14 @@
 
       const label = node.querySelector('.node-label');
       const detail = node.querySelector('.node-detail');
-      const line = lines.find(item => Number(item.dataset.branch) === branch);
+      const line = lines.find(item => item.branch === branch);
       const from = drawingRect(core);
-      const to = drawingRect(node);
       const homeRect = drawingRect(document.querySelector('.host > .scene'));
       const home = {x: homeRect.left + homeRect.width * .51, y: homeRect.top + homeRect.height * .86};
-      const center = {x: from.left + from.width / 2, y: from.top + from.height / 2};
+      const mapRect = drawingRect(map);
+      const center = line?.curve
+        ? {x: mapRect.left + line.curve.start.x, y: mapRect.top + line.curve.start.y}
+        : {x: from.left + from.width / 2, y: from.top + from.height / 2};
       const labelStart = line ? 2 : .7;
 
       let tip = revealText(label, (seconds - labelStart) / 2.2);
@@ -1161,14 +1253,12 @@
         tip = revealText(detail, (seconds - 4.2) / 2.2);
         if (seconds < 4.2) tip = revealText(label, (seconds - labelStart) / 2.2);
       }
-      if (line) {
+      if (line?.curve) {
         const fraction = Math.max(0, Math.min(1, (seconds - .7) / 1.1));
-        line.style.scale = fraction + ' 1';
-        const end = {x: to.left + to.width / 2, y: to.top + to.height / 2};
-        if (seconds < 1.8) moveWriter(
-          center.x + (end.x - center.x) * fraction,
-          center.y + (end.y - center.y) * fraction
-        );
+        line.progress = fraction;
+        const traced = curvePoint(line.curve, fraction);
+        const end = {x: mapRect.left + line.curve.end.x, y: mapRect.top + line.curve.end.y};
+        if (seconds < 1.8) moveWriter(mapRect.left + traced.x, mapRect.top + traced.y);
         if (seconds >= 1.8 && seconds < 2) {
           const first = drawingRect(lettering.get(label)[0]);
           const lift = (seconds - 1.8) / .2;
@@ -1217,6 +1307,7 @@
       if (!map.hidden) {
         layoutLines();
         writeScene(elapsed - sceneStarts[index]);
+        drawConnections();
       }
       updateExpression();
       if (elapsed >= duration) {
