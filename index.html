@@ -27,7 +27,7 @@
 
     .shadow {
       position: absolute;
-      left: 41%;
+      left: 37%;
       top: 90%;
       width: 37%;
       height: 4%;
@@ -40,7 +40,7 @@
     .pencil {
       position: absolute;
       z-index: 1;
-      left: 42%;
+      left: 38%;
       top: 8%;
       width: 26%;
       height: 78%;
@@ -195,7 +195,7 @@
       border-radius: 0 0 0 85%;
       transform: rotate(-8deg);
       transform-origin: right bottom;
-      animation: point 4.2s ease-in-out infinite;
+      animation: wave 4.2s ease-in-out infinite;
     }
 
     .arm.resting {
@@ -233,84 +233,28 @@
       transform: rotate(-19deg);
     }
     .raised .glove::after {
-      top: -105%;
-      left: 27%;
-      width: 44%;
-      height: 125%;
-      border: .8cqw solid var(--ink);
-      border-bottom: 0;
-      border-radius: 60% 62% 18% 0;
+      top: 37%;
+      right: -28%;
+      width: 47%;
+      height: 42%;
+      border: .65cqw solid var(--ink);
+      border-left: 0;
+      border-radius: 12% 80% 80% 12%;
       background: #fffcf2;
-      box-shadow: inset -.55cqw 0 #d5dad9;
+      transform: rotate(-28deg);
     }
-
-    .bulb {
-      position: absolute;
-      z-index: 2;
-      left: 15%;
-      top: 22%;
-      width: 14%;
-      height: 19%;
-      transform: rotate(-19deg);
-      animation: idea 4.2s ease-in-out infinite;
-    }
-    .bulb-glass {
-      position: absolute;
-      inset: 0 0 24%;
-      border: .85cqw solid var(--ink);
-      border-radius: 50% 50% 42% 42%;
-      background: radial-gradient(circle at 27% 26%, #fffef1 0 7%, transparent 8%),
-        radial-gradient(circle at 46% 40%, #fff5a5 0 32%, #fcd757 62%, #eda926 100%);
-      box-shadow: 0 0 4.5cqw #ffc84f8c;
-    }
-    .bulb-glass::after {
-      content: "";
-      position: absolute;
-      left: 34%;
-      top: 49%;
-      width: 32%;
-      height: 45%;
-      border: .5cqw solid var(--ink);
-      border-radius: 46% 46% 8% 8%;
-      border-bottom: 0;
-    }
-    .bulb-base {
-      position: absolute;
-      inset: 68% 22% 0;
-      border: .8cqw solid var(--ink);
-      border-radius: 12% 12% 43% 43%;
-      background: repeating-linear-gradient(#dce0dd 0 1cqw, #787d7c 1cqw 1.65cqw);
-    }
-    .rays { position: absolute; inset: -32% -37% 29%; }
-    .rays i {
-      position: absolute;
-      width: 19%;
-      height: .7cqw;
-      background: #a96c23;
-      border-radius: 1cqw;
-      animation: rays 4.2s ease-in-out infinite;
-    }
-    .rays i:nth-child(1) { left: 1%; top: 39%; transform: rotate(24deg); }
-    .rays i:nth-child(2) { left: 40%; top: 3%; transform: rotate(89deg); }
-    .rays i:nth-child(3) { right: 0; top: 34%; transform: rotate(-30deg); }
 
     @keyframes float {
       28%, 56% { transform: translateY(-1.9cqw) rotate(7deg); }
       80% { transform: translateY(.5cqw) rotate(13deg); }
     }
     @keyframes shadow { 28%, 56% { transform: scaleX(.84); opacity: .65; } }
-    @keyframes point { 28%, 56% { transform: rotate(12deg); } }
+    @keyframes wave {
+      28%, 52% { transform: rotate(12deg); }
+      40%, 64% { transform: rotate(2deg); }
+    }
     @keyframes blink { 75%, 81% { scale: 1 1; } 78% { scale: 1 .11; } }
     @keyframes smile { 28%, 56% { scale: 1.03 1.08; } }
-    @keyframes idea {
-      0%, 100% { opacity: .6; transform: translateY(.8cqw) rotate(-19deg); }
-      28%, 56% { opacity: 1; transform: translateY(-1.5cqw) rotate(-12deg); }
-    }
-    @keyframes rays {
-      0%, 80%, 100% { opacity: 0; }
-      28%, 56% { opacity: 1; }
-    }
-
     @media (prefers-reduced-motion: reduce) {
       *, *::before, *::after { animation: none !important; }
     }
@@ -318,13 +262,8 @@
 </head>
 <body>
   <main>
-    <div class="scene" role="img" aria-label="Lápis amarelo sorrindo e apontando para uma lâmpada que se acende">
+    <div class="scene" role="img" aria-label="Lápis amarelo sorrindo e acenando">
       <div class="shadow"></div>
-      <div class="bulb">
-        <span class="rays"><i></i><i></i><i></i></span>
-        <div class="bulb-glass"></div>
-        <div class="bulb-base"></div>
-      </div>
       <div class="pencil">
         <div class="eraser"></div>
         <div class="ferrule"></div>
