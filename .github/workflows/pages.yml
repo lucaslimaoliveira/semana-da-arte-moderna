@@ -5,6 +5,8 @@ on:
     branches: [main]
     paths:
       - index.html
+      - assets/**
+      - .github/workflows/pages.yml
   workflow_dispatch:
 
 concurrency:
@@ -29,7 +31,9 @@ jobs:
       - name: Configurar GitHub Pages
         uses: actions/configure-pages@v5
       - name: Preparar arquivos do site
-        run: install -D index.html _site/index.html
+        run: |
+          install -D index.html _site/index.html
+          cp -R assets _site/assets
       - name: Enviar artefato
         uses: actions/upload-pages-artifact@v4
         with:

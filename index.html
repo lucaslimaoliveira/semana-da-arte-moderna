@@ -435,6 +435,43 @@
     .writer .smile { animation: none !important; }
     .stage { isolation: isolate; }
 
+
+    .gallery {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      align-items: start;
+      gap: 10px;
+      margin: 16px 0 12px;
+    }
+    .gallery[data-count="1"] { grid-template-columns: minmax(0, 1fr); }
+    .gallery[data-count="2"] { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .gallery figure { margin: 0; min-width: 0; text-align: center; }
+    .gallery img {
+      display: block;
+      width: 100%;
+      height: clamp(110px, 16vw, 178px);
+      object-fit: contain;
+      margin-inline: auto;
+      background: #fffcf5;
+      border: 1px solid #28252240;
+    }
+    .gallery[data-count="1"] img { max-width: 290px; }
+    .gallery figcaption {
+      margin-top: 5px;
+      font-size: clamp(.66rem, 1vw, .81rem);
+      line-height: 1.25;
+      font-weight: 650;
+      overflow-wrap: anywhere;
+    }
+    .stage[data-entering] .gallery figure { animation: appear .5s ease-out both; }
+    .stage[data-entering] .gallery figure:nth-child(2) { animation-delay: .12s; }
+    .stage[data-entering] .gallery figure:nth-child(3) { animation-delay: .24s; }
+    .gallery:not([hidden]) + .map { aspect-ratio: 1.9; min-height: 215px; }
+    @media (max-width: 650px) {
+      .gallery img { height: 128px; }
+      .gallery[data-count="1"] img { height: 165px; }
+    }
+
 </style>
 </head>
 <body>
@@ -472,6 +509,7 @@
             <h1 id="title">Olá, eu sou o Woody!</h1>
           </div>
         </div>
+        <div class="gallery" id="gallery" aria-label="Imagens da explicação" hidden></div>
         <div class="map" id="map" role="group" aria-label="Mapa mental da Semana de Arte Moderna" hidden>
           <strong class="map-item map-core"><span class="node-label">Semana de Arte Moderna</span></strong>
           <span class="map-line" data-branch="2" aria-hidden="true" hidden></span>
@@ -479,7 +517,7 @@
           <span class="map-line" data-branch="3" aria-hidden="true" hidden></span>
           <span class="map-item" data-branch="3" hidden><span class="node-label">Divulgação</span><small class="node-detail">Di Cavalcanti</small></span>
           <span class="map-line" data-branch="4" aria-hidden="true" hidden></span>
-          <span class="map-item" data-branch="4" hidden><span class="node-label">Artes visuais</span><small class="node-detail">Anita · Brecheret</small></span>
+          <span class="map-item" data-branch="4" hidden><span class="node-label">13 de fevereiro</span><small class="node-detail">Anita · Brecheret</small></span>
           <span class="map-line" data-branch="5" aria-hidden="true" hidden></span>
           <span class="map-item" data-branch="5" hidden><span class="node-label">Música e debate</span><small class="node-detail">Guiomar · Menotti</small></span>
           <span class="map-line" data-branch="6" aria-hidden="true" hidden></span>
@@ -495,59 +533,212 @@
   </main>
   <script>
     const scenes = [
+  {
+    "look": "intro",
+    "branch": 0,
+    "title": "Olá, eu sou o Woody!",
+    "caption": "Oi, galera! Tudo bem com vocês? Eu sou o professor Woody. Na aula de hoje, vamos voltar a 1922 e montar um mapa mental da Semana de Arte Moderna.",
+    "seconds": 10
+  },
+  {
+    "look": "opening",
+    "branch": 1,
+    "date": "São Paulo · 1922",
+    "title": "Semana de Arte Moderna",
+    "caption": "Vamos começar pelo centro do mapa: Semana de Arte Moderna. Durante nossa viagem, vou acrescentar os nomes, as obras e as ideias que marcaram esse encontro.",
+    "seconds": 11
+  },
+  {
+    "look": "theatre",
+    "branch": 2,
+    "date": "13, 15 e 17 de fevereiro · 1922",
+    "title": "No Theatro Municipal",
+    "caption": "A Semana de Arte Moderna foi uma manifestação artística realizada no Theatro Municipal de São Paulo. As três noites de apresentações aconteceram nos dias 13, 15 e 17 de fevereiro de 1922.",
+    "photos": [
       {
-        look: 'intro', title: 'Olá, eu sou o Woody!',
-        caption: 'Oi, galera! Eu sou o professor Woody. Hoje vamos montar juntos um mapa mental da Semana de Arte Moderna.',
-        seconds: 8
-      },
-      {
-        look: 'opening', date: 'São Paulo · 1922', title: 'Semana de Arte Moderna',
-        caption: 'Vamos voltar a 1922? No centro do mapa, vou escrever “Semana de Arte Moderna”. Agora é só puxar os ramos para lembrar do que aconteceu.',
-        seconds: 9
-      },
-      {
-        look: 'theatre', date: '13, 15 e 17 de fevereiro · 1922', title: 'No Theatro Municipal',
-        caption: 'A Semana reuniu artistas como Mário de Andrade, Oswald de Andrade e Di Cavalcanti no Theatro Municipal de São Paulo. Eles queriam questionar as regras acadêmicas e experimentar novas formas de fazer arte.',
-        seconds: 15
-      },
-      {
-        look: 'poster', date: 'Antes da abertura', title: 'Cartazes e catálogos',
-        caption: 'Di Cavalcanti criou materiais para divulgar o evento. Os cartazes e o catálogo apresentavam ao público a programação e o espírito da Semana.',
-        seconds: 11
-      },
-      {
-        look: 'portrait', date: '13 de fevereiro · Abertura', title: 'O Homem Amarelo',
-        caption: 'Graça Aranha abriu a Semana com a palestra “A Emoção Estética da Arte Moderna”. No saguão, o público viu obras de Victor Brecheret e Anita Malfatti. Em O Homem Amarelo, Anita usou amarelos intensos e contornos marcados para dar tensão e expressão ao retrato.',
-        source: 'https://anitamalfatti.ieb.usp.br/1922-sam/',
-        seconds: 21
-      },
-      {
-        look: 'piano', date: '15 de fevereiro · Música e debate', title: 'Guiomar ao piano',
-        caption: 'Guiomar Novaes tocou obras de compositores como Claude Debussy e Heitor Villa-Lobos. Na mesma noite, Menotti Del Picchia falou sobre estética e sobre as ideias do movimento modernista.',
-        seconds: 14
-      },
-      {
-        look: 'poem', date: '15 de fevereiro · Poesia', title: 'Os Sapos',
-        caption: 'Ronald de Carvalho recitou “Os Sapos”, de Manuel Bandeira. O poema satiriza o rigor formal dos parnasianos.',
-        poem: 'O sapo-tanoeiro,\nParnasiano aguado,\nDiz: “Meu cancioneiro\nÉ bem martelado.\nVede como primo\nEm comer os hiatos!\nQue arte! E nunca rimo\nOs termos cognatos.”',
-        seconds: 23
-      },
-      {
-        look: 'concert', date: '17 de fevereiro · Encerramento', title: 'Villa-Lobos em cena',
-        caption: 'No encerramento, a música de Heitor Villa-Lobos tomou o palco. A noite teve peças instrumentais e vocais do compositor.',
-        seconds: 10
-      },
-      {
-        look: 'legacy', date: 'Depois da Semana', title: 'O que ficou?',
-        caption: 'A Semana dividiu opiniões e recebeu críticas. As ideias modernistas continuaram circulando em revistas, manifestos e novos movimentos, influenciando a arte brasileira nas décadas seguintes.',
-        seconds: 14
-      },
-      {
-        look: 'opening', date: 'Fim da aula', title: 'Até a próxima!',
-        caption: 'Pronto, galera! Nosso mapa mostra como a Semana reuniu artes visuais, música e poesia e deixou marcas na arte brasileira. Até a próxima!',
-        seconds: 8
+        "src": "assets/roteiro-2/theatro-municipal.jpeg",
+        "caption": "Theatro Municipal de São Paulo",
+        "alt": "Fotografia histórica da fachada do Theatro Municipal de São Paulo"
       }
-    ];
+    ],
+    "seconds": 15
+  },
+  {
+    "look": "theatre",
+    "branch": 2,
+    "title": "Quem organizou?",
+    "caption": "Ela foi organizada por grandes nomes da arte, como Mário de Andrade, Oswald de Andrade e Di Cavalcanti. Vamos guardar esses três nomes junto do contexto da Semana.",
+    "photos": [
+      {
+        "src": "assets/roteiro-2/mario-de-andrade.jpeg",
+        "caption": "Mário de Andrade",
+        "alt": "Mário de Andrade"
+      },
+      {
+        "src": "assets/roteiro-2/oswald-de-andrade.jpeg",
+        "caption": "Oswald de Andrade",
+        "alt": "Oswald de Andrade"
+      },
+      {
+        "src": "assets/roteiro-2/di-cavalcanti.jpeg",
+        "caption": "Di Cavalcanti",
+        "alt": "Di Cavalcanti"
+      }
+    ],
+    "seconds": 13
+  },
+  {
+    "look": "opening",
+    "branch": 2,
+    "title": "Uma nova expressão",
+    "caption": "O objetivo era romper com o academicismo e o conservadorismo da época. Os artistas propunham novas maneiras de criar e de se expressar. Chega de enrolação: vamos conhecer o que apareceu nesse festival.",
+    "seconds": 14
+  },
+  {
+    "look": "poster",
+    "branch": 3,
+    "title": "Cartazes e catálogos",
+    "caption": "Di Cavalcanti criou cartazes e o catálogo para divulgar o evento. Olhem os materiais do roteiro: eles anunciavam a Semana e apresentavam ao público essa nova proposta de arte.",
+    "photos": [
+      {
+        "src": "assets/roteiro-2/catalogo-1922.jpeg",
+        "caption": "Catálogo da Semana · 1922",
+        "alt": "Capa ilustrada do catálogo da Semana de Arte Moderna"
+      },
+      {
+        "src": "assets/roteiro-2/cartaz-1922.jpeg",
+        "caption": "Cartaz da Semana · 1922",
+        "alt": "Cartaz com o título Semana de Arte Moderna e uma árvore"
+      }
+    ],
+    "seconds": 14
+  },
+  {
+    "look": "portrait",
+    "branch": 4,
+    "date": "13 de fevereiro · Abertura",
+    "title": "Graça Aranha abre a Semana",
+    "caption": "No primeiro dia, Graça Aranha inaugurou o evento com a palestra “A Emoção Estética da Arte Moderna”. No nosso mapa, esse é o início das atividades de 13 de fevereiro.",
+    "photos": [
+      {
+        "src": "assets/roteiro-2/graca-aranha.jpeg",
+        "caption": "Graça Aranha",
+        "alt": "Graça Aranha"
+      }
+    ],
+    "seconds": 14
+  },
+  {
+    "look": "portrait",
+    "branch": 4,
+    "date": "13 de fevereiro · Artes visuais",
+    "title": "No saguão do teatro",
+    "caption": "O saguão recebeu obras de Victor Brecheret e de Anita Malfatti. Entre os trabalhos de Anita estava O Homem Amarelo, uma pintura que se tornou um símbolo do modernismo brasileiro.",
+    "photos": [
+      {
+        "src": "assets/roteiro-2/victor-brecheret.jpeg",
+        "caption": "Victor Brecheret",
+        "alt": "Victor Brecheret"
+      },
+      {
+        "src": "assets/roteiro-2/anita-malfatti.jpeg",
+        "caption": "Anita Malfatti",
+        "alt": "Anita Malfatti"
+      },
+      {
+        "src": "assets/roteiro-2/o-homem-amarelo.jpeg",
+        "caption": "O Homem Amarelo · Anita Malfatti",
+        "alt": "O Homem Amarelo · Anita Malfatti"
+      }
+    ],
+    "seconds": 15
+  },
+  {
+    "look": "portrait",
+    "branch": 4,
+    "title": "O Homem Amarelo",
+    "caption": "Observem o olhar distante, a postura tensa e o amarelo intenso no rosto. Os contornos escuros e as sobrancelhas marcadas reforçam a expressão do retrato. Essas escolhas de cor e forma questionavam os padrões tradicionais.",
+    "photos": [
+      {
+        "src": "assets/roteiro-2/o-homem-amarelo.jpeg",
+        "caption": "O Homem Amarelo · Anita Malfatti",
+        "alt": "Pintura de um homem sentado, com rosto amarelo, contornos escuros e expressão séria"
+      }
+    ],
+    "seconds": 18
+  },
+  {
+    "look": "piano",
+    "branch": 5,
+    "date": "15 de fevereiro · Música e debate",
+    "title": "Guiomar e Menotti",
+    "caption": "No segundo dia, Guiomar Novaes interpretou compositores como Claude Debussy e Heitor Villa-Lobos. Menotti Del Picchia apresentou sua palestra sobre estética e sobre o movimento modernista.",
+    "photos": [
+      {
+        "src": "assets/roteiro-2/guiomar-novaes.jpeg",
+        "caption": "Guiomar Novaes",
+        "alt": "Guiomar Novaes"
+      },
+      {
+        "src": "assets/roteiro-2/menotti-del-picchia.jpeg",
+        "caption": "Menotti Del Picchia",
+        "alt": "Menotti Del Picchia"
+      }
+    ],
+    "seconds": 15
+  },
+  {
+    "look": "poem",
+    "branch": 6,
+    "date": "15 de fevereiro · Poesia",
+    "title": "Os Sapos",
+    "caption": "Ronald de Carvalho recitou “Os Sapos”, de Manuel Bandeira. A foto é de Bandeira, o autor do poema. Os sapos ilustram a sátira ao rigor formal dos parnasianos.",
+    "poem": "O sapo-tanoeiro,\nParnasiano aguado,\nDiz: “Meu cancioneiro\nÉ bem martelado.\nVede como primo\nEm comer os hiatos!\nQue arte! E nunca rimo\nOs termos cognatos.”",
+    "photos": [
+      {
+        "src": "assets/roteiro-2/manuel-bandeira.jpeg",
+        "caption": "Manuel Bandeira · autor de Os Sapos",
+        "alt": "Manuel Bandeira · autor de Os Sapos"
+      },
+      {
+        "src": "assets/roteiro-2/sapo-ilustracao.jpeg",
+        "caption": "Ilustração de um sapo",
+        "alt": "Ilustração de um sapo"
+      }
+    ],
+    "seconds": 28
+  },
+  {
+    "look": "concert",
+    "branch": 7,
+    "date": "17 de fevereiro · Encerramento",
+    "title": "Villa-Lobos em cena",
+    "caption": "Por fim, no dia 17, Heitor Villa-Lobos encerrou a programação com uma apresentação de suas composições. A noite reuniu peças instrumentais e vocais, mostrando a presença da música nessa renovação artística.",
+    "photos": [
+      {
+        "src": "assets/roteiro-2/heitor-villa-lobos.jpeg",
+        "caption": "Heitor Villa-Lobos",
+        "alt": "Heitor Villa-Lobos"
+      }
+    ],
+    "seconds": 15
+  },
+  {
+    "look": "legacy",
+    "branch": 8,
+    "title": "O que ficou?",
+    "caption": "A Semana teve repercussão e recebeu duras críticas. Depois dela, revistas, movimentos e manifestos ajudaram a disseminar essas novas ideias, influenciando o modernismo no Brasil.",
+    "seconds": 14
+  },
+  {
+    "look": "opening",
+    "branch": 8,
+    "date": "Fim da aula",
+    "title": "Até a próxima!",
+    "caption": "Pronto, galera! Nosso mapa reúne o contexto, os artistas, as obras, a música e a poesia da Semana de Arte Moderna. Espero que tenham gostado. Até a próxima, tchau, tchau!",
+    "seconds": 10
+  }
+];
 
     const stage = document.querySelector('#stage');
     const title = document.querySelector('#title');
@@ -555,6 +746,7 @@
     const caption = document.querySelector('#caption');
     const poem = document.querySelector('#poem');
     const source = document.querySelector('#scene-source');
+    const gallery = document.querySelector('#gallery');
     const map = document.querySelector('#map');
     const core = map.querySelector('.map-core');
     const nodes = [...map.querySelectorAll('.map-item[data-branch]')];
@@ -572,12 +764,14 @@
     for (const scene of scenes) sceneStarts.push(sceneStarts.at(-1) + scene.seconds);
     const duration = sceneStarts.at(-1);
     let current = -1;
+    let writingBranch = false;
     let startedAt;
     let finished = false;
 
     function showScene(index) {
-      current = index;
       const scene = scenes[index];
+      writingBranch = scene.branch > 0 && scene.branch !== scenes[current]?.branch;
+      current = index;
       stage.dataset.look = scene.look;
       stage.removeAttribute('data-entering');
       void stage.offsetWidth;
@@ -590,16 +784,33 @@
       poem.hidden = !scene.poem;
       source.hidden = !scene.source;
       if (scene.source) source.href = scene.source;
-      map.hidden = index === 0;
+      map.hidden = scene.branch === 0;
+      writer.hidden = true;
+      stage.removeAttribute('data-writing');
+      gallery.replaceChildren();
+      gallery.hidden = !scene.photos?.length;
+      gallery.dataset.count = scene.photos?.length ?? 0;
+      for (const photo of scene.photos ?? []) {
+        const figure = document.createElement('figure');
+        const image = document.createElement('img');
+        image.src = photo.src;
+        image.alt = photo.alt;
+        image.width = 180;
+        image.height = 180;
+        const caption = document.createElement('figcaption');
+        caption.textContent = photo.caption;
+        figure.append(image, caption);
+        gallery.append(figure);
+      }
 
       for (const node of nodes) {
         const nodeIndex = Number(node.dataset.branch);
-        node.hidden = nodeIndex > index;
-        node.toggleAttribute('data-current', nodeIndex === index);
+        node.hidden = nodeIndex > scene.branch;
+        node.toggleAttribute('data-current', nodeIndex === scene.branch);
         for (const text of node.children) text.style.clipPath = '';
       }
       for (const line of lines) {
-        line.hidden = Number(line.dataset.branch) > index;
+        line.hidden = Number(line.dataset.branch) > scene.branch;
         line.style.scale = '1 1';
       }
       core.querySelector('.node-label').style.clipPath = '';
@@ -637,7 +848,9 @@
     }
 
     function writeScene(seconds) {
-      const node = current === 1 ? core : nodes.find(item => Number(item.dataset.branch) === current);
+      if (!writingBranch) return;
+      const branch = scenes[current].branch;
+      const node = branch === 1 ? core : nodes.find(item => Number(item.dataset.branch) === branch);
       const writing = Boolean(node) && seconds >= .6 && seconds < 6 && !reducedMotion.matches;
       stage.toggleAttribute('data-writing', writing);
       writer.hidden = !writing;
@@ -645,7 +858,7 @@
 
       const label = node.querySelector('.node-label');
       const detail = node.querySelector('.node-detail');
-      const line = lines.find(item => Number(item.dataset.branch) === current);
+      const line = lines.find(item => Number(item.dataset.branch) === branch);
       // Give the line time to grow before the pencil writes the label.
       const labelStart = line ? 2 : .6;
       revealText(label, (seconds - labelStart) / 1.8);
