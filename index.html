@@ -574,6 +574,71 @@
     }
     @keyframes explain-left { 50% { transform: rotate(7deg); } }
 
+    .host > .scene[role="button"] { cursor: pointer; touch-action: manipulation; }
+    .host > .scene:focus-visible { outline: 3px solid #156480; outline-offset: 4px; border-radius: 12px; }
+    .stage[data-writing] .host > .scene { pointer-events: none; }
+    .brows, .brows i, .eyes i, .eyes i::before, .smile {
+      transition: border-radius .22s, height .22s, width .22s, top .22s, left .22s, transform .22s, translate .22s;
+    }
+
+    .stage[data-expression="curious"] .scene .brows i:first-child { transform: translateY(-1.2cqw) rotate(-24deg); }
+    .stage[data-expression="curious"] .scene .brows i + i { transform: rotate(-5deg); }
+    .stage[data-expression="curious"] .scene .eyes i::before { translate: 13% -5%; }
+    .stage[data-expression="curious"] .scene .smile {
+      left: 33%; width: 36%; height: 12%; top: 64%; border-radius: 12% 18% 65% 60%;
+    }
+
+    .stage[data-expression="surprised"] .scene .brows { top: 18%; }
+    .stage[data-expression="surprised"] .scene .brows i { transform: rotate(-6deg); }
+    .stage[data-expression="surprised"] .scene .brows i + i { transform: rotate(6deg); }
+    .stage[data-expression="surprised"] .scene .eyes i { transform: scale(1.05); }
+    .stage[data-expression="surprised"] .scene .eyes i::before { transform: scale(.78); }
+    .stage[data-expression="surprised"] .scene .smile {
+      left: 39%; width: 25%; height: 20%; top: 63%; border-radius: 50%; background: var(--ink); animation: none;
+    }
+    .stage[data-expression="surprised"] .scene .smile::before { display: none; }
+
+    .stage[data-expression="thoughtful"] .scene .brows i { transform: rotate(8deg); }
+    .stage[data-expression="thoughtful"] .scene .brows i + i { transform: translateY(-.8cqw) rotate(22deg); }
+    .stage[data-expression="thoughtful"] .scene .eyes i::before { translate: -13% -12%; }
+    .stage[data-expression="thoughtful"] .scene .smile {
+      left: 42%; width: 26%; height: 5%; top: 67%; border-radius: 45%; transform: rotate(-9deg);
+      background: var(--ink); animation: none;
+    }
+    .stage[data-expression="thoughtful"] .scene .smile::before,
+    .stage[data-expression="thoughtful"] .scene .smile::after { display: none; }
+
+    .stage[data-expression="focused"] .scene .brows { top: 28%; }
+    .stage[data-expression="focused"] .scene .brows i { transform: rotate(12deg); }
+    .stage[data-expression="focused"] .scene .brows i + i { transform: rotate(-12deg); }
+    .stage[data-expression="focused"] .scene .eyes i { height: 7.5cqw; }
+    .stage[data-expression="focused"] .scene .eyes i::before { translate: -8% 17%; }
+    .stage[data-expression="focused"] .scene .smile {
+      left: 37%; width: 28%; height: 6%; top: 62%; border-radius: 30% 30% 60% 60%; animation: none;
+    }
+    .stage[data-expression="focused"] .scene .smile::after { display: none; }
+
+    .stage[data-expression="delighted"] .scene .brows { top: 20%; }
+    .stage[data-expression="delighted"] .scene .eyes i {
+      height: 5cqw; top: 2cqw; border: 0; border-top: 1cqw solid var(--ink);
+      border-radius: 65% 65% 0 0; background: transparent; box-shadow: none; animation: none;
+    }
+    .stage[data-expression="delighted"] .scene .eyes i::before { display: none; }
+    .stage[data-expression="delighted"] .scene .smile {
+      left: 27%; width: 49%; height: 24%; top: 59%; border-radius: 10% 10% 70% 70%; background: var(--ink);
+    }
+    .stage[data-expression="delighted"] .scene .smile::after { display: block; }
+
+    .stage[data-expression="wink"] .scene .eyes i:last-child {
+      height: 4cqw; top: 3cqw; border: 0; border-top: 1cqw solid var(--ink);
+      border-radius: 65% 65% 0 0; background: transparent; box-shadow: none; animation: none;
+    }
+    .stage[data-expression="wink"] .scene .eyes i:last-child::before { display: none; }
+    .stage[data-expression="wink"] .scene .brows i + i { transform: rotate(-7deg); }
+    .stage[data-expression="wink"] .scene .smile {
+      left: 29%; width: 45%; height: 17%; top: 63%; border-radius: 12% 12% 70% 70%; transform: rotate(-11deg);
+    }
+
 </style>
 </head>
 <body>
@@ -855,10 +920,17 @@
     const nodes = [...map.querySelectorAll('.map-item[data-branch]')];
     const lines = [...map.querySelectorAll('.map-line')];
     const reducedMotion = matchMedia('(prefers-reduced-motion: reduce)');
-    const writer = document.querySelector('.host > .scene').cloneNode(true);
+    const woody = document.querySelector('.host > .scene');
+    woody.setAttribute('role', 'button');
+    woody.setAttribute('tabindex', '0');
+    woody.setAttribute('aria-label', 'Woody. Ativar para mudar a expressão.');
+    woody.setAttribute('title', 'Toque no Woody para ver outra expressão');
+    const writer = woody.cloneNode(true);
     writer.classList.add('writer');
     writer.removeAttribute('role');
     writer.removeAttribute('aria-label');
+    writer.removeAttribute('tabindex');
+    writer.removeAttribute('title');
     writer.setAttribute('aria-hidden', 'true');
     writer.hidden = true;
     stage.append(writer);
@@ -874,6 +946,46 @@
     let writingBranch = false;
     let startedAt;
     let finished = false;
+    let narrationFace = 'friendly';
+    let reactionFace = '';
+    let reactionTimer;
+    let reactionIndex = 0;
+    const reactions = ['wink', 'delighted', 'surprised', 'curious'];
+    const facesByLook = {
+      intro: ['friendly', 'wink'],
+      opening: ['curious', 'friendly'],
+      theatre: ['curious', 'friendly'],
+      poster: ['delighted', 'curious'],
+      portrait: ['thoughtful', 'curious'],
+      piano: ['friendly', 'delighted'],
+      poem: ['surprised', 'wink'],
+      concert: ['delighted', 'friendly'],
+      legacy: ['thoughtful', 'delighted']
+    };
+
+    function updateExpression() {
+      const expression = reactionFace || (stage.hasAttribute('data-writing') ? 'focused' : narrationFace);
+      if (stage.dataset.expression !== expression) stage.dataset.expression = expression;
+    }
+
+    function reactToTouch() {
+      clearTimeout(reactionTimer);
+      reactionFace = reactions[reactionIndex % reactions.length];
+      reactionIndex++;
+      updateExpression();
+      reactionTimer = setTimeout(() => {
+        reactionFace = '';
+        updateExpression();
+      }, 1800);
+    }
+
+    woody.addEventListener('click', reactToTouch);
+    woody.addEventListener('keydown', event => {
+      if (event.key === 'Enter' || event.key === ' ') {
+        event.preventDefault();
+        reactToTouch();
+      }
+    });
 
     function fitScene() {
       const availableWidth = window.visualViewport?.width ?? window.innerWidth;
@@ -1078,6 +1190,8 @@
         activeSentence = sentenceIndex;
         caption.textContent = sentences[sentenceIndex];
         stage.dataset.pose = current === 0 ? 'greet' : ['explain', 'point', 'rest'][sentenceIndex % 3];
+        const faces = facesByLook[scene.look] ?? facesByLook.opening;
+        narrationFace = faces[sentenceIndex % faces.length];
       }
       const mouth = ['open', 'closed', 'round', 'open', 'closed', 'open', 'closed', 'closed'][Math.floor(seconds * 8) % 8];
       if (stage.dataset.mouth !== mouth) stage.dataset.mouth = mouth;
@@ -1104,11 +1218,14 @@
         layoutLines();
         writeScene(elapsed - sceneStarts[index]);
       }
+      updateExpression();
       if (elapsed >= duration) {
         finished = true;
         writer.hidden = true;
         stage.removeAttribute('data-writing');
         stage.removeAttribute('data-speaking');
+        narrationFace = 'delighted';
+        updateExpression();
         return;
       }
       requestAnimationFrame(tick);
