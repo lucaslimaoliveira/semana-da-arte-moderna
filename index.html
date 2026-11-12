@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="description" content="Prévia da animação do lápis.">
+  <meta name="description" content="Uma animação com o professor Woody sobre a Semana de Arte Moderna de 1922.">
   <title>O lápis de 1922</title>
   <style>
     * { box-sizing: border-box; }
@@ -258,25 +258,367 @@
     @media (prefers-reduced-motion: reduce) {
       *, *::before, *::after { animation: none !important; }
     }
-  </style>
+
+    body {
+      background: #ebe4d5;
+      color: #252321;
+      font-family: system-ui, sans-serif;
+      padding: clamp(12px, 3vw, 38px);
+    }
+
+    .player {
+      width: min(100%, 1080px);
+      background: #faf5e8;
+      border: 1px solid #282522;
+      box-shadow: 5px 5px #282522;
+    }
+
+    .stage {
+      --paper: #eec760;
+      --paint: #9f342c;
+      display: grid;
+      grid-template-columns: minmax(0, 37fr) minmax(0, 63fr);
+      min-height: 325px;
+      overflow: hidden;
+      isolation: isolate;
+      background: var(--paper);
+      transition: background-color .45s ease;
+    }
+
+    .stage[data-look="theatre"] { --paper: #d99579; --paint: #572b29; }
+    .stage[data-look="poster"] { --paper: #e5b64f; --paint: #8a2922; }
+    .stage[data-look="portrait"] { --paper: #dfad48; --paint: #724831; }
+    .stage[data-look="piano"] { --paper: #93b3a1; --paint: #214c4e; }
+    .stage[data-look="poem"] { --paper: #b4bf94; --paint: #3d4e31; }
+    .stage[data-look="concert"] { --paper: #9aaacb; --paint: #303e66; }
+    .stage[data-look="legacy"] { --paper: #c79dba; --paint: #5a354c; }
+
+    .scene {
+      width: min(100%, 365px);
+      align-self: center;
+      justify-self: center;
+      z-index: 2;
+    }
+
+    .stage[data-speaking] .pencil { animation-duration: 2.7s; }
+    .stage[data-speaking] .smile { animation: talk .48s ease-in-out infinite alternate; }
+
+    .scene-title {
+      display: grid;
+      align-content: center;
+      min-width: 0;
+      padding: clamp(18px, 4vw, 56px);
+      position: relative;
+      isolation: isolate;
+    }
+
+    .scene-title::before, .scene-title::after {
+      content: "";
+      position: absolute;
+      z-index: -1;
+      pointer-events: none;
+    }
+
+    .scene-title::before {
+      width: 47%;
+      aspect-ratio: 1;
+      right: -7%;
+      top: 5%;
+      opacity: .32;
+      border-radius: 50%;
+      background: repeating-linear-gradient(135deg, transparent 0 6px, var(--paint) 6px 8px);
+    }
+
+    .scene-title::after {
+      width: 30%;
+      height: 110%;
+      right: 5%;
+      bottom: -72%;
+      background: var(--paint);
+      transform: rotate(-28deg);
+      opacity: .8;
+    }
+
+    [data-look="theatre"] .scene-title::before {
+      right: 0;
+      width: 65%;
+      border-radius: 50% 50% 0 0;
+      background: repeating-linear-gradient(90deg, var(--paint) 0 12%, transparent 12% 24%);
+    }
+
+    [data-look="portrait"] .scene-title::before {
+      right: -4%;
+      top: 10%;
+      width: 45%;
+      border: 12px double var(--paint);
+      border-radius: 0;
+      background: radial-gradient(ellipse at 57% 38%, var(--paint) 0 19%, transparent 20%),
+        linear-gradient(128deg, transparent 52%, var(--paint) 53%);
+      transform: rotate(14deg);
+    }
+
+    [data-look="piano"] .scene-title::after,
+    [data-look="concert"] .scene-title::after {
+      width: 72%;
+      height: 27%;
+      right: -4%;
+      bottom: -8%;
+      background: repeating-linear-gradient(90deg, var(--paint) 0 10%, #faf5e8 10% 19%);
+      transform: rotate(-12deg);
+    }
+
+    [data-look="poem"] .scene-title::before,
+    [data-look="legacy"] .scene-title::before,
+    [data-look="poster"] .scene-title::before {
+      border-radius: 0;
+      transform: rotate(12deg);
+      box-shadow: -15px 13px 0 var(--paint);
+    }
+
+    .scene-heading { max-width: 36rem; }
+    .stage[data-entering] .scene-heading { animation: appear .46s ease-out both; }
+    .date, .speaker, .count {
+      font-size: .72rem;
+      font-weight: 750;
+      letter-spacing: .12em;
+      text-transform: uppercase;
+    }
+
+    .date { margin: 0 0 .7rem; }
+    h1 {
+      margin: 0;
+      font: 700 clamp(2.1rem, 6.2vw, 5.5rem)/.95 Georgia, serif;
+      letter-spacing: -.06em;
+      overflow-wrap: anywhere;
+    }
+
+    .dialogue { padding: clamp(16px, 3.8vw, 42px); }
+    .speaker { color: #91382d; margin: 0 0 .55rem; }
+    .caption {
+      margin: 0;
+      min-height: 3.15em;
+      max-width: 80ch;
+      font-size: clamp(1rem, 2vw, 1.23rem);
+      line-height: 1.55;
+    }
+
+    .poem { margin: .8rem 0 0; white-space: pre-line; font: italic 1.1rem/1.5 Georgia, serif; }
+    .scene-source { display: inline-block; margin-top: .6rem; color: #7f302a; font-weight: 650; }
+    .player-footer { border-top: 1px solid #3e3a33; padding: 12px clamp(16px, 3.8vw, 42px) 16px; }
+    .controls { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; }
+    .controls button {
+      min-height: 42px;
+      padding: 7px 12px;
+      font: inherit;
+      font-weight: 650;
+      color: inherit;
+      border: 1px solid #282522;
+      border-radius: 4px;
+      background: transparent;
+      cursor: pointer;
+    }
+
+    .controls #play { background: #282522; color: #fff9e8; min-width: 110px; }
+    .controls button:disabled { opacity: .43; cursor: default; }
+    .controls button:focus-visible, a:focus-visible { outline: 3px solid #156480; outline-offset: 3px; }
+    .count { margin-left: auto; }
+    progress { display: block; width: 100%; height: 7px; margin-top: 12px; accent-color: #91382d; }
+    [hidden] { display: none !important; }
+
+    @keyframes appear { from { opacity: 0; translate: 0 10px; } }
+    @keyframes talk { from { scale: 1 .6; } to { scale: 1.03 1.08; } }
+
+    @media (max-width: 560px) {
+      .stage { grid-template-columns: 36fr 64fr; min-height: 0; }
+      .scene-title { min-height: 198px; padding: 15px 12px; }
+      .date, .count { font-size: .65rem; }
+      h1 { font-size: clamp(1.6rem, 7vw, 2.5rem); }
+      .count { width: 100%; margin: 2px 0 0; }
+    }
+</style>
 </head>
 <body>
-  <main>
-    <div class="scene" role="img" aria-label="Lápis amarelo sorrindo e acenando">
-      <div class="shadow"></div>
-      <div class="pencil">
-        <div class="eraser"></div>
-        <div class="ferrule"></div>
-        <div class="barrel">
-          <div class="brows"><i></i><i></i></div>
-          <div class="eyes"><i></i><i></i></div>
-          <div class="smile"></div>
+  <main class="player" aria-label="Animação da Semana de Arte Moderna">
+
+    <section class="stage" id="stage" data-look="opening">
+
+      <div class="scene" role="img" aria-label="Lápis amarelo sorrindo e acenando">
+        <div class="shadow"></div>
+        <div class="pencil">
+          <div class="eraser"></div>
+          <div class="ferrule"></div>
+          <div class="barrel">
+            <div class="brows"><i></i><i></i></div>
+            <div class="eyes"><i></i><i></i></div>
+            <div class="smile"></div>
+          </div>
+          <div class="wood"></div>
+          <div class="arm raised"><span class="glove"></span></div>
+          <div class="arm resting"><span class="glove"></span></div>
         </div>
-        <div class="wood"></div>
-        <div class="arm raised"><span class="glove"></span></div>
-        <div class="arm resting"><span class="glove"></span></div>
       </div>
+      <div class="scene-title">
+        <div class="scene-heading">
+          <p class="date" id="date">São Paulo · 1922</p>
+          <h1 id="title">Semana de Arte Moderna</h1>
+        </div>
+      </div>
+    </section>
+
+    <section class="dialogue" aria-label="Fala do professor Woody" aria-live="polite" aria-atomic="true">
+      <p class="speaker">Professor Woody</p>
+      <p class="caption" id="caption">Oi, galera! Eu sou o professor Woody. Hoje a gente vai voltar a 1922 para conhecer a Semana de Arte Moderna.</p>
+      <blockquote class="poem" id="poem" hidden></blockquote>
+      <a class="scene-source" id="scene-source" hidden>Ver a obra no acervo do IEB-USP</a>
+    </section>
+
+    <div class="player-footer">
+      <div class="controls" aria-label="Controles da animação">
+        <button type="button" id="previous" disabled>← Anterior</button>
+        <button type="button" id="play">Reproduzir</button>
+        <button type="button" id="next">Próxima →</button>
+        <span class="count" id="count">Cena 1 de 9</span>
+      </div>
+      <progress id="progress" value="0" max="1" aria-label="Progresso da animação"></progress>
     </div>
   </main>
+  <script>
+    const scenes = [
+      {
+        look: 'opening', date: 'São Paulo · 1922', title: 'Semana de Arte Moderna',
+        caption: 'Oi, galera! Eu sou o professor Woody. Hoje a gente vai voltar a 1922 para conhecer a Semana de Arte Moderna.',
+        seconds: 9
+      },
+      {
+        look: 'theatre', date: '13, 15 e 17 de fevereiro · 1922', title: 'No Theatro Municipal',
+        caption: 'A Semana reuniu artistas como Mário de Andrade, Oswald de Andrade e Di Cavalcanti no Theatro Municipal de São Paulo. Eles queriam questionar as regras acadêmicas e experimentar novas formas de fazer arte.',
+        seconds: 15
+      },
+      {
+        look: 'poster', date: 'Antes da abertura', title: 'Cartazes e catálogos',
+        caption: 'Di Cavalcanti criou materiais para divulgar o evento. Os cartazes e o catálogo apresentavam ao público a programação e o espírito da Semana.',
+        seconds: 11
+      },
+      {
+        look: 'portrait', date: '13 de fevereiro · Abertura', title: 'O Homem Amarelo',
+        caption: 'Graça Aranha abriu a Semana com a palestra “A Emoção Estética da Arte Moderna”. No saguão, o público viu obras de Victor Brecheret e Anita Malfatti. Em O Homem Amarelo, Anita usou amarelos intensos e contornos marcados para dar tensão e expressão ao retrato.',
+        source: 'https://anitamalfatti.ieb.usp.br/1922-sam/',
+        seconds: 21
+      },
+      {
+        look: 'piano', date: '15 de fevereiro · Música e debate', title: 'Guiomar ao piano',
+        caption: 'Guiomar Novaes tocou obras de compositores como Claude Debussy e Heitor Villa-Lobos. Na mesma noite, Menotti Del Picchia falou sobre estética e sobre as ideias do movimento modernista.',
+        seconds: 14
+      },
+      {
+        look: 'poem', date: '15 de fevereiro · Poesia', title: 'Os Sapos',
+        caption: 'Ronald de Carvalho recitou “Os Sapos”, de Manuel Bandeira. O poema satiriza o rigor formal dos parnasianos.',
+        poem: 'O sapo-tanoeiro,\nParnasiano aguado,\nDiz: “Meu cancioneiro\nÉ bem martelado.\nVede como primo\nEm comer os hiatos!\nQue arte! E nunca rimo\nOs termos cognatos.”',
+        seconds: 23
+      },
+      {
+        look: 'concert', date: '17 de fevereiro · Encerramento', title: 'Villa-Lobos em cena',
+        caption: 'No encerramento, a música de Heitor Villa-Lobos tomou o palco. A noite teve peças instrumentais e vocais do compositor.',
+        seconds: 10
+      },
+      {
+        look: 'legacy', date: 'Depois da Semana', title: 'O que ficou?',
+        caption: 'A Semana dividiu opiniões e recebeu críticas. As ideias modernistas continuaram circulando em revistas, manifestos e novos movimentos, influenciando a arte brasileira nas décadas seguintes.',
+        seconds: 14
+      },
+      {
+        look: 'opening', date: 'Fim da aula', title: 'Até a próxima!',
+        caption: 'Bom, galera, por hoje é isso. Espero que tenham gostado da nossa viagem a 1922. Até a próxima!',
+        seconds: 8
+      }
+    ];
+
+    const stage = document.querySelector('#stage');
+    const title = document.querySelector('#title');
+    const date = document.querySelector('#date');
+    const caption = document.querySelector('#caption');
+    const poem = document.querySelector('#poem');
+    const source = document.querySelector('#scene-source');
+    const previous = document.querySelector('#previous');
+    const play = document.querySelector('#play');
+    const next = document.querySelector('#next');
+    const count = document.querySelector('#count');
+    const progress = document.querySelector('#progress');
+    const sceneStarts = [0];
+    for (const scene of scenes) sceneStarts.push(sceneStarts.at(-1) + scene.seconds);
+    progress.max = sceneStarts.at(-1);
+
+    let current = 0;
+    let elapsed = 0;
+    let startedAt = 0;
+    let playing = false;
+    let finished = false;
+    let frame = 0;
+
+    function syncPlayButton() {
+      play.textContent = playing ? 'Pausar' : finished ? 'Recomeçar' : 'Reproduzir';
+      stage.toggleAttribute('data-speaking', playing);
+    }
+
+    function showScene(index) {
+      current = index;
+      const scene = scenes[index];
+      stage.dataset.look = scene.look;
+      stage.removeAttribute('data-entering');
+      void stage.offsetWidth;
+      stage.setAttribute('data-entering', '');
+      title.textContent = scene.title;
+      date.textContent = scene.date;
+      caption.textContent = scene.caption;
+      poem.textContent = scene.poem ?? '';
+      poem.hidden = !scene.poem;
+      source.hidden = !scene.source;
+      if (scene.source) source.href = scene.source;
+      previous.disabled = index === 0;
+      next.disabled = index === scenes.length - 1;
+      count.textContent = 'Cena ' + (index + 1) + ' de ' + scenes.length;
+    }
+
+    function seek(index) {
+      elapsed = sceneStarts[index];
+      startedAt = performance.now() - elapsed * 1000;
+      progress.value = elapsed;
+      finished = false;
+      showScene(index);
+      syncPlayButton();
+    }
+
+    function tick(now) {
+      if (!playing) return;
+      elapsed = Math.min((now - startedAt) / 1000, progress.max);
+      progress.value = elapsed;
+      const sceneIndex = sceneStarts.findLastIndex(start => start <= elapsed);
+      const index = Math.min(sceneIndex, scenes.length - 1);
+      if (index !== current) showScene(index);
+      if (elapsed >= progress.max) {
+        playing = false;
+        finished = true;
+        syncPlayButton();
+        return;
+      }
+      frame = requestAnimationFrame(tick);
+    }
+
+    play.addEventListener('click', () => {
+      if (playing) {
+        playing = false;
+        cancelAnimationFrame(frame);
+      } else {
+        if (finished) seek(0);
+        startedAt = performance.now() - elapsed * 1000;
+        playing = true;
+        frame = requestAnimationFrame(tick);
+      }
+      syncPlayButton();
+    });
+    previous.addEventListener('click', () => seek(current - 1));
+    next.addEventListener('click', () => seek(current + 1));
+    showScene(0);
+  </script>
 </body>
 </html>
