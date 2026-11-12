@@ -1,0 +1,72 @@
+<!doctype html>
+<html lang="pt-BR">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="Uma aula ilustrada sobre a Semana de Arte Moderna de 1922.">
+<title>O lápis de 1922</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&family=Playfair+Display:wght@800&display=swap');
+*{box-sizing:border-box}body{margin:0;background:#f6eedc;color:#26221d;font-family:'DM Sans',system-ui,sans-serif}main{width:min(1100px,calc(100% - 36px));margin:0 auto;padding:32px 0 40px}header{display:flex;justify-content:space-between;gap:12px;align-items:center;border-bottom:1px solid #b8aa90;padding-bottom:17px;font-size:.85rem}header strong{letter-spacing:.13em;text-transform:uppercase}h1,h2{font-family:'Playfair Display',Georgia,serif;line-height:1.04}h1{font-size:clamp(2.6rem,7vw,5.6rem);margin:24px 0}h1 em{color:#a43328;font-style:normal}.lesson{display:grid;grid-template-columns:1.18fr 1fr;border:2px solid #26221d;border-radius:20px;overflow:hidden;box-shadow:5px 6px #26221d;background:#fffbef}.stage{--scene:#f6ca65;display:grid;place-items:center;position:relative;min-height:360px;overflow:hidden;background-color:var(--scene);background-image:radial-gradient(#30241c28 1px,transparent 1px);background-size:17px 17px;transition:background-color .45s}.stage[data-step="1"]{--scene:#ed9784}.stage[data-step="2"]{--scene:#9ac6aa}.stage[data-step="3"]{--scene:#a9bae2}.paper{position:absolute;inset:16% 16%;border:2px solid #332a22;border-radius:10px;background:#fff8de;transform:rotate(-8deg);box-shadow:5px 7px #30241c3b}.art{position:absolute;right:9%;top:16%;font-family:Georgia,serif;font-size:clamp(2rem,6vw,5rem);font-weight:bold;color:#9c3128;transform:rotate(12deg)}.spark{position:absolute;left:12%;bottom:20%;font-size:4rem;color:#2c563a}.pencil{position:relative;width:92px;height:213px;filter:drop-shadow(7px 8px 0 #30241c30);transform:rotate(-13deg);animation:bob 2.7s ease-in-out infinite}.eraser,.metal,.shaft,.tip{position:absolute;left:0;width:100%;border:3px solid #30241c}.eraser{height:35px;background:#ee8a9b;border-radius:21px 21px 0 0}.metal{top:31px;height:20px;background:repeating-linear-gradient(#c4c9c4 0 4px,#6c756e 5px 6px)}.shaft{top:48px;height:112px;background:linear-gradient(90deg,#e99b30 17%,#ffc63a 17% 76%,#e99b30 76%)}.tip{top:156px;height:57px;border:0;background:#30241c;clip-path:polygon(0 0,100% 0,50% 100%)}.tip::before{content:"";position:absolute;inset:3px 6px 15px;background:#edbd82;clip-path:polygon(0 0,100% 0,50% 100%)}.eyes{display:flex;justify-content:center;gap:10px;margin-top:24px}.eyes i{display:block;width:19px;height:25px;border:2px solid #30241c;border-radius:50%;background:radial-gradient(circle at 58% 59%,#30241c 0 5px,#fffaf0 6px);animation:blink 4.6s infinite}.mouth{width:27px;height:15px;background:#30241c;border:2px solid #30241c;border-radius:3px 3px 15px 15px;margin:9px auto;box-shadow:inset 0 -4px #e87d7a}.arm{position:absolute;width:42px;height:36px;border-bottom:5px solid #30241c;border-radius:0 0 50% 50%;top:63px}.arm.left{left:-36px;transform:rotate(38deg)}.arm.right{right:-33px;transform:rotate(-44deg);animation:wave 1.5s ease-in-out infinite;transform-origin:left center}.arm::after{content:"";position:absolute;width:16px;height:15px;background:#fffaf0;border:2px solid #30241c;border-radius:50%;bottom:10px;right:0}.arm.left::after{right:auto;left:0}.copy{padding:clamp(24px,5vw,52px);display:flex;flex-direction:column;justify-content:center}.counter{color:#8b362b;font-size:.83rem;font-weight:700;text-transform:uppercase;letter-spacing:.1em}h2{font-size:clamp(1.9rem,4vw,3.15rem);margin:12px 0}.copy p{font-size:1.06rem;line-height:1.6;margin:0 0 22px;min-height:5em}.controls,.steps{display:flex;gap:10px;flex-wrap:wrap;align-items:center}.controls button,.steps button{font:inherit;cursor:pointer;color:inherit;border:1.5px solid #26221d;background:transparent;border-radius:8px;padding:10px 14px;font-weight:700}.controls .next{background:#29241e;color:#fff8e7}.controls button:disabled{opacity:.4;cursor:default}.steps{margin-top:22px}.steps button{border-radius:100%;padding:0;width:33px;height:33px}.steps [aria-current="step"]{background:#a43328;color:white;border-color:#a43328}button:focus-visible{outline:3px solid #295c82;outline-offset:3px}.entrance{animation:arrive .45s both}.stage.entrance .art,.stage.entrance .spark{animation:draw .65s both}@keyframes bob{50%{transform:translateY(-13px) rotate(-8deg)}}@keyframes blink{46%,51%{transform:scaleY(.12)}49%,54%{transform:scaleY(1)}}@keyframes wave{50%{transform:rotate(-76deg)}}@keyframes arrive{from{opacity:.38}}@keyframes draw{from{scale:.2;opacity:0}to{scale:1;opacity:1}}@media(max-width:720px){.lesson{grid-template-columns:1fr}.stage{min-height:285px}.copy p{min-height:0}.pencil{scale:.85}}@media(prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition:none!important}}
+</style>
+<main>
+<header><strong>O lápis de 1922</strong><span>Aula ilustrada</span></header>
+<h1>Semana de <em>Arte Moderna</em></h1>
+<section class="lesson" aria-label="Aula sobre a Semana de Arte Moderna">
+<div class="stage" data-step="0" aria-hidden="true"><div class="paper"><span class="art">1922</span><span class="spark">✦</span></div><div class="pencil"><div class="eraser"></div><div class="metal"></div><div class="shaft"><div class="eyes"><i></i><i></i></div><div class="mouth"></div><div class="arm left"></div><div class="arm right"></div></div><div class="tip"></div></div></div>
+<div class="copy">
+<div id="explanation" aria-live="polite" aria-atomic="true"><div class="counter" id="counter">Etapa 1 de 4</div><h2 id="title">Uma semana para experimentar</h2><p id="description">Em fevereiro de 1922, artistas se reuniram no Theatro Municipal de São Paulo para apresentar novas formas de fazer arte. Vamos ver o que aconteceu?</p></div>
+<div class="controls"><button id="previous" disabled>← Voltar</button><button class="next" id="next">Próxima etapa →</button></div>
+<nav class="steps" aria-label="Etapas da aula"></nav>
+</div>
+</section>
+</main>
+<script>
+const scenes = [
+  {title:'Uma semana para experimentar', description:'Em fevereiro de 1922, artistas se reuniram no Theatro Municipal de São Paulo para apresentar novas formas de fazer arte. Vamos ver o que aconteceu?', art:'1922', spark:'✦'},
+  {title:'O que aconteceu no teatro?', description:'Quem foi ao Municipal encontrou exposições de artes visuais, apresentações musicais e leituras. Cada linguagem trouxe uma maneira diferente de experimentar.', art:'♪', spark:'✎'},
+  {title:'Quem participou?', description:'Anita Malfatti expôs pinturas, Heitor Villa-Lobos apresentou música e Mário de Andrade participou das atividades literárias. A Semana reuniu artistas de várias áreas.', art:'Aa', spark:'♪'},
+  {title:'O que ficou?', description:'A Semana se tornou um marco do modernismo brasileiro. Nas décadas seguintes, artistas continuaram explorando novas formas de representar a vida e a cultura do país.', art:'✷', spark:'✓'}
+];
+const stage = document.querySelector('.stage');
+const explanation = document.querySelector('#explanation');
+const counter = document.querySelector('#counter');
+const title = document.querySelector('#title');
+const description = document.querySelector('#description');
+const previous = document.querySelector('#previous');
+const next = document.querySelector('#next');
+const navigation = document.querySelector('.steps');
+let current = 0;
+const buttons = scenes.map((scene, index) => {
+  const button = document.createElement('button');
+  button.textContent = index + 1;
+  button.setAttribute('aria-label', 'Etapa ' + (index + 1) + ' — ' + scene.title);
+  button.addEventListener('click', () => show(index));
+  navigation.append(button);
+  return button;
+});
+function show(index) {
+  current = index;
+  const scene = scenes[index];
+  stage.dataset.step = index;
+  stage.querySelector('.art').textContent = scene.art;
+  stage.querySelector('.spark').textContent = scene.spark;
+  counter.textContent = 'Etapa ' + (index + 1) + ' de ' + scenes.length;
+  title.textContent = scene.title;
+  description.textContent = scene.description;
+  previous.disabled = index === 0;
+  next.textContent = index === scenes.length - 1 ? '↻ Recomeçar' : 'Próxima etapa →';
+  buttons.forEach((button, position) => {
+    if (position === index) button.setAttribute('aria-current', 'step');
+    else button.removeAttribute('aria-current');
+  });
+  for (const element of [stage, explanation]) {
+    element.classList.remove('entrance');
+    void element.offsetWidth;
+    element.classList.add('entrance');
+  }
+}
+previous.addEventListener('click', () => show(current - 1));
+next.addEventListener('click', () => show((current + 1) % scenes.length));
+show(0);
+</script>
+</html>
