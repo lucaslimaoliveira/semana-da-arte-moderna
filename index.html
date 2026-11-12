@@ -673,6 +673,11 @@
     .map-core .node-label { color: #fff; }
     .board .scene-heading h1 { color: #921b2b; }
     .speaker, .date { color: #a32436; }
+    .voice-note {
+      margin: 0 0 8px;
+      color: #923040;
+      font: 600 .68rem/1.35 system-ui, sans-serif;
+    }
 
 </style>
 </head>
@@ -698,6 +703,7 @@
           </div>
         </div>
         <div class="dialogue" aria-label="Fala do professor Woody" aria-live="polite" aria-atomic="true">
+          <p class="voice-note" id="voice-note">Voz gerada por IA · toque no Woody para ouvir</p>
           <p class="speaker">Professor Woody</p>
           <p class="caption" id="caption">Oi, galera! Eu sou o professor Woody. Hoje vamos montar juntos um mapa mental da Semana de Arte Moderna.</p>
           <blockquote class="poem" id="poem" hidden></blockquote>
@@ -727,6 +733,7 @@
     </section>
 
   </main>
+  <audio id="narration" src="assets/narracao/woody.mp3" preload="auto"></audio>
   <script>
     const scenes = [
   {
@@ -734,7 +741,169 @@
     "branch": 0,
     "title": "Olá, eu sou o Woody!",
     "caption": "Oi, galera! Tudo bem com vocês? Eu sou o professor Woody. Na aula de hoje, vamos voltar a 1922 e montar um mapa mental da Semana de Arte Moderna.",
-    "seconds": 10
+    "seconds": 13.14,
+    "voice": {
+      "sentences": [
+        {
+          "text": "Oi, galera!",
+          "start": 0
+        },
+        {
+          "text": "Tudo bem com vocês?",
+          "start": 1.988
+        },
+        {
+          "text": "Eu sou o professor Woody.",
+          "start": 3.94
+        },
+        {
+          "text": "Na aula de hoje, vamos voltar a 1922 e montar um mapa mental da Semana de Arte Moderna.",
+          "start": 6.202
+        }
+      ],
+      "words": [
+        {
+          "start": 0.098,
+          "end": 0.443,
+          "text": "Oi"
+        },
+        {
+          "start": 0.621,
+          "end": 1.169,
+          "text": "galera"
+        },
+        {
+          "start": 1.988,
+          "end": 2.19,
+          "text": "Tudo"
+        },
+        {
+          "start": 2.202,
+          "end": 2.429,
+          "text": "bem"
+        },
+        {
+          "start": 2.44,
+          "end": 2.548,
+          "text": "com"
+        },
+        {
+          "start": 2.56,
+          "end": 3.119,
+          "text": "vocês"
+        },
+        {
+          "start": 3.94,
+          "end": 4.119,
+          "text": "Eu"
+        },
+        {
+          "start": 4.131,
+          "end": 4.393,
+          "text": "sou"
+        },
+        {
+          "start": 4.405,
+          "end": 4.452,
+          "text": "o"
+        },
+        {
+          "start": 4.464,
+          "end": 5.024,
+          "text": "professor"
+        },
+        {
+          "start": 5.036,
+          "end": 5.381,
+          "text": "Woody"
+        },
+        {
+          "start": 6.202,
+          "end": 6.357,
+          "text": "Na"
+        },
+        {
+          "start": 6.369,
+          "end": 6.679,
+          "text": "aula"
+        },
+        {
+          "start": 6.69,
+          "end": 6.845,
+          "text": "de"
+        },
+        {
+          "start": 6.857,
+          "end": 7.131,
+          "text": "hoje"
+        },
+        {
+          "start": 7.417,
+          "end": 7.679,
+          "text": "vamos"
+        },
+        {
+          "start": 7.69,
+          "end": 8.083,
+          "text": "voltar"
+        },
+        {
+          "start": 8.095,
+          "end": 8.143,
+          "text": "a"
+        },
+        {
+          "start": 8.155,
+          "end": 9.393,
+          "text": "1922 e"
+        },
+        {
+          "start": 9.405,
+          "end": 9.762,
+          "text": "montar"
+        },
+        {
+          "start": 9.774,
+          "end": 9.845,
+          "text": "um"
+        },
+        {
+          "start": 9.857,
+          "end": 10.131,
+          "text": "mapa"
+        },
+        {
+          "start": 10.143,
+          "end": 10.524,
+          "text": "mental"
+        },
+        {
+          "start": 10.536,
+          "end": 10.619,
+          "text": "da"
+        },
+        {
+          "start": 10.631,
+          "end": 11.06,
+          "text": "Semana"
+        },
+        {
+          "start": 11.071,
+          "end": 11.19,
+          "text": "de"
+        },
+        {
+          "start": 11.202,
+          "end": 11.44,
+          "text": "Arte"
+        },
+        {
+          "start": 11.452,
+          "end": 12.012,
+          "text": "Moderna"
+        }
+      ]
+    }
   },
   {
     "look": "opening",
@@ -742,7 +911,151 @@
     "date": "São Paulo · 1922",
     "title": "Semana de Arte Moderna",
     "caption": "Vamos começar pelo centro do mapa: Semana de Arte Moderna. Durante nossa viagem, vou acrescentar os nomes, as obras e as ideias que marcaram esse encontro.",
-    "seconds": 11
+    "seconds": 11.052,
+    "voice": {
+      "sentences": [
+        {
+          "text": "Vamos começar pelo centro do mapa: Semana de Arte Moderna.",
+          "start": 0
+        },
+        {
+          "text": "Durante nossa viagem, vou acrescentar os nomes, as obras e as ideias que marcaram esse encontro.",
+          "start": 4.571
+        }
+      ],
+      "words": [
+        {
+          "start": 0.098,
+          "end": 0.443,
+          "text": "Vamos"
+        },
+        {
+          "start": 0.455,
+          "end": 0.967,
+          "text": "começar"
+        },
+        {
+          "start": 0.979,
+          "end": 1.205,
+          "text": "pelo"
+        },
+        {
+          "start": 1.217,
+          "end": 1.574,
+          "text": "centro"
+        },
+        {
+          "start": 1.586,
+          "end": 1.669,
+          "text": "do"
+        },
+        {
+          "start": 1.681,
+          "end": 1.99,
+          "text": "mapa"
+        },
+        {
+          "start": 2.324,
+          "end": 2.812,
+          "text": "Semana"
+        },
+        {
+          "start": 2.824,
+          "end": 2.943,
+          "text": "de"
+        },
+        {
+          "start": 2.955,
+          "end": 3.229,
+          "text": "Arte"
+        },
+        {
+          "start": 3.24,
+          "end": 3.752,
+          "text": "Moderna"
+        },
+        {
+          "start": 4.571,
+          "end": 5.036,
+          "text": "Durante"
+        },
+        {
+          "start": 5.048,
+          "end": 5.321,
+          "text": "nossa"
+        },
+        {
+          "start": 5.333,
+          "end": 5.762,
+          "text": "viagem"
+        },
+        {
+          "start": 6.0,
+          "end": 6.131,
+          "text": "vou"
+        },
+        {
+          "start": 6.143,
+          "end": 6.714,
+          "text": "acrescentar"
+        },
+        {
+          "start": 6.726,
+          "end": 6.857,
+          "text": "os"
+        },
+        {
+          "start": 6.869,
+          "end": 7.298,
+          "text": "nomes"
+        },
+        {
+          "start": 7.476,
+          "end": 7.56,
+          "text": "as"
+        },
+        {
+          "start": 7.571,
+          "end": 7.952,
+          "text": "obras"
+        },
+        {
+          "start": 7.964,
+          "end": 8.083,
+          "text": "e"
+        },
+        {
+          "start": 8.095,
+          "end": 8.143,
+          "text": "as"
+        },
+        {
+          "start": 8.155,
+          "end": 8.643,
+          "text": "ideias"
+        },
+        {
+          "start": 8.655,
+          "end": 8.738,
+          "text": "que"
+        },
+        {
+          "start": 8.75,
+          "end": 9.238,
+          "text": "marcaram"
+        },
+        {
+          "start": 9.25,
+          "end": 9.429,
+          "text": "esse"
+        },
+        {
+          "start": 9.44,
+          "end": 9.917,
+          "text": "encontro"
+        }
+      ]
+    }
   },
   {
     "look": "theatre",
@@ -757,7 +1070,159 @@
         "alt": "Fotografia histórica da fachada do Theatro Municipal de São Paulo"
       }
     ],
-    "seconds": 15
+    "seconds": 13.668,
+    "voice": {
+      "sentences": [
+        {
+          "text": "A Semana de Arte Moderna foi uma manifestação artística realizada no Theatro Municipal de São Paulo.",
+          "start": 0
+        },
+        {
+          "text": "As três noites de apresentações aconteceram nos dias 13, 15 e 17 de fevereiro de 1922.",
+          "start": 6.202
+        }
+      ],
+      "words": [
+        {
+          "start": 0.098,
+          "end": 0.193,
+          "text": "A"
+        },
+        {
+          "start": 0.205,
+          "end": 0.657,
+          "text": "Semana"
+        },
+        {
+          "start": 0.669,
+          "end": 0.776,
+          "text": "de"
+        },
+        {
+          "start": 0.788,
+          "end": 1.002,
+          "text": "Arte"
+        },
+        {
+          "start": 1.014,
+          "end": 1.526,
+          "text": "Moderna"
+        },
+        {
+          "start": 1.538,
+          "end": 1.657,
+          "text": "foi"
+        },
+        {
+          "start": 1.669,
+          "end": 1.776,
+          "text": "uma"
+        },
+        {
+          "start": 1.788,
+          "end": 2.455,
+          "text": "manifestação"
+        },
+        {
+          "start": 2.467,
+          "end": 2.967,
+          "text": "artística"
+        },
+        {
+          "start": 2.979,
+          "end": 3.598,
+          "text": "realizada"
+        },
+        {
+          "start": 3.61,
+          "end": 3.705,
+          "text": "no"
+        },
+        {
+          "start": 3.717,
+          "end": 4.145,
+          "text": "Theatro"
+        },
+        {
+          "start": 4.157,
+          "end": 4.669,
+          "text": "Municipal"
+        },
+        {
+          "start": 4.681,
+          "end": 4.776,
+          "text": "de"
+        },
+        {
+          "start": 4.788,
+          "end": 5.014,
+          "text": "São"
+        },
+        {
+          "start": 5.026,
+          "end": 5.383,
+          "text": "Paulo"
+        },
+        {
+          "start": 6.202,
+          "end": 6.405,
+          "text": "As"
+        },
+        {
+          "start": 6.417,
+          "end": 6.726,
+          "text": "três"
+        },
+        {
+          "start": 6.738,
+          "end": 7.119,
+          "text": "noites"
+        },
+        {
+          "start": 7.131,
+          "end": 7.179,
+          "text": "de"
+        },
+        {
+          "start": 7.19,
+          "end": 7.821,
+          "text": "apresentações"
+        },
+        {
+          "start": 7.833,
+          "end": 8.476,
+          "text": "aconteceram"
+        },
+        {
+          "start": 8.488,
+          "end": 8.619,
+          "text": "nos"
+        },
+        {
+          "start": 8.631,
+          "end": 8.893,
+          "text": "dias"
+        },
+        {
+          "start": 8.905,
+          "end": 9.298,
+          "text": "13"
+        },
+        {
+          "start": 9.488,
+          "end": 9.857,
+          "text": "15 e"
+        },
+        {
+          "start": 9.869,
+          "end": 12.536,
+          "text": " 17 de fevereiro de 1922"
+        }
+      ],
+      "photoStarts": [
+        0
+      ]
+    }
   },
   {
     "look": "theatre",
@@ -781,14 +1246,356 @@
         "alt": "Di Cavalcanti"
       }
     ],
-    "seconds": 13
+    "seconds": 11.244,
+    "voice": {
+      "sentences": [
+        {
+          "text": "Ela foi organizada por grandes nomes da arte, como Mário de Andrade, Oswald de Andrade e Di Cavalcanti.",
+          "start": 0
+        },
+        {
+          "text": "Vamos guardar esses três nomes junto do contexto da Semana.",
+          "start": 6.869
+        }
+      ],
+      "words": [
+        {
+          "start": 0.098,
+          "end": 0.348,
+          "text": "Ela"
+        },
+        {
+          "start": 0.36,
+          "end": 0.49,
+          "text": "foi"
+        },
+        {
+          "start": 0.502,
+          "end": 1.169,
+          "text": "organizada"
+        },
+        {
+          "start": 1.181,
+          "end": 1.336,
+          "text": "por"
+        },
+        {
+          "start": 1.348,
+          "end": 1.764,
+          "text": "grandes"
+        },
+        {
+          "start": 1.776,
+          "end": 2.062,
+          "text": "nomes"
+        },
+        {
+          "start": 2.074,
+          "end": 2.169,
+          "text": "da"
+        },
+        {
+          "start": 2.181,
+          "end": 2.538,
+          "text": "arte"
+        },
+        {
+          "start": 2.812,
+          "end": 3.05,
+          "text": "como"
+        },
+        {
+          "start": 3.062,
+          "end": 3.348,
+          "text": "Mário"
+        },
+        {
+          "start": 3.36,
+          "end": 3.431,
+          "text": "de"
+        },
+        {
+          "start": 3.443,
+          "end": 3.883,
+          "text": "Andrade"
+        },
+        {
+          "start": 4.121,
+          "end": 4.574,
+          "text": "Oswald"
+        },
+        {
+          "start": 4.586,
+          "end": 4.669,
+          "text": "de"
+        },
+        {
+          "start": 4.681,
+          "end": 5.098,
+          "text": "Andrade"
+        },
+        {
+          "start": 5.11,
+          "end": 5.157,
+          "text": "e"
+        },
+        {
+          "start": 5.169,
+          "end": 5.348,
+          "text": "Di"
+        },
+        {
+          "start": 5.36,
+          "end": 6.05,
+          "text": "Cavalcanti"
+        },
+        {
+          "start": 6.869,
+          "end": 7.179,
+          "text": "Vamos"
+        },
+        {
+          "start": 7.19,
+          "end": 7.595,
+          "text": "guardar"
+        },
+        {
+          "start": 7.607,
+          "end": 7.833,
+          "text": "esses"
+        },
+        {
+          "start": 7.845,
+          "end": 8.167,
+          "text": "três"
+        },
+        {
+          "start": 8.179,
+          "end": 8.524,
+          "text": "nomes"
+        },
+        {
+          "start": 8.536,
+          "end": 8.833,
+          "text": "junto"
+        },
+        {
+          "start": 8.845,
+          "end": 8.929,
+          "text": "do"
+        },
+        {
+          "start": 8.94,
+          "end": 9.452,
+          "text": "contexto"
+        },
+        {
+          "start": 9.464,
+          "end": 9.571,
+          "text": "da"
+        },
+        {
+          "start": 9.583,
+          "end": 10.107,
+          "text": "Semana"
+        }
+      ],
+      "photoStarts": [
+        0,
+        4.121,
+        5.169
+      ]
+    }
   },
   {
     "look": "opening",
     "branch": 2,
     "title": "Uma nova expressão",
     "caption": "O objetivo era romper com o academicismo e o conservadorismo da época. Os artistas propunham novas maneiras de criar e de se expressar. Chega de enrolação: vamos conhecer o que apareceu nesse festival.",
-    "seconds": 14
+    "seconds": 13.812,
+    "voice": {
+      "sentences": [
+        {
+          "text": "O objetivo era romper com o academicismo e o conservadorismo da época.",
+          "start": 0
+        },
+        {
+          "text": "Os artistas propunham novas maneiras de criar e de se expressar.",
+          "start": 4.821
+        },
+        {
+          "text": "Chega de enrolação: vamos conhecer o que apareceu nesse festival.",
+          "start": 8.929
+        }
+      ],
+      "words": [
+        {
+          "start": 0.098,
+          "end": 0.157,
+          "text": "O"
+        },
+        {
+          "start": 0.169,
+          "end": 0.836,
+          "text": "objetivo"
+        },
+        {
+          "start": 0.848,
+          "end": 0.967,
+          "text": "era"
+        },
+        {
+          "start": 0.979,
+          "end": 1.324,
+          "text": "romper"
+        },
+        {
+          "start": 1.336,
+          "end": 1.49,
+          "text": "com"
+        },
+        {
+          "start": 1.502,
+          "end": 1.538,
+          "text": "o"
+        },
+        {
+          "start": 1.55,
+          "end": 2.407,
+          "text": "academicismo"
+        },
+        {
+          "start": 2.419,
+          "end": 2.49,
+          "text": "e"
+        },
+        {
+          "start": 2.502,
+          "end": 2.55,
+          "text": "o"
+        },
+        {
+          "start": 2.562,
+          "end": 3.443,
+          "text": "conservadorismo"
+        },
+        {
+          "start": 3.455,
+          "end": 3.574,
+          "text": "da"
+        },
+        {
+          "start": 3.586,
+          "end": 4.002,
+          "text": "época"
+        },
+        {
+          "start": 4.821,
+          "end": 4.929,
+          "text": "Os"
+        },
+        {
+          "start": 4.94,
+          "end": 5.512,
+          "text": "artistas"
+        },
+        {
+          "start": 5.524,
+          "end": 5.988,
+          "text": "propunham"
+        },
+        {
+          "start": 6.0,
+          "end": 6.345,
+          "text": "novas"
+        },
+        {
+          "start": 6.357,
+          "end": 6.762,
+          "text": "maneiras"
+        },
+        {
+          "start": 6.774,
+          "end": 6.881,
+          "text": "de"
+        },
+        {
+          "start": 6.893,
+          "end": 7.286,
+          "text": "criar"
+        },
+        {
+          "start": 7.298,
+          "end": 7.345,
+          "text": "e"
+        },
+        {
+          "start": 7.357,
+          "end": 7.476,
+          "text": "de"
+        },
+        {
+          "start": 7.488,
+          "end": 7.571,
+          "text": "se"
+        },
+        {
+          "start": 7.583,
+          "end": 8.107,
+          "text": "expressar"
+        },
+        {
+          "start": 8.929,
+          "end": 9.298,
+          "text": "Chega"
+        },
+        {
+          "start": 9.31,
+          "end": 9.381,
+          "text": "de"
+        },
+        {
+          "start": 9.393,
+          "end": 9.952,
+          "text": "enrolação"
+        },
+        {
+          "start": 10.345,
+          "end": 10.631,
+          "text": "vamos"
+        },
+        {
+          "start": 10.643,
+          "end": 11.143,
+          "text": "conhecer"
+        },
+        {
+          "start": 11.155,
+          "end": 11.214,
+          "text": "o"
+        },
+        {
+          "start": 11.226,
+          "end": 11.298,
+          "text": "que"
+        },
+        {
+          "start": 11.31,
+          "end": 11.774,
+          "text": "apareceu"
+        },
+        {
+          "start": 11.786,
+          "end": 12.083,
+          "text": "nesse"
+        },
+        {
+          "start": 12.095,
+          "end": 12.691,
+          "text": "festival"
+        }
+      ]
+    }
   },
   {
     "look": "poster",
@@ -807,7 +1614,170 @@
         "alt": "Cartaz com o título Semana de Arte Moderna e uma árvore"
       }
     ],
-    "seconds": 14
+    "seconds": 11.556,
+    "voice": {
+      "sentences": [
+        {
+          "text": "Di Cavalcanti criou cartazes e o catálogo para divulgar o evento.",
+          "start": 0
+        },
+        {
+          "text": "Olhem os materiais do roteiro: eles anunciavam a Semana e apresentavam ao público essa nova proposta de arte.",
+          "start": 4.488
+        }
+      ],
+      "words": [
+        {
+          "start": 0.098,
+          "end": 0.312,
+          "text": "Di"
+        },
+        {
+          "start": 0.324,
+          "end": 0.943,
+          "text": "Cavalcanti"
+        },
+        {
+          "start": 0.955,
+          "end": 1.252,
+          "text": "criou"
+        },
+        {
+          "start": 1.264,
+          "end": 1.824,
+          "text": "cartazes"
+        },
+        {
+          "start": 1.836,
+          "end": 1.931,
+          "text": "e"
+        },
+        {
+          "start": 1.943,
+          "end": 1.979,
+          "text": "o"
+        },
+        {
+          "start": 1.99,
+          "end": 2.502,
+          "text": "catálogo"
+        },
+        {
+          "start": 2.514,
+          "end": 2.693,
+          "text": "para"
+        },
+        {
+          "start": 2.705,
+          "end": 3.11,
+          "text": "divulgar"
+        },
+        {
+          "start": 3.121,
+          "end": 3.193,
+          "text": "o"
+        },
+        {
+          "start": 3.205,
+          "end": 3.669,
+          "text": "evento"
+        },
+        {
+          "start": 4.488,
+          "end": 4.809,
+          "text": "Olhem"
+        },
+        {
+          "start": 4.821,
+          "end": 4.917,
+          "text": "os"
+        },
+        {
+          "start": 4.929,
+          "end": 5.417,
+          "text": "materiais"
+        },
+        {
+          "start": 5.429,
+          "end": 5.512,
+          "text": "do"
+        },
+        {
+          "start": 5.524,
+          "end": 5.964,
+          "text": "roteiro"
+        },
+        {
+          "start": 6.202,
+          "end": 6.357,
+          "text": "eles"
+        },
+        {
+          "start": 6.369,
+          "end": 7.059,
+          "text": "anunciavam"
+        },
+        {
+          "start": 7.071,
+          "end": 7.107,
+          "text": "a"
+        },
+        {
+          "start": 7.119,
+          "end": 7.583,
+          "text": "Semana"
+        },
+        {
+          "start": 7.595,
+          "end": 7.643,
+          "text": "e"
+        },
+        {
+          "start": 7.655,
+          "end": 8.309,
+          "text": "apresentavam"
+        },
+        {
+          "start": 8.321,
+          "end": 8.44,
+          "text": "ao"
+        },
+        {
+          "start": 8.452,
+          "end": 8.857,
+          "text": "público"
+        },
+        {
+          "start": 8.869,
+          "end": 9.071,
+          "text": "essa"
+        },
+        {
+          "start": 9.083,
+          "end": 9.393,
+          "text": "nova"
+        },
+        {
+          "start": 9.405,
+          "end": 9.929,
+          "text": "proposta"
+        },
+        {
+          "start": 9.94,
+          "end": 10.059,
+          "text": "de"
+        },
+        {
+          "start": 10.071,
+          "end": 10.429,
+          "text": "arte"
+        }
+      ],
+      "photoStarts": [
+        0,
+        7.778
+      ]
+    }
   },
   {
     "look": "portrait",
@@ -822,7 +1792,164 @@
         "alt": "Graça Aranha"
       }
     ],
-    "seconds": 14
+    "seconds": 11.028,
+    "voice": {
+      "sentences": [
+        {
+          "text": "No primeiro dia, Graça Aranha inaugurou o evento com a palestra “A Emoção Estética da Arte Moderna”.",
+          "start": 0
+        },
+        {
+          "text": "No nosso mapa, esse é o início das atividades de 13 de fevereiro.",
+          "start": 6.274
+        }
+      ],
+      "words": [
+        {
+          "start": 0.098,
+          "end": 0.252,
+          "text": "No"
+        },
+        {
+          "start": 0.264,
+          "end": 0.61,
+          "text": "primeiro"
+        },
+        {
+          "start": 0.621,
+          "end": 0.895,
+          "text": "dia"
+        },
+        {
+          "start": 1.086,
+          "end": 1.443,
+          "text": "Graça"
+        },
+        {
+          "start": 1.455,
+          "end": 1.752,
+          "text": "Aranha"
+        },
+        {
+          "start": 1.764,
+          "end": 2.205,
+          "text": "inaugurou"
+        },
+        {
+          "start": 2.217,
+          "end": 2.288,
+          "text": "o"
+        },
+        {
+          "start": 2.3,
+          "end": 2.717,
+          "text": "evento"
+        },
+        {
+          "start": 2.729,
+          "end": 2.848,
+          "text": "com"
+        },
+        {
+          "start": 2.86,
+          "end": 2.907,
+          "text": "a"
+        },
+        {
+          "start": 2.919,
+          "end": 3.407,
+          "text": "palestra"
+        },
+        {
+          "start": 3.479,
+          "end": 3.55,
+          "text": "A"
+        },
+        {
+          "start": 3.562,
+          "end": 4.002,
+          "text": "Emoção"
+        },
+        {
+          "start": 4.014,
+          "end": 4.514,
+          "text": "Estética"
+        },
+        {
+          "start": 4.526,
+          "end": 4.621,
+          "text": "da"
+        },
+        {
+          "start": 4.633,
+          "end": 4.919,
+          "text": "Arte"
+        },
+        {
+          "start": 4.931,
+          "end": 5.455,
+          "text": "Moderna"
+        },
+        {
+          "start": 6.274,
+          "end": 6.44,
+          "text": "No"
+        },
+        {
+          "start": 6.452,
+          "end": 6.726,
+          "text": "nosso"
+        },
+        {
+          "start": 6.738,
+          "end": 7.071,
+          "text": "mapa"
+        },
+        {
+          "start": 7.321,
+          "end": 7.536,
+          "text": "esse"
+        },
+        {
+          "start": 7.548,
+          "end": 7.583,
+          "text": "é"
+        },
+        {
+          "start": 7.595,
+          "end": 7.643,
+          "text": "o"
+        },
+        {
+          "start": 7.655,
+          "end": 8.012,
+          "text": "início"
+        },
+        {
+          "start": 8.024,
+          "end": 8.119,
+          "text": "das"
+        },
+        {
+          "start": 8.131,
+          "end": 8.774,
+          "text": "atividades"
+        },
+        {
+          "start": 8.786,
+          "end": 8.905,
+          "text": "de"
+        },
+        {
+          "start": 8.917,
+          "end": 9.893,
+          "text": "13 de fevereiro"
+        }
+      ],
+      "photoStarts": [
+        0
+      ]
+    }
   },
   {
     "look": "portrait",
@@ -847,7 +1974,176 @@
         "alt": "O Homem Amarelo · Anita Malfatti"
       }
     ],
-    "seconds": 15
+    "seconds": 11.172,
+    "voice": {
+      "sentences": [
+        {
+          "text": "O saguão recebeu obras de Victor Brecheret e de Anita Malfatti.",
+          "start": 0
+        },
+        {
+          "text": "Entre os trabalhos de Anita estava O Homem Amarelo, uma pintura que se tornou um símbolo do modernismo brasileiro.",
+          "start": 4.262
+        }
+      ],
+      "words": [
+        {
+          "start": 0.098,
+          "end": 0.205,
+          "text": "O"
+        },
+        {
+          "start": 0.217,
+          "end": 0.61,
+          "text": "saguão"
+        },
+        {
+          "start": 0.621,
+          "end": 1.05,
+          "text": "recebeu"
+        },
+        {
+          "start": 1.062,
+          "end": 1.395,
+          "text": "obras"
+        },
+        {
+          "start": 1.407,
+          "end": 1.49,
+          "text": "de"
+        },
+        {
+          "start": 1.502,
+          "end": 1.824,
+          "text": "Victor"
+        },
+        {
+          "start": 1.836,
+          "end": 2.3,
+          "text": "Brecheret"
+        },
+        {
+          "start": 2.312,
+          "end": 2.371,
+          "text": "e"
+        },
+        {
+          "start": 2.383,
+          "end": 2.49,
+          "text": "de"
+        },
+        {
+          "start": 2.502,
+          "end": 2.848,
+          "text": "Anita"
+        },
+        {
+          "start": 2.86,
+          "end": 3.443,
+          "text": "Malfatti"
+        },
+        {
+          "start": 4.262,
+          "end": 4.536,
+          "text": "Entre"
+        },
+        {
+          "start": 4.548,
+          "end": 4.607,
+          "text": "os"
+        },
+        {
+          "start": 4.619,
+          "end": 5.119,
+          "text": "trabalhos"
+        },
+        {
+          "start": 5.131,
+          "end": 5.19,
+          "text": "de"
+        },
+        {
+          "start": 5.202,
+          "end": 5.536,
+          "text": "Anita"
+        },
+        {
+          "start": 5.548,
+          "end": 5.857,
+          "text": "estava"
+        },
+        {
+          "start": 5.869,
+          "end": 5.905,
+          "text": "O"
+        },
+        {
+          "start": 5.917,
+          "end": 6.179,
+          "text": "Homem"
+        },
+        {
+          "start": 6.19,
+          "end": 6.702,
+          "text": "Amarelo"
+        },
+        {
+          "start": 7.012,
+          "end": 7.19,
+          "text": "uma"
+        },
+        {
+          "start": 7.202,
+          "end": 7.714,
+          "text": "pintura"
+        },
+        {
+          "start": 7.726,
+          "end": 7.81,
+          "text": "que"
+        },
+        {
+          "start": 7.821,
+          "end": 7.929,
+          "text": "se"
+        },
+        {
+          "start": 7.94,
+          "end": 8.226,
+          "text": "tornou"
+        },
+        {
+          "start": 8.238,
+          "end": 8.321,
+          "text": "um"
+        },
+        {
+          "start": 8.333,
+          "end": 8.786,
+          "text": "símbolo"
+        },
+        {
+          "start": 8.798,
+          "end": 8.869,
+          "text": "do"
+        },
+        {
+          "start": 8.881,
+          "end": 9.488,
+          "text": "modernismo"
+        },
+        {
+          "start": 9.5,
+          "end": 10.048,
+          "text": "brasileiro"
+        }
+      ],
+      "photoStarts": [
+        0,
+        2.502,
+        5.869
+      ]
+    }
   },
   {
     "look": "portrait",
@@ -861,7 +2157,203 @@
         "alt": "Pintura de um homem sentado, com rosto amarelo, contornos escuros e expressão séria"
       }
     ],
-    "seconds": 18
+    "seconds": 15.108,
+    "voice": {
+      "sentences": [
+        {
+          "text": "Observem o olhar distante, a postura tensa e o amarelo intenso no rosto.",
+          "start": 0
+        },
+        {
+          "text": "Os contornos escuros e as sobrancelhas marcadas reforçam a expressão do retrato.",
+          "start": 5.226
+        },
+        {
+          "text": "Essas escolhas de cor e forma questionavam os padrões tradicionais.",
+          "start": 10.393
+        }
+      ],
+      "words": [
+        {
+          "start": 0.098,
+          "end": 0.8,
+          "text": "Observem"
+        },
+        {
+          "start": 0.812,
+          "end": 0.824,
+          "text": "o"
+        },
+        {
+          "start": 0.836,
+          "end": 1.145,
+          "text": "olhar"
+        },
+        {
+          "start": 1.157,
+          "end": 1.717,
+          "text": "distante"
+        },
+        {
+          "start": 1.931,
+          "end": 2.014,
+          "text": "a"
+        },
+        {
+          "start": 2.026,
+          "end": 2.502,
+          "text": "postura"
+        },
+        {
+          "start": 2.514,
+          "end": 2.871,
+          "text": "tensa"
+        },
+        {
+          "start": 2.883,
+          "end": 2.919,
+          "text": "e"
+        },
+        {
+          "start": 2.931,
+          "end": 2.979,
+          "text": "o"
+        },
+        {
+          "start": 2.99,
+          "end": 3.395,
+          "text": "amarelo"
+        },
+        {
+          "start": 3.407,
+          "end": 3.883,
+          "text": "intenso"
+        },
+        {
+          "start": 3.895,
+          "end": 4.002,
+          "text": "no"
+        },
+        {
+          "start": 4.014,
+          "end": 4.407,
+          "text": "rosto"
+        },
+        {
+          "start": 5.226,
+          "end": 5.393,
+          "text": "Os"
+        },
+        {
+          "start": 5.405,
+          "end": 5.929,
+          "text": "contornos"
+        },
+        {
+          "start": 5.94,
+          "end": 6.429,
+          "text": "escuros"
+        },
+        {
+          "start": 6.44,
+          "end": 6.548,
+          "text": "e"
+        },
+        {
+          "start": 6.56,
+          "end": 6.679,
+          "text": "as"
+        },
+        {
+          "start": 6.69,
+          "end": 7.321,
+          "text": "sobrancelhas"
+        },
+        {
+          "start": 7.333,
+          "end": 7.857,
+          "text": "marcadas"
+        },
+        {
+          "start": 7.869,
+          "end": 8.417,
+          "text": "reforçam"
+        },
+        {
+          "start": 8.429,
+          "end": 8.452,
+          "text": "a"
+        },
+        {
+          "start": 8.464,
+          "end": 8.952,
+          "text": "expressão"
+        },
+        {
+          "start": 8.964,
+          "end": 9.036,
+          "text": "do"
+        },
+        {
+          "start": 9.048,
+          "end": 9.571,
+          "text": "retrato"
+        },
+        {
+          "start": 10.393,
+          "end": 10.679,
+          "text": "Essas"
+        },
+        {
+          "start": 10.69,
+          "end": 11.25,
+          "text": "escolhas"
+        },
+        {
+          "start": 11.262,
+          "end": 11.369,
+          "text": "de"
+        },
+        {
+          "start": 11.381,
+          "end": 11.619,
+          "text": "cor"
+        },
+        {
+          "start": 11.631,
+          "end": 11.667,
+          "text": "e"
+        },
+        {
+          "start": 11.679,
+          "end": 12.048,
+          "text": "forma"
+        },
+        {
+          "start": 12.06,
+          "end": 12.655,
+          "text": "questionavam"
+        },
+        {
+          "start": 12.667,
+          "end": 12.786,
+          "text": "os"
+        },
+        {
+          "start": 12.798,
+          "end": 13.226,
+          "text": "padrões"
+        },
+        {
+          "start": 13.238,
+          "end": 13.988,
+          "text": "tradicionais"
+        }
+      ],
+      "photoStarts": [
+        0
+      ]
+    }
   },
   {
     "look": "piano",
@@ -881,7 +2373,155 @@
         "alt": "Menotti Del Picchia"
       }
     ],
-    "seconds": 15
+    "seconds": 11.94,
+    "voice": {
+      "sentences": [
+        {
+          "text": "No segundo dia, Guiomar Novaes interpretou compositores como Claude Debussy e Heitor Villa-Lobos.",
+          "start": 0
+        },
+        {
+          "text": "Menotti Del Picchia apresentou sua palestra sobre estética e sobre o movimento modernista.",
+          "start": 6.286
+        }
+      ],
+      "words": [
+        {
+          "start": 0.098,
+          "end": 0.252,
+          "text": "No"
+        },
+        {
+          "start": 0.264,
+          "end": 0.705,
+          "text": "segundo"
+        },
+        {
+          "start": 0.717,
+          "end": 1.002,
+          "text": "dia"
+        },
+        {
+          "start": 1.193,
+          "end": 1.621,
+          "text": "Guiomar"
+        },
+        {
+          "start": 1.633,
+          "end": 1.943,
+          "text": "Novaes"
+        },
+        {
+          "start": 1.955,
+          "end": 2.574,
+          "text": "interpretou"
+        },
+        {
+          "start": 2.586,
+          "end": 3.3,
+          "text": "compositores"
+        },
+        {
+          "start": 3.312,
+          "end": 3.55,
+          "text": "como"
+        },
+        {
+          "start": 3.562,
+          "end": 3.871,
+          "text": "Claude"
+        },
+        {
+          "start": 3.883,
+          "end": 4.312,
+          "text": "Debussy"
+        },
+        {
+          "start": 4.324,
+          "end": 4.371,
+          "text": "e"
+        },
+        {
+          "start": 4.383,
+          "end": 4.74,
+          "text": "Heitor"
+        },
+        {
+          "start": 4.752,
+          "end": 5.467,
+          "text": "Villa-Lobos"
+        },
+        {
+          "start": 6.286,
+          "end": 6.809,
+          "text": "Menotti"
+        },
+        {
+          "start": 6.821,
+          "end": 6.964,
+          "text": "Del"
+        },
+        {
+          "start": 6.976,
+          "end": 7.262,
+          "text": "Picchia"
+        },
+        {
+          "start": 7.274,
+          "end": 7.774,
+          "text": "apresentou"
+        },
+        {
+          "start": 7.786,
+          "end": 7.976,
+          "text": "sua"
+        },
+        {
+          "start": 7.988,
+          "end": 8.452,
+          "text": "palestra"
+        },
+        {
+          "start": 8.464,
+          "end": 8.702,
+          "text": "sobre"
+        },
+        {
+          "start": 8.714,
+          "end": 9.238,
+          "text": "estética"
+        },
+        {
+          "start": 9.25,
+          "end": 9.298,
+          "text": "e"
+        },
+        {
+          "start": 9.31,
+          "end": 9.56,
+          "text": "sobre"
+        },
+        {
+          "start": 9.571,
+          "end": 9.583,
+          "text": "o"
+        },
+        {
+          "start": 9.595,
+          "end": 10.119,
+          "text": "movimento"
+        },
+        {
+          "start": 10.131,
+          "end": 10.81,
+          "text": "modernista"
+        }
+      ],
+      "photoStarts": [
+        0,
+        6.286
+      ]
+    }
   },
   {
     "look": "poem",
@@ -902,7 +2542,310 @@
         "alt": "Ilustração de um sapo"
       }
     ],
-    "seconds": 28
+    "seconds": 31.068,
+    "voice": {
+      "sentences": [
+        {
+          "text": "Ronald de Carvalho recitou “Os Sapos”, de Manuel Bandeira.",
+          "start": 0
+        },
+        {
+          "text": "A foto é de Bandeira, o autor do poema.",
+          "start": 4.25
+        },
+        {
+          "text": "Os sapos ilustram a sátira ao rigor formal dos parnasianos.",
+          "start": 7.488
+        }
+      ],
+      "words": [
+        {
+          "start": 0.098,
+          "end": 0.538,
+          "text": "Ronald"
+        },
+        {
+          "start": 0.55,
+          "end": 0.645,
+          "text": "de"
+        },
+        {
+          "start": 0.657,
+          "end": 1.133,
+          "text": "Carvalho"
+        },
+        {
+          "start": 1.145,
+          "end": 1.598,
+          "text": "recitou"
+        },
+        {
+          "start": 1.621,
+          "end": 1.752,
+          "text": "Os"
+        },
+        {
+          "start": 1.764,
+          "end": 2.193,
+          "text": "Sapos"
+        },
+        {
+          "start": 2.383,
+          "end": 2.49,
+          "text": "de"
+        },
+        {
+          "start": 2.502,
+          "end": 2.931,
+          "text": "Manuel"
+        },
+        {
+          "start": 2.943,
+          "end": 3.431,
+          "text": "Bandeira"
+        },
+        {
+          "start": 4.25,
+          "end": 4.393,
+          "text": "A"
+        },
+        {
+          "start": 4.405,
+          "end": 4.774,
+          "text": "foto"
+        },
+        {
+          "start": 4.786,
+          "end": 4.833,
+          "text": "é"
+        },
+        {
+          "start": 4.845,
+          "end": 4.917,
+          "text": "de"
+        },
+        {
+          "start": 4.929,
+          "end": 5.369,
+          "text": "Bandeira"
+        },
+        {
+          "start": 5.667,
+          "end": 5.738,
+          "text": "o"
+        },
+        {
+          "start": 5.75,
+          "end": 6.143,
+          "text": "autor"
+        },
+        {
+          "start": 6.155,
+          "end": 6.262,
+          "text": "do"
+        },
+        {
+          "start": 6.274,
+          "end": 6.667,
+          "text": "poema"
+        },
+        {
+          "start": 7.488,
+          "end": 7.655,
+          "text": "Os"
+        },
+        {
+          "start": 7.667,
+          "end": 8.012,
+          "text": "sapos"
+        },
+        {
+          "start": 8.024,
+          "end": 8.548,
+          "text": "ilustram"
+        },
+        {
+          "start": 8.56,
+          "end": 8.595,
+          "text": "a"
+        },
+        {
+          "start": 8.607,
+          "end": 9.036,
+          "text": "sátira"
+        },
+        {
+          "start": 9.048,
+          "end": 9.131,
+          "text": "ao"
+        },
+        {
+          "start": 9.143,
+          "end": 9.5,
+          "text": "rigor"
+        },
+        {
+          "start": 9.512,
+          "end": 9.893,
+          "text": "formal"
+        },
+        {
+          "start": 9.905,
+          "end": 10.095,
+          "text": "dos"
+        },
+        {
+          "start": 10.107,
+          "end": 10.905,
+          "text": "parnasianos"
+        },
+        {
+          "start": 11.726,
+          "end": 11.857,
+          "text": "O"
+        },
+        {
+          "start": 11.869,
+          "end": 12.25,
+          "text": "poema"
+        },
+        {
+          "start": 12.262,
+          "end": 12.667,
+          "text": "diz"
+        },
+        {
+          "start": 13.488,
+          "end": 13.595,
+          "text": "O"
+        },
+        {
+          "start": 13.607,
+          "end": 14.524,
+          "text": "sapo-tanoeiro"
+        },
+        {
+          "start": 15.345,
+          "end": 15.929,
+          "text": "Parnasiano"
+        },
+        {
+          "start": 15.94,
+          "end": 16.417,
+          "text": "aguado"
+        },
+        {
+          "start": 17.238,
+          "end": 17.702,
+          "text": "Diz"
+        },
+        {
+          "start": 17.964,
+          "end": 18.179,
+          "text": "Meu"
+        },
+        {
+          "start": 18.19,
+          "end": 18.845,
+          "text": "cancioneiro"
+        },
+        {
+          "start": 19.667,
+          "end": 19.786,
+          "text": "É"
+        },
+        {
+          "start": 19.798,
+          "end": 20.036,
+          "text": "bem"
+        },
+        {
+          "start": 20.048,
+          "end": 20.702,
+          "text": "martelado"
+        },
+        {
+          "start": 21.524,
+          "end": 21.881,
+          "text": "Vede"
+        },
+        {
+          "start": 21.893,
+          "end": 22.155,
+          "text": "como"
+        },
+        {
+          "start": 22.167,
+          "end": 22.512,
+          "text": "primo"
+        },
+        {
+          "start": 23.333,
+          "end": 23.464,
+          "text": "Em"
+        },
+        {
+          "start": 23.476,
+          "end": 23.845,
+          "text": "comer"
+        },
+        {
+          "start": 23.857,
+          "end": 23.905,
+          "text": "os"
+        },
+        {
+          "start": 23.917,
+          "end": 24.571,
+          "text": "hiatos"
+        },
+        {
+          "start": 25.393,
+          "end": 25.56,
+          "text": "Que"
+        },
+        {
+          "start": 25.571,
+          "end": 26.048,
+          "text": "arte"
+        },
+        {
+          "start": 26.869,
+          "end": 26.976,
+          "text": "E"
+        },
+        {
+          "start": 26.988,
+          "end": 27.417,
+          "text": "nunca"
+        },
+        {
+          "start": 27.429,
+          "end": 27.821,
+          "text": "rimo"
+        },
+        {
+          "start": 28.643,
+          "end": 28.857,
+          "text": "Os"
+        },
+        {
+          "start": 28.869,
+          "end": 29.238,
+          "text": "termos"
+        },
+        {
+          "start": 29.25,
+          "end": 29.952,
+          "text": "cognatos"
+        }
+      ],
+      "photoStarts": [
+        0,
+        13.488
+      ],
+      "poemStart": 13.488
+    }
   },
   {
     "look": "concert",
@@ -917,14 +2860,325 @@
         "alt": "Heitor Villa-Lobos"
       }
     ],
-    "seconds": 15
+    "seconds": 13.932,
+    "voice": {
+      "sentences": [
+        {
+          "text": "Por fim, no dia 17, Heitor Villa-Lobos encerrou a programação com uma apresentação de suas composições.",
+          "start": 0
+        },
+        {
+          "text": "A noite reuniu peças instrumentais e vocais, mostrando a presença da música nessa renovação artística.",
+          "start": 7.024
+        }
+      ],
+      "words": [
+        {
+          "start": 0.098,
+          "end": 0.276,
+          "text": "Por"
+        },
+        {
+          "start": 0.288,
+          "end": 0.55,
+          "text": "fim"
+        },
+        {
+          "start": 0.764,
+          "end": 0.871,
+          "text": "no"
+        },
+        {
+          "start": 0.883,
+          "end": 1.074,
+          "text": "dia"
+        },
+        {
+          "start": 1.086,
+          "end": 1.752,
+          "text": "17"
+        },
+        {
+          "start": 1.99,
+          "end": 2.324,
+          "text": "Heitor"
+        },
+        {
+          "start": 2.336,
+          "end": 2.836,
+          "text": "Villa-Lobos"
+        },
+        {
+          "start": 2.848,
+          "end": 3.3,
+          "text": "encerrou"
+        },
+        {
+          "start": 3.312,
+          "end": 3.36,
+          "text": "a"
+        },
+        {
+          "start": 3.371,
+          "end": 4.05,
+          "text": "programação"
+        },
+        {
+          "start": 4.062,
+          "end": 4.205,
+          "text": "com"
+        },
+        {
+          "start": 4.217,
+          "end": 4.3,
+          "text": "uma"
+        },
+        {
+          "start": 4.312,
+          "end": 4.955,
+          "text": "apresentação"
+        },
+        {
+          "start": 4.967,
+          "end": 5.062,
+          "text": "de"
+        },
+        {
+          "start": 5.074,
+          "end": 5.348,
+          "text": "suas"
+        },
+        {
+          "start": 5.36,
+          "end": 6.205,
+          "text": "composições"
+        },
+        {
+          "start": 7.024,
+          "end": 7.131,
+          "text": "A"
+        },
+        {
+          "start": 7.143,
+          "end": 7.524,
+          "text": "noite"
+        },
+        {
+          "start": 7.536,
+          "end": 7.893,
+          "text": "reuniu"
+        },
+        {
+          "start": 7.905,
+          "end": 8.179,
+          "text": "peças"
+        },
+        {
+          "start": 8.19,
+          "end": 8.964,
+          "text": "instrumentais"
+        },
+        {
+          "start": 8.976,
+          "end": 9.024,
+          "text": "e"
+        },
+        {
+          "start": 9.036,
+          "end": 9.548,
+          "text": "vocais"
+        },
+        {
+          "start": 9.821,
+          "end": 10.298,
+          "text": "mostrando"
+        },
+        {
+          "start": 10.31,
+          "end": 10.345,
+          "text": "a"
+        },
+        {
+          "start": 10.357,
+          "end": 10.833,
+          "text": "presença"
+        },
+        {
+          "start": 10.845,
+          "end": 10.941,
+          "text": "da"
+        },
+        {
+          "start": 10.952,
+          "end": 11.345,
+          "text": "música"
+        },
+        {
+          "start": 11.357,
+          "end": 11.607,
+          "text": "nessa"
+        },
+        {
+          "start": 11.619,
+          "end": 12.202,
+          "text": "renovação"
+        },
+        {
+          "start": 12.214,
+          "end": 12.81,
+          "text": "artística"
+        }
+      ],
+      "photoStarts": [
+        0
+      ]
+    }
   },
   {
     "look": "legacy",
     "branch": 8,
     "title": "O que ficou?",
     "caption": "A Semana teve repercussão e recebeu duras críticas. Depois dela, revistas, movimentos e manifestos ajudaram a disseminar essas novas ideias, influenciando o modernismo no Brasil.",
-    "seconds": 14
+    "seconds": 12.516,
+    "voice": {
+      "sentences": [
+        {
+          "text": "A Semana teve repercussão e recebeu duras críticas.",
+          "start": 0
+        },
+        {
+          "text": "Depois dela, revistas, movimentos e manifestos ajudaram a disseminar essas novas ideias, influenciando o modernismo no Brasil.",
+          "start": 3.869
+        }
+      ],
+      "words": [
+        {
+          "start": 0.098,
+          "end": 0.193,
+          "text": "A"
+        },
+        {
+          "start": 0.205,
+          "end": 0.669,
+          "text": "Semana"
+        },
+        {
+          "start": 0.681,
+          "end": 0.883,
+          "text": "teve"
+        },
+        {
+          "start": 0.895,
+          "end": 1.574,
+          "text": "repercussão"
+        },
+        {
+          "start": 1.586,
+          "end": 1.609,
+          "text": "e"
+        },
+        {
+          "start": 1.621,
+          "end": 2.026,
+          "text": "recebeu"
+        },
+        {
+          "start": 2.038,
+          "end": 2.419,
+          "text": "duras"
+        },
+        {
+          "start": 2.431,
+          "end": 3.05,
+          "text": "críticas"
+        },
+        {
+          "start": 3.869,
+          "end": 4.262,
+          "text": "Depois"
+        },
+        {
+          "start": 4.274,
+          "end": 4.595,
+          "text": "dela"
+        },
+        {
+          "start": 4.857,
+          "end": 5.524,
+          "text": "revistas"
+        },
+        {
+          "start": 5.786,
+          "end": 6.381,
+          "text": "movimentos"
+        },
+        {
+          "start": 6.393,
+          "end": 6.488,
+          "text": "e"
+        },
+        {
+          "start": 6.5,
+          "end": 7.071,
+          "text": "manifestos"
+        },
+        {
+          "start": 7.083,
+          "end": 7.607,
+          "text": "ajudaram"
+        },
+        {
+          "start": 7.619,
+          "end": 7.667,
+          "text": "a"
+        },
+        {
+          "start": 7.679,
+          "end": 8.202,
+          "text": "disseminar"
+        },
+        {
+          "start": 8.214,
+          "end": 8.476,
+          "text": "essas"
+        },
+        {
+          "start": 8.488,
+          "end": 8.702,
+          "text": "novas"
+        },
+        {
+          "start": 8.714,
+          "end": 9.25,
+          "text": "ideias"
+        },
+        {
+          "start": 9.512,
+          "end": 10.155,
+          "text": "influenciando"
+        },
+        {
+          "start": 10.167,
+          "end": 10.179,
+          "text": "o"
+        },
+        {
+          "start": 10.19,
+          "end": 10.821,
+          "text": "modernismo"
+        },
+        {
+          "start": 10.833,
+          "end": 10.917,
+          "text": "no"
+        },
+        {
+          "start": 10.929,
+          "end": 11.381,
+          "text": "Brasil"
+        }
+      ]
+    }
   },
   {
     "look": "opening",
@@ -932,7 +3186,179 @@
     "date": "Fim da aula",
     "title": "Até a próxima!",
     "caption": "Pronto, galera! Nosso mapa reúne o contexto, os artistas, as obras, a música e a poesia da Semana de Arte Moderna. Espero que tenham gostado. Até a próxima, tchau, tchau!",
-    "seconds": 10
+    "seconds": 14.244,
+    "voice": {
+      "sentences": [
+        {
+          "text": "Pronto, galera!",
+          "start": 0
+        },
+        {
+          "text": "Nosso mapa reúne o contexto, os artistas, as obras, a música e a poesia da Semana de Arte Moderna.",
+          "start": 2.06
+        },
+        {
+          "text": "Espero que tenham gostado.",
+          "start": 8.917
+        },
+        {
+          "text": "Até a próxima, tchau, tchau!",
+          "start": 11.131
+        }
+      ],
+      "words": [
+        {
+          "start": 0.098,
+          "end": 0.526,
+          "text": "Pronto"
+        },
+        {
+          "start": 0.693,
+          "end": 1.24,
+          "text": "galera"
+        },
+        {
+          "start": 2.06,
+          "end": 2.417,
+          "text": "Nosso"
+        },
+        {
+          "start": 2.429,
+          "end": 2.69,
+          "text": "mapa"
+        },
+        {
+          "start": 2.702,
+          "end": 3.024,
+          "text": "reúne"
+        },
+        {
+          "start": 3.036,
+          "end": 3.059,
+          "text": "o"
+        },
+        {
+          "start": 3.071,
+          "end": 3.643,
+          "text": "contexto"
+        },
+        {
+          "start": 3.881,
+          "end": 3.94,
+          "text": "os"
+        },
+        {
+          "start": 3.952,
+          "end": 4.619,
+          "text": "artistas"
+        },
+        {
+          "start": 4.81,
+          "end": 4.881,
+          "text": "as"
+        },
+        {
+          "start": 4.893,
+          "end": 5.369,
+          "text": "obras"
+        },
+        {
+          "start": 5.56,
+          "end": 5.619,
+          "text": "a"
+        },
+        {
+          "start": 5.631,
+          "end": 6.071,
+          "text": "música"
+        },
+        {
+          "start": 6.083,
+          "end": 6.131,
+          "text": "e"
+        },
+        {
+          "start": 6.143,
+          "end": 6.214,
+          "text": "a"
+        },
+        {
+          "start": 6.226,
+          "end": 6.619,
+          "text": "poesia"
+        },
+        {
+          "start": 6.631,
+          "end": 6.726,
+          "text": "da"
+        },
+        {
+          "start": 6.738,
+          "end": 7.179,
+          "text": "Semana"
+        },
+        {
+          "start": 7.19,
+          "end": 7.309,
+          "text": "de"
+        },
+        {
+          "start": 7.321,
+          "end": 7.559,
+          "text": "Arte"
+        },
+        {
+          "start": 7.571,
+          "end": 8.095,
+          "text": "Moderna"
+        },
+        {
+          "start": 8.917,
+          "end": 9.393,
+          "text": "Espero"
+        },
+        {
+          "start": 9.405,
+          "end": 9.524,
+          "text": "que"
+        },
+        {
+          "start": 9.536,
+          "end": 9.774,
+          "text": "tenham"
+        },
+        {
+          "start": 9.786,
+          "end": 10.309,
+          "text": "gostado"
+        },
+        {
+          "start": 11.131,
+          "end": 11.5,
+          "text": "Até"
+        },
+        {
+          "start": 11.512,
+          "end": 11.583,
+          "text": "a"
+        },
+        {
+          "start": 11.595,
+          "end": 12.107,
+          "text": "próxima"
+        },
+        {
+          "start": 12.31,
+          "end": 12.607,
+          "text": "tchau"
+        },
+        {
+          "start": 12.798,
+          "end": 13.119,
+          "text": "tchau"
+        }
+      ]
+    }
   }
 ];
 
@@ -941,6 +3367,8 @@
     const title = document.querySelector('#title');
     const date = document.querySelector('#date');
     const caption = document.querySelector('#caption');
+    const narration = document.querySelector('#narration');
+    const voiceNote = document.querySelector('#voice-note');
     const poem = document.querySelector('#poem');
     const source = document.querySelector('#scene-source');
     const gallery = document.querySelector('#gallery');
@@ -981,6 +3409,9 @@
     let writingBranch = false;
     let startedAt;
     let finished = false;
+    let narrationActive = false;
+    let narrationStarting = false;
+    let animationFrame = 0;
     let narrationFace = 'friendly';
     let reactionFace = '';
     let reactionTimer;
@@ -1014,11 +3445,19 @@
       }, 1800);
     }
 
-    woody.addEventListener('click', reactToTouch);
+    function interactWithWoody() {
+      if (!narrationActive || finished) {
+        enableNarration();
+      } else {
+        reactToTouch();
+      }
+    }
+
+    woody.addEventListener('click', interactWithWoody);
     woody.addEventListener('keydown', event => {
       if (event.key === 'Enter' || event.key === ' ') {
         event.preventDefault();
-        reactToTouch();
+        interactWithWoody();
       }
     });
 
@@ -1073,7 +3512,8 @@
       current = index;
       activePhoto = -1;
       activeSentence = -1;
-      sentences = scene.caption.split(/(?<=[.!?])\s+/u);
+      sentences = scene.voice?.sentences.map(sentence => sentence.text)
+        ?? scene.caption.split(/(?<=[.!?])\s+/u);
       stage.dataset.look = scene.look;
       stage.removeAttribute('data-entering');
       void stage.offsetWidth;
@@ -1290,7 +3730,9 @@
 
     function presentScene(seconds) {
       const scene = scenes[current];
-      const sentenceIndex = Math.min(sentences.length - 1, Math.floor(seconds / (scene.seconds / sentences.length)));
+      const sentenceIndex = scene.voice
+        ? Math.max(0, scene.voice.sentences.findLastIndex(sentence => sentence.start <= seconds))
+        : Math.min(sentences.length - 1, Math.floor(seconds / (scene.seconds / sentences.length)));
       if (sentenceIndex !== activeSentence) {
         activeSentence = sentenceIndex;
         caption.textContent = sentences[sentenceIndex];
@@ -1299,11 +3741,21 @@
         narrationFace = faces[sentenceIndex % faces.length];
       }
       const mouth = ['open', 'closed', 'round', 'open', 'closed', 'open', 'closed', 'closed'][Math.floor(seconds * 8) % 8];
-      if (stage.dataset.mouth !== mouth) stage.dataset.mouth = mouth;
+      const word = narrationActive && scene.voice?.words.find(word => word.start <= seconds && word.end >= seconds);
+      const speaking = !narrationActive || (!narration.paused && narration.readyState >= 3 && Boolean(word));
+      const spokenMouth = !speaking ? 'closed'
+        : word && /[ouóôú]/iu.test(word.text) && Math.floor(seconds * 8) % 3 === 0 ? 'round' : mouth;
+      stage.toggleAttribute('data-speaking', speaking);
+      if (stage.dataset.mouth !== spokenMouth) stage.dataset.mouth = spokenMouth;
+      if (scene.poem && scene.voice?.poemStart !== undefined) {
+        poem.hidden = seconds < scene.voice.poemStart;
+      }
       if (gallery.hidden) return;
       const photoTime = Math.max(0, seconds - (writingBranch ? 4 : 0));
       const photoDuration = (scene.seconds - (writingBranch ? 4 : 0)) / gallery.children.length;
-      const index = Math.min(gallery.children.length - 1, Math.floor(photoTime / photoDuration));
+      const index = scene.voice?.photoStarts
+        ? Math.max(0, scene.voice.photoStarts.findLastIndex(start => start <= seconds))
+        : Math.min(gallery.children.length - 1, Math.floor(photoTime / photoDuration));
       if (index === activePhoto) return;
       activePhoto = index;
       for (const [position, figure] of [...gallery.children].entries()) {
@@ -1333,7 +3785,8 @@
     function tick(now) {
       if (finished) return;
       startedAt ??= now;
-      const elapsed = Math.max(0, Math.min((now - startedAt) / 1000, duration));
+      const elapsed = Math.max(0, Math.min(narrationActive
+        ? narration.currentTime : (now - startedAt) / 1000, duration));
       const index = Math.min(sceneStarts.findLastIndex(start => start <= elapsed), scenes.length - 1);
       if (index !== current) showScene(index);
       presentScene(elapsed - sceneStarts[index]);
@@ -1344,20 +3797,68 @@
       }
       updateExpression();
       if (elapsed >= duration) {
-        finished = true;
-        writer.hidden = true;
-        stage.removeAttribute('data-writing');
-        stage.removeAttribute('data-speaking');
-        narrationFace = 'delighted';
-        updateExpression();
+        finishPlayback();
         return;
       }
-      requestAnimationFrame(tick);
+      animationFrame = requestAnimationFrame(tick);
     }
 
+    function finishPlayback() {
+      finished = true;
+      writer.hidden = true;
+      stage.removeAttribute('data-writing');
+      stage.removeAttribute('data-speaking');
+      narrationFace = 'delighted';
+      updateExpression();
+      if (narrationActive) {
+        voiceNote.textContent = 'Voz gerada por IA · toque no Woody para ouvir novamente';
+        woody.setAttribute('aria-label', 'Woody. Ativar para ouvir novamente.');
+        woody.setAttribute('title', 'Toque no Woody para ouvir novamente');
+      }
+      cancelAnimationFrame(animationFrame);
+    }
+
+    async function enableNarration() {
+      if (narrationStarting || (narrationActive && !finished)) return;
+      narrationStarting = true;
+      try {
+        if (narration.error) narration.load();
+        narration.currentTime = 0;
+        await narration.play();
+        narrationActive = true;
+        finished = false;
+        current = -1;
+        startedAt = undefined;
+        showScene(0);
+        voiceNote.textContent = 'Voz gerada por IA · Antônio';
+        woody.setAttribute('aria-label', 'Woody. Ativar para mudar a expressão.');
+        woody.setAttribute('title', 'Toque no Woody para ver outra expressão');
+        cancelAnimationFrame(animationFrame);
+        animationFrame = requestAnimationFrame(tick);
+      } catch {
+        voiceNote.textContent = 'Voz gerada por IA · toque no Woody para ouvir';
+        woody.setAttribute('aria-label', 'Woody. Ativar para ouvir a narração.');
+        woody.setAttribute('title', 'Toque no Woody para ouvir a narração');
+      } finally {
+        narrationStarting = false;
+      }
+    }
+
+    narration.addEventListener('ended', finishPlayback);
+    narration.addEventListener('error', () => {
+      if (!narrationActive) return;
+      startedAt = performance.now() - narration.currentTime * 1000;
+      narrationActive = false;
+      voiceNote.textContent = 'Áudio interrompido · toque no Woody para tentar novamente';
+      woody.setAttribute('aria-label', 'Woody. Ativar para tentar ouvir a narração.');
+    });
+    woody.setAttribute('aria-label', 'Woody. Ativar para ouvir a narração.');
+    woody.setAttribute('title', 'Toque no Woody para ouvir a narração');
+    woody.setAttribute('aria-describedby', 'voice-note');
     showScene(0);
     stage.setAttribute('data-speaking', '');
-    requestAnimationFrame(tick);
+    animationFrame = requestAnimationFrame(tick);
+    enableNarration();
   </script>
 </body>
 </html>
