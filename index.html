@@ -1213,7 +1213,6 @@
       // Small up-and-down strokes follow the current letter instead of the whole card.
       const x = letter.left + letter.width * fraction;
       const y = letter.bottom - 2 - Math.sin(fraction * Math.PI * 2) * Math.min(4, letter.height * .2);
-      moveWriter(x, y);
       return {x, y};
     }
 
@@ -1231,14 +1230,23 @@
       if (!writingBranch) return;
       const branch = scenes[current].branch;
       const node = branch === 1 ? core : nodes.find(item => Number(item.dataset.branch) === branch);
-      const writing = Boolean(node) && seconds < 7.2 && !reducedMotion.matches;
-      stage.toggleAttribute('data-writing', writing);
-      writer.hidden = !writing;
-      if (!node || reducedMotion.matches) return;
+      if (!node) return;
 
       const label = node.querySelector('.node-label');
       const detail = node.querySelector('.node-detail');
       const line = lines.find(item => item.branch === branch);
+      const labelStart = line ? 2 : .7;
+      const labelDuration = Math.max(1.1, Math.min(2.4, lettering.get(label).length * .075));
+      const labelEnd = labelStart + labelDuration;
+      const detailStart = labelEnd + .16;
+      const detailDuration = detail ? Math.max(.8, Math.min(2.4, lettering.get(detail).length * .075)) : 0;
+      const returnStart = detail ? detailStart + detailDuration : labelEnd;
+      const returnDuration = .6;
+      const writing = seconds < returnStart + returnDuration && !reducedMotion.matches;
+      stage.toggleAttribute('data-writing', writing);
+      writer.hidden = !writing;
+      if (reducedMotion.matches) return;
+
       const from = drawingRect(core);
       const homeRect = drawingRect(document.querySelector('.host > .scene'));
       const home = {x: homeRect.left + homeRect.width * .51, y: homeRect.top + homeRect.height * .86};
@@ -1246,13 +1254,20 @@
       const center = line?.curve
         ? {x: mapRect.left + line.curve.start.x, y: mapRect.top + line.curve.start.y}
         : {x: from.left + from.width / 2, y: from.top + from.height / 2};
-      const labelStart = line ? 2 : .7;
-
-      let tip = revealText(label, (seconds - labelStart) / 2.2);
+      let tip = revealText(label, (seconds - labelStart) / labelDuration);
       if (detail) {
-        tip = revealText(detail, (seconds - 4.2) / 2.2);
-        if (seconds < 4.2) tip = revealText(label, (seconds - labelStart) / 2.2);
+        const detailTip = revealText(detail, (seconds - detailStart) / detailDuration);
+        if (seconds >= detailStart) {
+          tip = detailTip;
+        } else if (seconds >= labelEnd) {
+          const lift = (seconds - labelEnd) / (detailStart - labelEnd);
+          tip = {
+            x: tip.x + (detailTip.x - tip.x) * lift,
+            y: tip.y + (detailTip.y - tip.y) * lift - Math.sin(lift * Math.PI) * 8
+          };
+        }
       }
+      moveWriter(tip.x, tip.y);
       if (line?.curve) {
         const fraction = Math.max(0, Math.min(1, (seconds - .7) / 1.1));
         line.progress = fraction;
@@ -1270,7 +1285,9 @@
         const firstLetter = drawingRect(lettering.get(label)[0]);
         glide(home, line ? center : {x:firstLetter.left, y:firstLetter.bottom}, seconds / .7);
       }
-      if (seconds >= 6.4 && seconds < 7.2) glide(tip, home, (seconds - 6.4) / .8, true);
+      if (seconds >= returnStart && seconds < returnStart + returnDuration) {
+        glide(tip, home, (seconds - returnStart) / returnDuration, true);
+      }
     }
 
     function presentScene(seconds) {
