@@ -300,8 +300,6 @@
     .stage[data-speaking] .pencil { animation-duration: 2.7s; }
     .stage[data-speaking] .smile { animation: talk .48s ease-in-out infinite alternate; }
     .stage[data-look="intro"][data-entering] .scene { animation: appear .55s ease-out both; }
-    .stage[data-paused] * { animation-play-state: paused; }
-    .stage[data-paused] .scene { animation: none; }
 
     .dialogue {
       width: 100%;
@@ -356,17 +354,7 @@
     h1 { margin: 0; font: 700 clamp(1.4rem, 3.3vw, 2.7rem)/1.04 Georgia, serif; }
     .stage[data-entering] .scene-heading { animation: appear .42s ease-out both; }
 
-    #play {
-      min-height: 32px;
-      padding: 4px 9px;
-      border: 1px solid #282522;
-      border-radius: 4px;
-      color: #282522;
-      background: #fffaf0;
-      font: 650 .78rem system-ui, sans-serif;
-      cursor: pointer;
-    }
-    button:focus-visible, a:focus-visible { outline: 3px solid #156480; outline-offset: 3px; }
+    a:focus-visible { outline: 3px solid #156480; outline-offset: 3px; }
 
     .map { position: relative; display: grid; grid-template: repeat(3, 1fr) / repeat(3, 1fr); aspect-ratio: 1.45; margin-top: 10px; }
     .map[hidden] { display: none; }
@@ -394,7 +382,6 @@
       font-family: Georgia, serif;
     }
     .map-item[data-current] { background: var(--paint); color: #fffaf0; }
-    .stage[data-entering] .map-item[data-current] { animation: appear .35s .2s ease-out both; }
 
     .map-line {
       position: absolute;
@@ -406,7 +393,6 @@
       transform: rotate(var(--angle));
       transform-origin: left center;
     }
-    .stage[data-entering] .map-line[data-current] { animation: draw .24s ease-out both; }
     .map [data-branch="2"] { --row: 1; --column: 1; --angle: -145deg; }
     .map [data-branch="3"] { --row: 1; --column: 2; --angle: -90deg; --length: 23%; }
     .map [data-branch="4"] { --row: 1; --column: 3; --angle: -35deg; }
@@ -417,7 +403,6 @@
 
     [hidden] { display: none !important; }
     @keyframes appear { from { opacity: 0; translate: 0 8px; } }
-    @keyframes draw { from { scale: 0 1; } }
     @keyframes talk { from { scale: 1 .6; } to { scale: 1.03 1.08; } }
 
     @media (max-width: 650px) {
@@ -426,6 +411,29 @@
       .dialogue::before { left: -7px; top: 44%; transform: rotate(-45deg); }
       .map { max-width: 470px; margin-inline: auto; }
     }
+
+
+    .map-item { min-width: 0; }
+    .node-label, .node-detail { display: block; }
+    .node-detail { margin-top: .35em; font-size: .76em; line-height: 1.2; font-weight: 500; }
+    .stage[data-writing] .host > .scene { opacity: 0; }
+    .scene.writer {
+      position: absolute;
+      width: clamp(76px, 11vw, 120px);
+      transform: translate(-51%, -86%);
+      z-index: 5;
+      pointer-events: none;
+      animation: none !important;
+    }
+    .writer .pencil {
+      animation: none;
+      transform: rotate(27deg);
+      transform-origin: 50% 100%;
+    }
+    .writer .shadow { display: none; }
+    .writer .arm { animation: none; }
+    .writer .smile { animation: none !important; }
+    .stage { isolation: isolate; }
 
 </style>
 </head>
@@ -463,24 +471,23 @@
             <p class="date" id="date" hidden></p>
             <h1 id="title">Olá, eu sou o Woody!</h1>
           </div>
-          <button type="button" id="play">Pausar</button>
         </div>
         <div class="map" id="map" role="group" aria-label="Mapa mental da Semana de Arte Moderna" hidden>
-          <strong class="map-item map-core">Semana de Arte Moderna</strong>
+          <strong class="map-item map-core"><span class="node-label">Semana de Arte Moderna</span></strong>
           <span class="map-line" data-branch="2" aria-hidden="true" hidden></span>
-          <span class="map-item" data-branch="2" hidden>Contexto</span>
+          <span class="map-item" data-branch="2" hidden><span class="node-label">Contexto</span><small class="node-detail">São Paulo · 1922</small></span>
           <span class="map-line" data-branch="3" aria-hidden="true" hidden></span>
-          <span class="map-item" data-branch="3" hidden>Divulgação</span>
+          <span class="map-item" data-branch="3" hidden><span class="node-label">Divulgação</span><small class="node-detail">Di Cavalcanti</small></span>
           <span class="map-line" data-branch="4" aria-hidden="true" hidden></span>
-          <span class="map-item" data-branch="4" hidden>Artes visuais</span>
+          <span class="map-item" data-branch="4" hidden><span class="node-label">Artes visuais</span><small class="node-detail">Anita · Brecheret</small></span>
           <span class="map-line" data-branch="5" aria-hidden="true" hidden></span>
-          <span class="map-item" data-branch="5" hidden>Música e debate</span>
+          <span class="map-item" data-branch="5" hidden><span class="node-label">Música e debate</span><small class="node-detail">Guiomar · Menotti</small></span>
           <span class="map-line" data-branch="6" aria-hidden="true" hidden></span>
-          <span class="map-item" data-branch="6" hidden>Poesia</span>
+          <span class="map-item" data-branch="6" hidden><span class="node-label">Poesia</span><small class="node-detail">Os Sapos</small></span>
           <span class="map-line" data-branch="7" aria-hidden="true" hidden></span>
-          <span class="map-item" data-branch="7" hidden>Concerto</span>
+          <span class="map-item" data-branch="7" hidden><span class="node-label">Concerto</span><small class="node-detail">Villa-Lobos</small></span>
           <span class="map-line" data-branch="8" aria-hidden="true" hidden></span>
-          <span class="map-item" data-branch="8" hidden>Legado</span>
+          <span class="map-item" data-branch="8" hidden><span class="node-label">Legado</span><small class="node-detail">Revistas · manifestos</small></span>
         </div>
       </div>
     </section>
@@ -548,25 +555,25 @@
     const caption = document.querySelector('#caption');
     const poem = document.querySelector('#poem');
     const source = document.querySelector('#scene-source');
-    const play = document.querySelector('#play');
     const map = document.querySelector('#map');
-    const branches = map.querySelectorAll('[data-branch]');
+    const core = map.querySelector('.map-core');
+    const nodes = [...map.querySelectorAll('.map-item[data-branch]')];
+    const lines = [...map.querySelectorAll('.map-line')];
+    const reducedMotion = matchMedia('(prefers-reduced-motion: reduce)');
+    const writer = document.querySelector('.host > .scene').cloneNode(true);
+    writer.classList.add('writer');
+    writer.removeAttribute('role');
+    writer.removeAttribute('aria-label');
+    writer.setAttribute('aria-hidden', 'true');
+    writer.hidden = true;
+    stage.append(writer);
+
     const sceneStarts = [0];
     for (const scene of scenes) sceneStarts.push(sceneStarts.at(-1) + scene.seconds);
     const duration = sceneStarts.at(-1);
-
-    let current = 0;
-    let elapsed = 0;
-    let startedAt = 0;
-    let playing = false;
+    let current = -1;
+    let startedAt;
     let finished = false;
-    let frame = 0;
-
-    function syncPlayButton() {
-      play.textContent = playing ? 'Pausar' : finished ? 'Recomeçar' : 'Continuar';
-      stage.toggleAttribute('data-speaking', playing);
-      stage.toggleAttribute('data-paused', !playing);
-    }
 
     function showScene(index) {
       current = index;
@@ -584,51 +591,105 @@
       source.hidden = !scene.source;
       if (scene.source) source.href = scene.source;
       map.hidden = index === 0;
-      for (const branch of branches) {
-        const sceneIndex = Number(branch.dataset.branch);
-        branch.hidden = sceneIndex > index;
-        branch.toggleAttribute('data-current', sceneIndex === index);
+
+      for (const node of nodes) {
+        const nodeIndex = Number(node.dataset.branch);
+        node.hidden = nodeIndex > index;
+        node.toggleAttribute('data-current', nodeIndex === index);
+        for (const text of node.children) text.style.clipPath = '';
       }
+      for (const line of lines) {
+        line.hidden = Number(line.dataset.branch) > index;
+        line.style.scale = '1 1';
+      }
+      core.querySelector('.node-label').style.clipPath = '';
+    }
+
+    function layoutLines() {
+      const mapRect = map.getBoundingClientRect();
+      const center = core.getBoundingClientRect();
+      const originX = center.left + center.width / 2;
+      const originY = center.top + center.height / 2;
+      for (const [index, line] of lines.entries()) {
+        const node = nodes[index];
+        if (node.hidden) continue;
+        const rect = node.getBoundingClientRect();
+        const dx = rect.left + rect.width / 2 - originX;
+        const dy = rect.top + rect.height / 2 - originY;
+        line.style.left = (originX - mapRect.left) + 'px';
+        line.style.top = (originY - mapRect.top) + 'px';
+        line.style.width = Math.hypot(dx, dy) + 'px';
+        line.style.transform = 'rotate(' + Math.atan2(dy, dx) + 'rad)';
+      }
+    }
+
+    function moveWriter(x, y) {
+      const rect = stage.getBoundingClientRect();
+      writer.style.left = (x - rect.left) + 'px';
+      writer.style.top = (y - rect.top) + 'px';
+    }
+
+    function revealText(text, fraction) {
+      const progress = Math.max(0, Math.min(1, fraction));
+      text.style.clipPath = 'inset(0 ' + ((1 - progress) * 100) + '% 0 0)';
+      const rect = text.getBoundingClientRect();
+      moveWriter(rect.left + rect.width * progress, rect.bottom - 3);
+    }
+
+    function writeScene(seconds) {
+      const node = current === 1 ? core : nodes.find(item => Number(item.dataset.branch) === current);
+      const writing = Boolean(node) && seconds >= .6 && seconds < 6 && !reducedMotion.matches;
+      stage.toggleAttribute('data-writing', writing);
+      writer.hidden = !writing;
+      if (!node || reducedMotion.matches) return;
+
+      const label = node.querySelector('.node-label');
+      const detail = node.querySelector('.node-detail');
+      const line = lines.find(item => Number(item.dataset.branch) === current);
+      // Give the line time to grow before the pencil writes the label.
+      const labelStart = line ? 2 : .6;
+      revealText(label, (seconds - labelStart) / 1.8);
+      if (detail) detail.style.clipPath = 'inset(0 100% 0 0)';
+
+      if (line) {
+        const fraction = Math.max(0, Math.min(1, (seconds - .6) / 1.4));
+        line.style.scale = fraction + ' 1';
+        if (seconds < 2) {
+          const from = core.getBoundingClientRect();
+          const to = node.getBoundingClientRect();
+          moveWriter(
+            from.left + from.width / 2 + (to.left + to.width / 2 - from.left - from.width / 2) * fraction,
+            from.top + from.height / 2 + (to.top + to.height / 2 - from.top - from.height / 2) * fraction
+          );
+        }
+      }
+      if (detail && seconds >= 3.8) revealText(detail, (seconds - 3.8) / 1.8);
     }
 
     function tick(now) {
-      if (!playing) return;
-      elapsed = Math.max(0, Math.min((now - startedAt) / 1000, duration));
-      const sceneIndex = sceneStarts.findLastIndex(start => start <= elapsed);
-      const index = Math.min(sceneIndex, scenes.length - 1);
+      if (finished) return;
+      // Use the animation-frame clock from the first frame throughout playback.
+      startedAt ??= now;
+      const elapsed = Math.max(0, Math.min((now - startedAt) / 1000, duration));
+      const index = Math.min(sceneStarts.findLastIndex(start => start <= elapsed), scenes.length - 1);
       if (index !== current) showScene(index);
+      if (!map.hidden) {
+        layoutLines();
+        writeScene(elapsed - sceneStarts[index]);
+      }
       if (elapsed >= duration) {
-        playing = false;
         finished = true;
-        syncPlayButton();
+        writer.hidden = true;
+        stage.removeAttribute('data-writing');
+        stage.removeAttribute('data-speaking');
         return;
       }
-      frame = requestAnimationFrame(tick);
+      requestAnimationFrame(tick);
     }
 
-    function startPlayback() {
-      if (finished) {
-        finished = false;
-        elapsed = 0;
-        showScene(0);
-      }
-      startedAt = performance.now() - elapsed * 1000;
-      playing = true;
-      frame = requestAnimationFrame(tick);
-      syncPlayButton();
-    }
-
-    play.addEventListener('click', () => {
-      if (playing) {
-        playing = false;
-        cancelAnimationFrame(frame);
-        syncPlayButton();
-      } else {
-        startPlayback();
-      }
-    });
     showScene(0);
-    startPlayback();
+    stage.setAttribute('data-speaking', '');
+    requestAnimationFrame(tick);
   </script>
 </body>
 </html>
