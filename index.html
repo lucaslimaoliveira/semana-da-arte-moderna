@@ -337,38 +337,26 @@
 
     .board {
       min-width: 0;
-      align-self: center;
+      display: grid;
+      grid-template-rows: 76px 180px 340px;
+      gap: 12px;
       padding: clamp(12px, 2vw, 24px);
-      border: 1px solid #282522;
-      background: repeating-linear-gradient(#fdf5e5 0 23px, #e8ddc9 23px 24px);
-      box-shadow: 4px 4px #282522;
+      border: 1px solid #dfb5bc;
+      border-radius: 22px;
+      background: #fff;
+      box-shadow: 0 8px 24px #48371a15, 0 2px 0 #fffdf8 inset;
     }
-
-    .board-heading {
-      display: flex;
-      justify-content: space-between;
-      gap: 10px;
-      align-items: flex-start;
-    }
+    .board-heading { grid-row: 1; }
     .date { color: var(--paint); margin: 0 0 .3rem; }
     h1 { margin: 0; font: 700 clamp(1.4rem, 3.3vw, 2.7rem)/1.04 Georgia, serif; }
     .stage[data-entering] .scene-heading { animation: appear .42s ease-out both; }
 
     a:focus-visible { outline: 3px solid #156480; outline-offset: 3px; }
 
-
-    .board {
-      border: 1px solid #dfb5bc;
-      border-radius: 22px;
-      background: #fff;
-      box-shadow: 0 8px 24px #48371a15, 0 2px 0 #fffdf8 inset;
-    }
-    .map, .gallery:not([hidden]) + .map {
+    .map {
+      grid-row: 3;
       position: relative;
-      display: block;
-      aspect-ratio: 1.65;
-      min-height: 340px;
-      margin-top: 18px;
+      width: 100%;
       border-radius: 16px;
       background: radial-gradient(#bb4b5b35 .8px, transparent .8px) center / 14px 14px;
       isolation: isolate;
@@ -433,22 +421,38 @@
     .map [data-branch="7"] { --x: 50%; --y: 88%; --branch: #991f2b; }
     .map [data-branch="8"] { --x: 15%; --y: 81%; --branch: #ab3a2b; }
     @keyframes map-arrival { from { opacity: 0; scale: .92; } }
-    @media (max-width: 650px) {
-      .board { padding: 13px; border-radius: 16px; }
-      .map, .gallery:not([hidden]) + .map { min-height: 305px; margin-top: 14px; }
+    @media (max-width: 720px) {
+      .board {
+        padding: 12px;
+        border-radius: 16px;
+        grid-template-rows: 68px 152px 248px;
+        gap: 8px;
+      }
       .map-item { padding: 8px 4px; font-size: .69rem; border-radius: 9px; }
       .map-core { font-size: .83rem; border-radius: 40%; min-height: 78px; }
+      .map [data-branch="3"] { --y: 13%; }
+      .map [data-branch="7"] { --y: 87%; }
     }
 
     [hidden] { display: none !important; }
     @keyframes appear { from { opacity: 0; translate: 0 8px; } }
     @keyframes talk { from { scale: 1 .6; } to { scale: 1.03 1.08; } }
 
-    @media (max-width: 650px) {
-      .stage { grid-template-columns: 1fr; }
-      .host { grid-template-columns: minmax(58px, 25%) minmax(0, 1fr); align-items: center; gap: 9px; }
+    @media (max-width: 720px) and (orientation: portrait) {
+      .stage {
+        grid-template-columns: minmax(0, 1fr);
+        grid-template-rows: 164px auto;
+        gap: 10px;
+        padding: 10px;
+      }
+      .host { grid-template-columns: minmax(64px, 24%) minmax(0, 1fr); align-items: center; gap: 9px; }
+      .dialogue { padding: 10px; }
+      .caption { font-size: .94rem; line-height: 1.35; }
       .dialogue::before { left: -7px; top: 44%; transform: rotate(-45deg); }
       .map { max-width: 470px; margin-inline: auto; }
+    }
+    @media (max-width: 360px) and (orientation: portrait) {
+      .stage { grid-template-rows: 192px auto; }
     }
 
 
@@ -486,7 +490,6 @@
       transform: scale(var(--scene-scale, 1));
       transform-origin: center;
     }
-    .stage { min-height: 590px; }
     .host > .scene { transition: opacity .12s; }
     .scene.writer { width: 80px; }
     .writer .pencil { transform: rotate(35deg); }
@@ -504,11 +507,23 @@
     .map-core .word { white-space: nowrap; }
 
 
+    .board-media {
+      grid-row: 2;
+      display: grid;
+      grid-auto-flow: column;
+      grid-auto-columns: minmax(0, 1fr);
+      align-items: stretch;
+      gap: 8px;
+    }
+    .board-media .poem {
+      align-self: center;
+      margin: 0;
+      padding: 4px;
+      font-size: clamp(.73rem, 1.25vw, 1rem);
+      line-height: 1.22;
+    }
     .gallery {
-      display: block;
       position: relative;
-      height: clamp(185px, 22vw, 242px);
-      margin: 16px 0 12px;
       overflow: hidden;
       isolation: isolate;
       border-radius: 14px;
@@ -568,11 +583,34 @@
     .gallery figure[data-active] figcaption { animation: photo-caption .45s .25s ease-out both; }
     .caption { transition: opacity .15s; }
     @keyframes photo-caption { from { opacity: 0; translate: 0 6px; } }
-    @media (max-width: 650px) {
-      .stage { min-height: 0; }
-      .gallery { height: 170px; }
+    @media (max-width: 720px) {
       .gallery figure { inset: 8px 10px; }
-      .host { grid-template-columns: minmax(74px, 27%) minmax(0, 1fr); }
+    }
+
+    @media (max-height: 560px) and (orientation: landscape) {
+      .stage {
+        grid-template-columns: minmax(0, 24fr) minmax(0, 76fr);
+        gap: 10px;
+        padding: 10px;
+      }
+      .board {
+        grid-template-columns: minmax(0, 28fr) minmax(0, 72fr);
+        grid-template-rows: 48px 232px;
+        gap: 8px;
+        padding: 10px;
+      }
+      .board-heading { grid-column: 1 / -1; }
+      .board .scene-heading h1 { font-size: clamp(1rem, 2.5vw, 1.65rem); }
+      .board-media { grid-column: 1; grid-auto-flow: row; grid-auto-rows: minmax(0, 1fr); }
+      .board-media .poem { font-size: .69rem; line-height: 1.17; }
+      .map { grid-row: 2; grid-column: 2; }
+      .map-item { padding: 6px 3px; min-height: 44px; font-size: .69rem; }
+      .map-core { min-height: 68px; font-size: .79rem; }
+      .host > .scene { width: min(100%, 145px); }
+      .dialogue { padding: 8px; }
+      .caption { font-size: .82rem; line-height: 1.3; }
+      .gallery figure { inset: 5px; }
+      .gallery figcaption { padding: 3px; margin-top: 3px; }
     }
 
     .host .arm { transition: transform .35s ease-out; }
@@ -700,7 +738,6 @@
         <div class="dialogue" aria-label="Fala do professor Woody" aria-live="polite" aria-atomic="true">
           <p class="speaker">Professor Woody</p>
           <p class="caption" id="caption">Oi, galera! Eu sou o professor Woody. Hoje vamos montar juntos um mapa mental da Semana de Arte Moderna.</p>
-          <blockquote class="poem" id="poem" hidden></blockquote>
           <a class="scene-source" id="scene-source" hidden>Ver a obra no acervo do IEB-USP</a>
         </div>
       </div>
@@ -711,7 +748,10 @@
             <h1 id="title">Olá, eu sou o Woody!</h1>
           </div>
         </div>
-        <div class="gallery" id="gallery" aria-label="Imagens da explicação" hidden></div>
+        <div class="board-media">
+          <div class="gallery" id="gallery" aria-label="Imagens da explicação" hidden></div>
+          <blockquote class="poem" id="poem" hidden></blockquote>
+        </div>
         <div class="map" id="map" role="group" aria-label="Mapa mental da Semana de Arte Moderna" hidden>
           <canvas class="map-links" aria-hidden="true"></canvas>
           <strong class="map-item map-core"><span class="node-label">Semana de Arte Moderna</span></strong>
@@ -1117,7 +1157,6 @@
       for (const letters of lettering.values()) {
         for (const letter of letters) letter.style.clipPath = '';
       }
-      fitScene();
     }
 
     function layoutLines() {
@@ -1356,6 +1395,7 @@
     }
 
     showScene(0);
+    fitScene();
     stage.setAttribute('data-speaking', '');
     requestAnimationFrame(tick);
   </script>
