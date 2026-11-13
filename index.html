@@ -1065,8 +1065,12 @@
     function fitScene() {
       const availableWidth = window.visualViewport?.width ?? window.innerWidth;
       const availableHeight = window.visualViewport?.height ?? window.innerHeight;
-      sceneScale = Math.min(1, (availableWidth - 18) / (player.offsetWidth + 6),
-        (availableHeight - 18) / (player.offsetHeight + 6));
+      const verticalMargin = Math.min(36, availableHeight * .045);
+      sceneScale = Math.min(
+        .95,
+        (availableWidth - 18) / (player.offsetWidth + 6),
+        (availableHeight - verticalMargin * 2) / (player.offsetHeight + 6)
+      );
       player.style.setProperty('--scene-scale', sceneScale);
     }
 
