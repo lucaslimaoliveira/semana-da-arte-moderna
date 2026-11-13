@@ -347,6 +347,12 @@
       box-shadow: 0 8px 24px #48371a15, 0 2px 0 #fffdf8 inset;
     }
     .board-heading { grid-row: 1; }
+    .stage[data-look="intro"] .board-heading {
+      grid-row: 1 / -1;
+      display: grid;
+      place-items: center;
+      text-align: center;
+    }
     .date { color: var(--paint); margin: 0 0 .3rem; }
     h1 { margin: 0; font: 700 clamp(1.4rem, 3.3vw, 2.7rem)/1.04 Georgia, serif; }
     .stage[data-entering] .scene-heading { animation: appear .42s ease-out both; }
